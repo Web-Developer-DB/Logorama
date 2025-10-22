@@ -35,13 +35,22 @@ const generateId = () => {
   return `entry-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 };
 
+const formatTwoDigits = (value) => value.toString().padStart(2, "0");
+
 /**
- * Vorbefüllung des Formulars mit der aktuellen Zeit (auf Minuten gerundet).
+ * Vorbefüllung des Formulars mit der aktuellen lokalen Zeit (auf Minuten gerundet).
  */
 const getInitialDateTime = () => {
   const now = new Date();
   now.setSeconds(0, 0);
-  return now.toISOString().slice(0, 16);
+
+  const year = now.getFullYear();
+  const month = formatTwoDigits(now.getMonth() + 1);
+  const day = formatTwoDigits(now.getDate());
+  const hours = formatTwoDigits(now.getHours());
+  const minutes = formatTwoDigits(now.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
 /**
