@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import EntryCard from "./components/EntryCard.jsx";
+import ConfirmButton from "./components/ConfirmButton.jsx";
 
 // Primary localStorage buckets: active Einträge + Papierkorb.
 const STORAGE_KEY = "personal-log-entries";
@@ -134,6 +135,10 @@ const App = () => {
   });
   // Filter für Zeitbereiche (Alle / Heute / Letzte 7 Tage).
   const [filter, setFilter] = useState("all");
+  const [showOlderEntries, setShowOlderEntries] = useState(false);
+  const [olderVisibleCount, setOlderVisibleCount] = useState(5);
+  const [showTrashAccordion, setShowTrashAccordion] = useState(false);
+  const [trashVisibleCount, setTrashVisibleCount] = useState(5);
   const importInputRef = useRef(null);
 
   // Persistiert aktive Einträge nach jeder Änderung.
@@ -249,6 +254,42 @@ const App = () => {
     });
   }, [trashEntries]);
 
+  const latestEntry = filteredEntries[0] ?? null;
+  const olderEntries = filteredEntries.slice(1);
+  const visibleOlderEntries = olderEntries.slice(0, olderVisibleCount);
+  const hasMoreOlderEntries = olderEntries.length > visibleOlderEntries.length;
+
+  const visibleTrashEntries = sortedTrashEntries.slice(0, trashVisibleCount);
+  const hasMoreTrashEntries = sortedTrashEntries.length > visibleTrashEntries.length;
+
+  const handleToggleOlderEntries = () => {
+    setShowOlderEntries((prev) => {
+      const next = !prev;
+      if (!prev) {
+        setOlderVisibleCount(5);
+      }
+      return next;
+    });
+  };
+
+  const handleLoadMoreOlderEntries = () => {
+    setOlderVisibleCount((prev) => Math.min(prev + 5, olderEntries.length));
+  };
+
+  const handleToggleTrashAccordion = () => {
+    setShowTrashAccordion((prev) => {
+      const next = !prev;
+      if (!prev) {
+        setTrashVisibleCount(5);
+      }
+      return next;
+    });
+  };
+
+  const handleLoadMoreTrashEntries = () => {
+    setTrashVisibleCount((prev) => Math.min(prev + 5, sortedTrashEntries.length));
+  };
+
   // Synchronisiert Formularfelder.
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -314,10 +355,25 @@ const App = () => {
   };
 
   /**
-   * Entfernt einen Papierkorb-Eintrag sofort (z. B. nach Nutzerbestätigung).
+   * Entfernt einen Papierkorb-Eintrag endgültig, sobald der zweistufige Button bestätigt wurde.
    */
   const handleDeleteForever = (id) => {
     setTrashEntries((prev) => prev.filter((entry) => entry.id !== id));
+  };
+
+  const handleEmptyTrash = () => {
+    if (!sortedTrashEntries.length) {
+      return;
+    }
+    if (typeof window !== "undefined") {
+      const shouldDelete = window.confirm(
+        "Sollen wirklich alle Einträge im Papierkorb endgültig gelöscht werden?"
+      );
+      if (!shouldDelete) {
+        return;
+      }
+    }
+    setTrashEntries([]);
   };
 
   /**
@@ -494,9 +550,40 @@ const App = () => {
 
           {filteredEntries.length ? (
             <div className="log-list">
-              {filteredEntries.map((entry) => (
-                <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
-              ))}
+              {latestEntry ? (
+                <EntryCard entry={latestEntry} onDelete={handleDelete} />
+              ) : null}
+
+              {olderEntries.length ? (
+                <div className={`accordion ${showOlderEntries ? "open" : ""}`}>
+                  <button
+                    type="button"
+                    className="accordion-toggle"
+                    onClick={handleToggleOlderEntries}
+                  >
+                    <span>Ältere Einträge {olderEntries.length ? `(${olderEntries.length})` : ""}</span>
+                    <span className="accordion-icon">{showOlderEntries ? "^" : "v"}</span>
+                  </button>
+
+                  {showOlderEntries ? (
+                    <div className="accordion-panel">
+                      {visibleOlderEntries.map((entry) => (
+                        <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
+                      ))}
+
+                      {hasMoreOlderEntries ? (
+                        <button
+                          type="button"
+                          className="secondary accordion-more"
+                          onClick={handleLoadMoreOlderEntries}
+                        >
+                          Weiter
+                        </button>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="empty-state">
@@ -511,44 +598,89 @@ const App = () => {
             <p>Einträge bleiben 30 Tage erhalten, bevor sie automatisch entfernt werden.</p>
           </div>
 
-          {sortedTrashEntries.length ? (
-            <div className="trash-list">
-              {sortedTrashEntries.map((entry) => (
-                <article key={entry.id} className="log-entry trash-entry">
-                  <header>
-                    <div className="trash-title-group">
-                      <strong>{entry.title || "Ohne Titel"}</strong>
-                      <span className="trash-meta">Gelöscht am {formatDateTime(entry.deletedAt)}</span>
+          <div className={`accordion trash-accordion ${showTrashAccordion ? "open" : ""}`}>
+            <button
+              type="button"
+              className="accordion-toggle"
+              onClick={handleToggleTrashAccordion}
+            >
+              <span>
+                {showTrashAccordion
+                  ? "Papierkorb schließen"
+                  : `Papierkorb anzeigen (${sortedTrashEntries.length})`}
+              </span>
+              <span className="accordion-icon">{showTrashAccordion ? "^" : "v"}</span>
+            </button>
+
+            {showTrashAccordion ? (
+              <div className="accordion-panel">
+                {visibleTrashEntries.length ? (
+                  <>
+                    <div className="trash-list">
+                      {visibleTrashEntries.map((entry) => (
+                        <article
+                          key={entry.id}
+                          className="log-entry trash-entry"
+                        >
+                          <header>
+                            <div className="trash-title-group">
+                              <strong>{entry.title || "Ohne Titel"}</strong>
+                              <span className="trash-meta">
+                                Gelöscht am {formatDateTime(entry.deletedAt)}
+                              </span>
+                            </div>
+                            <time dateTime={entry.createdAt}>
+                              Erstellt am {formatDateTime(entry.createdAt)}
+                            </time>
+                          </header>
+                          <p>{entry.content}</p>
+                          <footer>
+                            <button
+                              type="button"
+                              className="secondary"
+                              onClick={() => handleRestore(entry.id)}
+                            >
+                              Wiederherstellen
+                            </button>
+                            <ConfirmButton
+                              initialLabel="Löschen"
+                              confirmLabel="Endgültig löschen"
+                              className="secondary"
+                              confirmClassName="danger"
+                              resetDelay={1200}
+                              onConfirm={() => handleDeleteForever(entry.id)}
+                            />
+                          </footer>
+                        </article>
+                      ))}
                     </div>
-                    <time dateTime={entry.createdAt}>
-                      Erstellt am {formatDateTime(entry.createdAt)}
-                    </time>
-                  </header>
-                  <p>{entry.content}</p>
-                  <footer>
+
+                    {hasMoreTrashEntries ? (
+                      <button
+                        type="button"
+                        className="secondary accordion-more"
+                        onClick={handleLoadMoreTrashEntries}
+                      >
+                        Weiter
+                      </button>
+                    ) : null}
+
                     <button
                       type="button"
-                      className="secondary"
-                      onClick={() => handleRestore(entry.id)}
+                      className="danger accordion-delete-all"
+                      onClick={handleEmptyTrash}
                     >
-                      Wiederherstellen
+                      Alle Anträge löschen
                     </button>
-                    <button
-                      type="button"
-                      className="danger"
-                      onClick={() => handleDeleteForever(entry.id)}
-                    >
-                      Endgültig löschen
-                    </button>
-                  </footer>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="trash-empty">
-              <p>Papierkorb ist leer. Gelöschte Einträge bleiben 30 Tage erhalten.</p>
-            </div>
-          )}
+                  </>
+                ) : (
+                  <div className="trash-empty">
+                    <p>Papierkorb ist leer. Gelöschte Einträge bleiben 30 Tage erhalten.</p>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
         </section>
       </div>
     </main>

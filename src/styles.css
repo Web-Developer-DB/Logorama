@@ -196,6 +196,66 @@ button:disabled {
   margin-top: 12px;
 }
 
+.accordion {
+  margin-top: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+}
+
+.accordion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.2s ease;
+}
+
+.accordion-toggle:hover {
+  background: rgba(99, 102, 241, 0.15);
+  box-shadow: none;
+  transform: none;
+}
+
+.accordion-toggle:active {
+  transform: none;
+}
+
+.accordion-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.accordion-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 18px 18px;
+}
+
+.accordion-more,
+.accordion-delete-all {
+  align-self: flex-end;
+}
+
+.accordion-more {
+  margin-top: 4px;
+}
+
+.accordion-delete-all {
+  margin-top: 12px;
+}
+
 .log-entry {
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: 18px;
@@ -398,6 +458,15 @@ button.danger:hover {
   .log-entry {
     background: rgba(255, 255, 255, 0.95);
     color: #111827;
+  }
+
+  .accordion {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+
+  .accordion-toggle:hover {
+    background: rgba(99, 102, 241, 0.12);
   }
 
   .log-entry header {

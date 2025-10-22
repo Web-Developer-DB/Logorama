@@ -1,3 +1,5 @@
+import ConfirmButton from "./ConfirmButton.jsx";
+
 // Ermittelt das Initial für den Avatar-Kringel – bevorzugt Titel, sonst Content.
 const getInitial = (entry) => {
   const source = (entry.title || entry.content || "L").trim();
@@ -13,7 +15,7 @@ const formatDate = (isoString) =>
 
 /**
  * Präsentationskomponente für einen einzelnen Logeintrag.
- * Der Lösch-Button delegiert die eigentliche Aktion an den Parent.
+ * Der Löschen-Button nutzt eine zweistufige Bestätigung und delegiert die finale Aktion nach außen.
  */
 const EntryCard = ({ entry, onDelete }) => (
   <article className="log-entry">
@@ -43,9 +45,14 @@ const EntryCard = ({ entry, onDelete }) => (
     </header>
     <p>{entry.content}</p>
     <footer>
-      <button type="button" className="secondary" onClick={() => onDelete(entry.id)}>
-        Löschen
-      </button>
+      <ConfirmButton
+        initialLabel="Löschen"
+        confirmLabel="Endgültig löschen"
+        className="secondary"
+        confirmClassName="danger"
+        resetDelay={1200}
+        onConfirm={() => onDelete(entry.id)}
+      />
     </footer>
   </article>
 );
