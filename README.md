@@ -46,10 +46,14 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 │   ├── manifest.webmanifest     # Web App Manifest
 │   └── service-worker.js        # Offline-Caching & Fallback-Logik
 ├── src/
-│   ├── App.jsx                  # Hauptkomponente mit Formular, Filter, Persistenz
+│   ├── App.jsx                  # Orchestriert State, Persistenz und Sub-Komponenten
 │   ├── components/
+│   │   ├── ActiveEntriesSection.jsx # Akkordeon-Logik für aktive Einträge
 │   │   ├── ConfirmButton.jsx    # Zwei-Klick-Bestätigung für Löschaktionen
-│   │   └── EntryCard.jsx        # Darstellung eines einzelnen Log-Eintrags
+│   │   ├── EntryCard.jsx        # Darstellung eines einzelnen Log-Eintrags
+│   │   ├── EntryForm.jsx        # Formular zum Erfassen neuer Einträge
+│   │   ├── SearchFilter.jsx     # Suchfeld und Zeitraumfilter
+│   │   └── TrashSection.jsx     # Papierkorb inklusive Mehrstufigkeit
 │   ├── main.jsx                 # React-Einstieg + Service Worker Registrierung
 │   └── styles.css               # UI-Styles
 ├── icons/                       # Ursprüngliche Icon-Dateien (optional)
