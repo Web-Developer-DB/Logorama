@@ -476,7 +476,16 @@ const App = () => {
           />
         </div>
       </main>
-      <footer className="app-footer">MIT License · Created by Dimitri B</footer>
+      <footer className="app-footer">
+        MIT License · Created by Dimitri B ·{" "}
+        <a
+          href="https://github.com/Web-Developer-DB/Logorama"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source Code auf GitHub
+        </a>
+      </footer>
     </>
   );
 };

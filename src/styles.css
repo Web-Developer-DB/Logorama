@@ -383,6 +383,18 @@ button.danger:hover {
   font-size: 0.85rem;
 }
 
+.app-footer a {
+  color: rgba(226, 232, 240, 0.82);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.app-footer a:hover,
+.app-footer a:focus {
+  color: #f8fafc;
+  text-decoration: underline;
+}
+
 @media (max-width: 600px) {
   main {
     padding: 20px 14px 80px;
