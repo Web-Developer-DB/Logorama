@@ -1,0 +1,47 @@
+{
+  "name": "Logorama",
+  "short_name": "Logorama",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "de",
+  "description": "Logorama ist eine Progressive Web App zum Festhalten persönlicher Notizen und Fortschritte.",
+  "categories": ["productivity", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Neuer Eintrag",
+      "short_name": "Neuer Log",
+      "description": "Direkt zur Eingabe springen",
+      "url": "./index.html#new-entry"
+    },
+    {
+      "name": "Heutige Einträge",
+      "short_name": "Heute",
+      "description": "Filtere nach Logorama Einträgen von heute",
+      "url": "./index.html#filter=today"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
