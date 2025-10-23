@@ -1,8 +1,8 @@
 // Versionierter Cache-Name – bei Änderungen erhöhen, damit alte Assets invalidiert werden.
-const CACHE_NAME = "logorama-cache-v1";
-const scopeUrl =
-  self.registration && self.registration.scope ? new URL(self.registration.scope) : new URL(self.location.href);
-const BASE_PATH = scopeUrl.pathname.replace(/\/$/, "");
+const CACHE_NAME = "logorama-cache-v2";
+const scopeHref = self.registration?.scope ?? self.location.href;
+const scopePath = new URL("./", scopeHref).pathname;
+const BASE_PATH = scopePath.replace(/\/$/, "");
 const withBase = (path) => `${BASE_PATH}${path}`;
 // Fallback-Dokument für Offline-Anfragen (Client-Shell).
 const OFFLINE_FALLBACK = withBase("/index.html");
