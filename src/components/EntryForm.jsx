@@ -4,22 +4,11 @@ import { memo } from "react";
  * Vollständiges Formular zum Erfassen neuer Logeinträge.
  *
  * Verantwortlichkeiten:
- * - Kapselt sämtliche Formularfelder (Zeitpunkt, Titel, Inhalt) und deren Events.
+ * - Kapselt sämtliche Formularfelder (Titel, Inhalt) und deren Events.
  * - Delegiert Statusverwaltung nach außen, sodass `App` die Daten konsistent halten kann.
  */
 const EntryForm = ({ formState, onInputChange, onSubmit }) => (
   <form className="log-form" onSubmit={onSubmit} id="new-entry">
-    <label>
-      Zeitpunkt
-      <input
-        type="datetime-local"
-        name="date"
-        value={formState.date}
-        onChange={onInputChange}
-        required
-      />
-    </label>
-
     <label>
       Titel (optional)
       <input

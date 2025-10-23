@@ -33,6 +33,8 @@ const TrashSection = ({
       const next = !prev;
       if (!prev) {
         setVisibleCount(5);
+      } else {
+        setExpandedEntryIds(new Set());
       }
       return next;
     });
