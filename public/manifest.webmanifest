@@ -2,7 +2,7 @@
   "name": "Logorama",
   "short_name": "Logorama",
   "id": "./",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone"],

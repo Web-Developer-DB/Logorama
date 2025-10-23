@@ -76,6 +76,13 @@ main {
   font-size: 0.85rem;
 }
 
+.install-button {
+  margin-top: 16px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+}
+
 .card {
   background: linear-gradient(145deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.78));
   border-radius: 22px;
