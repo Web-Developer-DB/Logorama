@@ -6,7 +6,8 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 
 - 🌟 Modernes UI mit Dark/Light-Unterstützung und mobiloptimierter Oberfläche
 - 📝 Freitext-Log inkl. Datum/Uhrzeit, Suchfunktion sowie Filter für „Heute“ und „Letzte 7 Tage“
-- 💾 Persistenz über `localStorage`, optionaler JSON-Import/-Export
+- ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
+- 💾 Persistenz über `localStorage` plus verständlicher Sicherungsbereich für JSON-Export/-Import
 - 📚 Akkordeon-Ansichten für ältere Einträge sowie Papierkorb mit 5er-Paginierung
 - 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist und Restore-Option
 - 🛡️ Zweistufiger Löschschutz: Knopf färbt sich rot, zweiter Klick löscht endgültig
@@ -52,6 +53,7 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 │   │   ├── ConfirmButton.jsx    # Zwei-Klick-Bestätigung für Löschaktionen
 │   │   ├── EntryCard.jsx        # Darstellung eines einzelnen Log-Eintrags
 │   │   ├── EntryForm.jsx        # Formular zum Erfassen neuer Einträge
+│   │   ├── DataSafetyPanel.jsx  # Akkordeon-Karte für Backup & Wiederherstellung
 │   │   ├── SearchFilter.jsx     # Suchfeld und Zeitraumfilter
 │   │   └── TrashSection.jsx     # Papierkorb inklusive Mehrstufigkeit
 │   ├── main.jsx                 # React-Einstieg + Service Worker Registrierung
@@ -68,7 +70,8 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 - **Filter & Suche**: Dropdown für Zeiträume (`Alle`, `Heute`, `Letzte 7 Tage`) und Freitext-Suche über Titel/Inhalt.
 - **Akkordeon-Listen**: Der jüngste Eintrag bleibt sichtbar, ältere Logs und Papierkorb-Einträge werden bei Bedarf ausgeklappt (5er-Blöcke, „Weiter“-Button).
 - **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen oder endgültig entfernen.
-- **Export/Import**: JSON-Datei mit ISO-Zeitstempeln; Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
+- **Inline-Bearbeitung**: Jeder Eintrag bietet einen „Bearbeiten“-Button, der Titel/Inhalt direkt in der Karte editierbar macht. Speichern aktualisiert den Zeitstempel `editedAt`.
+- **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ (Akkordeon) lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
 - **PWA**: Der Service Worker cached Grund-Assets für Offlinebetrieb; Manifest liefert Shortcuts (`#new-entry`, `#filter=today`) und sorgt für korrekte Darstellung auf Android.
 
 ### Papierkorb & Aufbewahrung

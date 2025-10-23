@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EntryForm from "./components/EntryForm.jsx";
 import SearchFilter from "./components/SearchFilter.jsx";
 import ActiveEntriesSection from "./components/ActiveEntriesSection.jsx";
 import TrashSection from "./components/TrashSection.jsx";
+import DataSafetyPanel from "./components/DataSafetyPanel.jsx";
 
 // Primary localStorage buckets: active Einträge + Papierkorb.
 const STORAGE_KEY = "personal-log-entries";
@@ -150,7 +151,6 @@ const App = () => {
   });
   // Filter für Zeitbereiche (Alle / Heute / Letzte 7 Tage).
   const [filter, setFilter] = useState("all");
-  const importInputRef = useRef(null);
 
   // Persistiert aktive Einträge nach jeder Änderung.
   useEffect(() => {
@@ -462,14 +462,9 @@ const App = () => {
         <div className="layout-grid">
           <section className="card">
             <EntryForm
-              ref={importInputRef}
               formState={formState}
               onInputChange={handleInputChange}
               onSubmit={handleSubmit}
-              onExport={handleExport}
-              onRequestImport={() => importInputRef.current?.click()}
-              onImportFile={handleImport}
-              disableExport={!entries.length}
             />
           </section>
 
@@ -495,6 +490,11 @@ const App = () => {
             onEmptyTrash={handleEmptyTrash}
             description="Einträge bleiben 30 Tage erhalten, bevor sie automatisch entfernt werden."
             formatDateTime={formatDateTime}
+          />
+          <DataSafetyPanel
+            onExport={handleExport}
+            onImportFile={handleImport}
+            disableExport={!entries.length}
           />
         </div>
       </main>

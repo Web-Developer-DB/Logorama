@@ -16,7 +16,7 @@ const formatDate = (isoString) =>
 
 /**
  * Präsentationskomponente für einen einzelnen Logeintrag.
- * Der Löschen-Button nutzt eine zweistufige Bestätigung und delegiert die finale Aktion nach außen.
+ * Unterstützt Inline-Bearbeitung der Inhalte sowie den zweistufigen Löschvorgang.
  */
 const EntryCard = ({ entry, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
