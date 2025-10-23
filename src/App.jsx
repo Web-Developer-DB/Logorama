@@ -233,6 +233,8 @@ const formatDateTime = (isoString) =>
  * an die kleineren Präsentations- und Formular-Komponenten.
  */
 const App = () => {
+  // PWA: speichert das beforeinstallprompt-Event, um einen Install-Button zu zeigen.
+  const [installPrompt, setInstallPrompt] = useState(null);
   // Aktive Einträge + Papierkorb werden aus localStorage hydriert.
   const [entries, setEntries] = useState(() => reindexAutoTitles(loadEntries()));
   const [trashEntries, setTrashEntries] = useState(loadTrashEntries);
@@ -339,6 +341,23 @@ const App = () => {
     }
   }, [filter]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleBeforeInstall = (event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+    const handleAppInstalled = () => {
+      setInstallPrompt(null);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+    window.addEventListener("appinstalled", handleAppInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+      window.removeEventListener("appinstalled", handleAppInstalled);
+    };
+  }, []);
+
   /**
    * Selektiert aktiv gefilterte Einträge (Suche + Zeitfenster) und sortiert sie absteigend.
    */
@@ -369,6 +388,21 @@ const App = () => {
       return bTime - aTime;
     });
   }, [trashEntries]);
+
+  const handleAppInstall = async () => {
+    if (!installPrompt) {
+      return;
+    }
+    const promptEvent = installPrompt;
+    promptEvent.prompt();
+    try {
+      await promptEvent.userChoice;
+    } catch (error) {
+      console.error("App-Installation konnte nicht abgeschlossen werden:", error);
+    } finally {
+      setInstallPrompt(null);
+    }
+  };
 
   // Synchronisiert Formularfelder.
   const handleInputChange = (event) => {
@@ -576,6 +610,15 @@ const App = () => {
         <header className="app-header">
           <h1>Logorama</h1>
           <p>Notiere Gedanken, Ideen und Fortschritte – offline verfügbar.</p>
+          {installPrompt && (
+            <button
+              type="button"
+              className="install-button secondary"
+              onClick={handleAppInstall}
+            >
+              App installieren
+            </button>
+          )}
         </header>
 
         <div className="layout-grid">
