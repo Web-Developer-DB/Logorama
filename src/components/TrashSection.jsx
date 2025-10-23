@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
 
 /**
@@ -123,4 +123,4 @@ const TrashSection = ({
   );
 };
 
-export default TrashSection;
+export default memo(TrashSection);

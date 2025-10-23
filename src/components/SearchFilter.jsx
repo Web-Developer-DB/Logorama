@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 /**
  * Steuerleiste für Sucheingabe und Datumsfilter.
  *
@@ -22,4 +24,4 @@ const SearchFilter = ({ searchValue, onSearchChange, filterValue, onFilterChange
   </div>
 );
 
-export default SearchFilter;
+export default memo(SearchFilter);

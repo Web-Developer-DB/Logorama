@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import { formatDateTime } from "../utils/formatters.js";
 
 // Ermittelt das Initial für den Avatar-Kringel – bevorzugt Titel, sonst Content.
 const getInitial = (entry) => {
   const source = (entry.title || entry.content || "L").trim();
   return source.charAt(0).toUpperCase();
 };
-
-// Einheitliche Datumsausgabe für Eintrag und Header.
-const formatDate = (isoString) =>
-  new Date(isoString).toLocaleString("de-DE", {
-    dateStyle: "medium",
-    timeStyle: "short"
-  });
 
 /**
  * Präsentationskomponente für einen einzelnen Logeintrag.
@@ -99,7 +93,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
             <strong>{entry.title || "Ohne Titel"}</strong>
           )}
         </div>
-        <time dateTime={entry.createdAt}>{formatDate(entry.createdAt)}</time>
+        <time dateTime={entry.createdAt}>{formatDateTime(entry.createdAt)}</time>
       </header>
       {isEditing ? (
         <textarea
@@ -151,4 +145,4 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
   );
 };
 
-export default EntryCard;
+export default memo(EntryCard);

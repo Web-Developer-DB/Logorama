@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import EntryForm from "./components/EntryForm.jsx";
 import SearchFilter from "./components/SearchFilter.jsx";
 import ActiveEntriesSection from "./components/ActiveEntriesSection.jsx";
 import TrashSection from "./components/TrashSection.jsx";
 import DataSafetyPanel from "./components/DataSafetyPanel.jsx";
+import { formatDateTime } from "./utils/formatters.js";
 
 // Primary localStorage buckets: active Einträge + Papierkorb.
 const STORAGE_KEY = "personal-log-entries";
@@ -220,15 +221,6 @@ const filterByRange = (entry, filter) => {
 };
 
 /**
- * Einheitliches Datumsformat für UI-Anzeigen (deutsche Locale).
- */
-const formatDateTime = (isoString) =>
-  new Date(isoString).toLocaleString("de-DE", {
-    dateStyle: "medium",
-    timeStyle: "short"
-  });
-
-/**
  * Root-Komponente der Anwendung: orchestriert State, Persistenz und verteilt Daten
  * an die kleineren Präsentations- und Formular-Komponenten.
  */
@@ -249,7 +241,7 @@ const App = () => {
   // Filter für Zeitbereiche (Alle / Heute / Letzte 7 Tage).
   const [filter, setFilter] = useState("all");
 
-  const updateEntries = (updater) => {
+  const updateEntries = useCallback((updater) => {
     setEntries((prev) => {
       const nextEntries = typeof updater === "function" ? updater(prev) : updater;
       if (!Array.isArray(nextEntries)) {
@@ -257,7 +249,7 @@ const App = () => {
       }
       return reindexAutoTitles(nextEntries);
     });
-  };
+  }, []);
 
   // Persistiert aktive Einträge nach jeder Änderung.
   useEffect(() => {
@@ -358,11 +350,10 @@ const App = () => {
     };
   }, []);
 
-  /**
-   * Selektiert aktiv gefilterte Einträge (Suche + Zeitfenster) und sortiert sie absteigend.
-   */
+  const deferredSearch = useDeferredValue(search);
+
   const filteredEntries = useMemo(() => {
-    const term = search.trim().toLowerCase();
+    const term = (deferredSearch ?? "").trim().toLowerCase();
     return [...entries]
       .filter((entry) => filterByRange(entry, filter))
       .filter((entry) => {
@@ -375,7 +366,7 @@ const App = () => {
       .sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
-  }, [entries, search, filter]);
+  }, [entries, deferredSearch, filter]);
 
   /**
    * Papierkorb wird separat nach Löschdatum sortiert dargestellt.
@@ -388,8 +379,9 @@ const App = () => {
       return bTime - aTime;
     });
   }, [trashEntries]);
+  const trashEntryCount = sortedTrashEntries.length;
 
-  const handleAppInstall = async () => {
+  const handleAppInstall = useCallback(async () => {
     if (!installPrompt) {
       return;
     }
@@ -402,16 +394,16 @@ const App = () => {
     } finally {
       setInstallPrompt(null);
     }
-  };
+  }, [installPrompt]);
 
   // Synchronisiert Formularfelder.
-  const handleInputChange = (event) => {
+  const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
   // Legt neuen Eintrag an und setzt Formular zurück.
-  const handleSubmit = (event) => {
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
     const trimmedContent = formState.content.trim();
     if (!trimmedContent || !formState.date) {
@@ -437,78 +429,104 @@ const App = () => {
     });
     // Nach dem Speichern wieder auf "Alle" schalten, damit neuer Eintrag sichtbar bleibt.
     setFilter("all");
-  };
+  }, [formState, updateEntries]);
 
   /**
    * Verschiebt einen Eintrag in den Papierkorb. Falls es bereits eine ältere
    * Version im Papierkorb mit identischer ID gibt (z. B. durch Re-Import),
    * wird diese überschrieben statt dupliziert.
    */
-  const handleDelete = (id) => {
-    const entryToDelete = entries.find((entry) => entry.id === id);
-    if (!entryToDelete) {
-      return;
-    }
-
-    updateEntries((prev) => prev.filter((entry) => entry.id !== id));
-    setTrashEntries((prev) => [
-      ...prev.filter((entry) => entry.id !== id),
-      { ...entryToDelete, deletedAt: new Date().toISOString() }
-    ]);
-  };
+  const handleDelete = useCallback(
+    (id) => {
+      let entryToDelete = null;
+      updateEntries((prev) => {
+        const nextEntries = [];
+        for (const entry of prev) {
+          if (entry.id === id) {
+            entryToDelete = entry;
+            continue;
+          }
+          nextEntries.push(entry);
+        }
+        return nextEntries;
+      });
+      if (entryToDelete) {
+        const deletedAt = new Date().toISOString();
+        setTrashEntries((prev) => [
+          ...prev.filter((entry) => entry.id !== id),
+          { ...entryToDelete, deletedAt }
+        ]);
+      }
+    },
+    [updateEntries]
+  );
 
   /**
    * Aktualisiert einen bestehenden Eintrag und stempelt das Bearbeitungsdatum neu.
    */
-  const handleUpdate = (id, updates) => {
-    updateEntries((prev) =>
-      prev.map((entry) => {
-        if (entry.id !== id) {
-          return entry;
-        }
-        const nextEntry = {
-          ...entry,
-          editedAt: new Date().toISOString()
-        };
+  const handleUpdate = useCallback(
+    (id, updates) => {
+      updateEntries((prev) =>
+        prev.map((entry) => {
+          if (entry.id !== id) {
+            return entry;
+          }
+          const nextEntry = {
+            ...entry,
+            editedAt: new Date().toISOString()
+          };
 
-        if ("content" in updates && typeof updates.content === "string") {
-          nextEntry.content = updates.content;
-        }
+          if ("content" in updates && typeof updates.content === "string") {
+            nextEntry.content = updates.content;
+          }
 
-        if ("title" in updates) {
-          const normalizedTitle = (updates.title ?? "").trim();
-          nextEntry.title = normalizedTitle;
-          nextEntry.isAutoTitle = !normalizedTitle;
-        }
+          if ("title" in updates) {
+            const normalizedTitle = (updates.title ?? "").trim();
+            nextEntry.title = normalizedTitle;
+            nextEntry.isAutoTitle = !normalizedTitle;
+          }
 
-        return nextEntry;
-      })
-    );
-  };
+          return nextEntry;
+        })
+      );
+    },
+    [updateEntries]
+  );
 
   /**
    * Stellt einen Eintrag aus dem Papierkorb wieder her und entfernt den Löschstempel.
    */
-  const handleRestore = (id) => {
-    const entryToRestore = trashEntries.find((entry) => entry.id === id);
-    if (!entryToRestore) {
-      return;
-    }
-
-    const { deletedAt, ...restoredEntry } = entryToRestore;
-    setTrashEntries((prev) => prev.filter((entry) => entry.id !== id));
-    updateEntries((prev) => [...prev, restoredEntry]);
-  };
+  const handleRestore = useCallback(
+    (id) => {
+      let restoredEntry = null;
+      setTrashEntries((prev) => {
+        const next = [];
+        for (const entry of prev) {
+          if (entry.id === id) {
+            const { deletedAt, ...rest } = entry;
+            restoredEntry = rest;
+            continue;
+          }
+          next.push(entry);
+        }
+        return next;
+      });
+      if (restoredEntry) {
+        updateEntries((prev) => [...prev, restoredEntry]);
+      }
+    },
+    [updateEntries]
+  );
 
   /**
    * Entfernt einen Papierkorb-Eintrag endgültig, sobald der zweistufige Button bestätigt wurde.
    */
-  const handleDeleteForever = (id) => {
+  const handleDeleteForever = useCallback((id) => {
     setTrashEntries((prev) => prev.filter((entry) => entry.id !== id));
-  };
+  }, []);
 
-  const handleEmptyTrash = () => {
-    if (!sortedTrashEntries.length) {
+  const handleEmptyTrash = useCallback(() => {
+    if (!trashEntryCount) {
       return;
     }
     if (typeof window !== "undefined") {
@@ -520,14 +538,14 @@ const App = () => {
       }
     }
     setTrashEntries([]);
-  };
+  }, [trashEntryCount]);
 
   /**
    * Exportiert aktive Einträge als JSON. Nutzt die File System Access API,
    * wenn der Browser sie anbietet, um den gewünschten Zielordner zu wählen.
    * Fällt ansonsten auf den klassischen Download-Link zurück.
    */
-  const handleExport = async () => {
+  const handleExport = useCallback(async () => {
     if (!entries.length) {
       return;
     }
@@ -567,13 +585,13 @@ const App = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  };
+  }, [entries]);
 
   /**
    * Importiert eine JSON-Datei und ersetzt den gesamten aktiven Bestand.
    * Papierkorb bleibt unangetastet, damit Nutzer vorherige Stände zurückholen können.
    */
-  const handleImport = async (event) => {
+  const handleImport = useCallback(async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
@@ -602,7 +620,15 @@ const App = () => {
     } finally {
       event.target.value = "";
     }
-  };
+  }, []);
+
+  const handleSearchChange = useCallback((value) => {
+    setSearch(value);
+  }, []);
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
 
   return (
     <>
@@ -633,9 +659,9 @@ const App = () => {
           <section className="card">
             <SearchFilter
               searchValue={search}
-              onSearchChange={setSearch}
+              onSearchChange={handleSearchChange}
               filterValue={filter}
-              onFilterChange={setFilter}
+              onFilterChange={handleFilterChange}
             />
 
             <ActiveEntriesSection

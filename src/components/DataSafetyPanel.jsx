@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 
 /**
  * Kompakte Sicherungszentrale mit Akkordeon-Mechanik für Export & Import.
@@ -70,4 +70,4 @@ const DataSafetyPanel = ({ onExport, onImportFile, disableExport }) => {
   );
 };
 
-export default DataSafetyPanel;
+export default memo(DataSafetyPanel);
