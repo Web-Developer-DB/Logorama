@@ -127,7 +127,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
         </button>
         <ConfirmButton
           initialLabel="Löschen"
-          confirmLabel="Endgültig löschen"
+          confirmLabel="In den Papierkorb"
           className="secondary"
           confirmClassName="danger"
           resetDelay={1200}
