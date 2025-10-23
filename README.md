@@ -7,6 +7,7 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 - 🌟 Modernes UI mit Dark/Light-Unterstützung und mobiloptimierter Oberfläche
 - 📝 Freitext-Log inkl. Datum/Uhrzeit, Suchfunktion sowie Filter für „Heute“ und „Letzte 7 Tage“
 - ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
+- 🗓️ Automatische Wochentags-Titel („1 - Montag“) sobald kein eigener Titel angegeben wird
 - 💾 Persistenz über `localStorage` plus verständlicher Sicherungsbereich für JSON-Export/-Import
 - 📚 Akkordeon-Ansichten für ältere Einträge sowie Papierkorb mit 5er-Paginierung
 - 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist und Restore-Option
@@ -71,6 +72,7 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 - **Akkordeon-Listen**: Der jüngste Eintrag bleibt sichtbar, ältere Logs und Papierkorb-Einträge werden bei Bedarf ausgeklappt (5er-Blöcke, „Weiter“-Button).
 - **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen oder endgültig entfernen.
 - **Inline-Bearbeitung**: Jeder Eintrag bietet einen „Bearbeiten“-Button, der Titel/Inhalt direkt in der Karte editierbar macht. Speichern aktualisiert den Zeitstempel `editedAt`.
+- **Automatische Titel**: Ohne eigenen Titel vergibt Logorama fortlaufende Namen pro Kalendertag (`1 - Montag`, `2 - Montag`, …) basierend auf der lokalen Gerätezeit.
 - **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ (Akkordeon) lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
 - **PWA**: Der Service Worker cached Grund-Assets für Offlinebetrieb; Manifest liefert Shortcuts (`#new-entry`, `#filter=today`) und sorgt für korrekte Darstellung auf Android.
 

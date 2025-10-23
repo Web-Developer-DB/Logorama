@@ -10,6 +10,16 @@ const STORAGE_KEY = "personal-log-entries";
 const TRASH_STORAGE_KEY = "personal-log-trash";
 // Gelöschte Einträge werden nach 30 Tagen bereinigt.
 const TRASH_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
+const WEEKDAY_NAMES = [
+  "Sonntag",
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag"
+];
+const DEFAULT_TITLE_SEPARATOR = " - ";
 
 /**
  * Prüft, ob ein Papierkorb-Eintrag älter als die Aufbewahrungsfrist ist.
@@ -37,6 +47,81 @@ const generateId = () => {
 };
 
 const formatTwoDigits = (value) => value.toString().padStart(2, "0");
+
+const toTimestamp = (isoString) => {
+  const time = new Date(isoString).getTime();
+  return Number.isNaN(time) ? 0 : time;
+};
+
+const getLocalDateDetails = (isoString) => {
+  if (!isoString) {
+    return { key: "", weekday: "" };
+  }
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) {
+    return { key: "", weekday: "" };
+  }
+  const year = date.getFullYear();
+  const month = formatTwoDigits(date.getMonth() + 1);
+  const day = formatTwoDigits(date.getDate());
+  const weekday = WEEKDAY_NAMES[date.getDay()] ?? "";
+  return {
+    key: `${year}-${month}-${day}`,
+    weekday
+  };
+};
+
+/**
+ * Vergibt laufende Wochentagstitel für alle Einträge mit Auto-Titel-Flag
+ * bzw. ohne manuell gesetzten Titel. Nummerierung erfolgt pro Kalendertag.
+ */
+const reindexAutoTitles = (entriesList) => {
+  if (!Array.isArray(entriesList) || !entriesList.length) {
+    return entriesList;
+  }
+
+  const cloned = entriesList.map((entry) => ({ ...entry }));
+  const sorted = cloned
+    .map((entry, index) => ({ entry, index }))
+    .sort((a, b) => toTimestamp(a.entry.createdAt) - toTimestamp(b.entry.createdAt));
+
+  const counters = new Map();
+  let hasChanges = false;
+
+  sorted.forEach(({ entry, index }) => {
+    const { key, weekday } = getLocalDateDetails(entry.createdAt);
+    if (!key || !weekday) {
+      if (entry.isAutoTitle) {
+        cloned[index].isAutoTitle = false;
+        hasChanges = true;
+      }
+      return;
+    }
+
+    const count = (counters.get(key) ?? 0) + 1;
+    counters.set(key, count);
+
+    const currentTitle = typeof entry.title === "string" ? entry.title.trim() : "";
+    const shouldAuto = entry.isAutoTitle || !currentTitle;
+
+    if (shouldAuto) {
+      const generatedTitle = `${count}${DEFAULT_TITLE_SEPARATOR}${weekday}`;
+      if (cloned[index].title !== generatedTitle) {
+        cloned[index].title = generatedTitle;
+        hasChanges = true;
+      }
+      if (!cloned[index].isAutoTitle) {
+        cloned[index].isAutoTitle = true;
+        hasChanges = true;
+      }
+    } else if (entry.isAutoTitle) {
+      cloned[index].isAutoTitle = false;
+      hasChanges = true;
+    }
+  });
+
+  return hasChanges ? cloned : entriesList;
+};
 
 /**
  * Vorbefüllung des Formulars mit der aktuellen lokalen Zeit (auf Minuten gerundet).
@@ -67,13 +152,18 @@ const loadEntries = () => {
     if (!stored) return [];
     const parsed = JSON.parse(stored);
     if (!Array.isArray(parsed)) return [];
-    return parsed.map((entry) => ({
-      id: entry.id ?? generateId(),
-      title: entry.title ?? "",
-      content: entry.content ?? "",
-      createdAt: entry.createdAt ?? new Date().toISOString(),
-      editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString()
-    }));
+    return parsed.map((entry) => {
+      const normalizedTitle = typeof entry.title === "string" ? entry.title : "";
+      const hasManualTitle = normalizedTitle.trim().length > 0;
+      return {
+        id: entry.id ?? generateId(),
+        title: normalizedTitle,
+        content: entry.content ?? "",
+        createdAt: entry.createdAt ?? new Date().toISOString(),
+        editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString(),
+        isAutoTitle: entry.isAutoTitle ?? !hasManualTitle
+      };
+    });
   } catch (error) {
     console.error("Konnte gespeicherte Logs nicht laden:", error);
     return [];
@@ -95,14 +185,19 @@ const loadTrashEntries = () => {
     if (!Array.isArray(parsed)) return [];
     const now = Date.now();
     return parsed
-      .map((entry) => ({
-        id: entry.id ?? generateId(),
-        title: entry.title ?? "",
-        content: entry.content ?? "",
-        createdAt: entry.createdAt ?? new Date().toISOString(),
-        editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString(),
-        deletedAt: entry.deletedAt ?? new Date().toISOString()
-      }))
+      .map((entry) => {
+        const normalizedTitle = typeof entry.title === "string" ? entry.title : "";
+        const hasManualTitle = normalizedTitle.trim().length > 0;
+        return {
+          id: entry.id ?? generateId(),
+          title: normalizedTitle,
+          content: entry.content ?? "",
+          createdAt: entry.createdAt ?? new Date().toISOString(),
+          editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString(),
+          deletedAt: entry.deletedAt ?? new Date().toISOString(),
+          isAutoTitle: entry.isAutoTitle ?? !hasManualTitle
+        };
+      })
       .filter((entry) => !isTrashEntryExpired(entry, now));
   } catch (error) {
     console.error("Konnte Papierkorb nicht laden:", error);
@@ -139,7 +234,7 @@ const formatDateTime = (isoString) =>
  */
 const App = () => {
   // Aktive Einträge + Papierkorb werden aus localStorage hydriert.
-  const [entries, setEntries] = useState(loadEntries);
+  const [entries, setEntries] = useState(() => reindexAutoTitles(loadEntries()));
   const [trashEntries, setTrashEntries] = useState(loadTrashEntries);
   // Globale Suchleiste filtert Titel + Inhalte.
   const [search, setSearch] = useState("");
@@ -151,6 +246,16 @@ const App = () => {
   });
   // Filter für Zeitbereiche (Alle / Heute / Letzte 7 Tage).
   const [filter, setFilter] = useState("all");
+
+  const updateEntries = (updater) => {
+    setEntries((prev) => {
+      const nextEntries = typeof updater === "function" ? updater(prev) : updater;
+      if (!Array.isArray(nextEntries)) {
+        return prev;
+      }
+      return reindexAutoTitles(nextEntries);
+    });
+  };
 
   // Persistiert aktive Einträge nach jeder Änderung.
   useEffect(() => {
@@ -274,20 +379,23 @@ const App = () => {
   // Legt neuen Eintrag an und setzt Formular zurück.
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!formState.content.trim() || !formState.date) {
+    const trimmedContent = formState.content.trim();
+    if (!trimmedContent || !formState.date) {
       return;
     }
 
+    const trimmedTitle = formState.title.trim();
     const createdAt = new Date(formState.date).toISOString();
     const newEntry = {
       id: generateId(),
-      title: formState.title.trim(),
-      content: formState.content.trim(),
+      title: trimmedTitle,
+      content: trimmedContent,
       createdAt,
-      editedAt: createdAt
+      editedAt: createdAt,
+      isAutoTitle: !trimmedTitle
     };
 
-    setEntries((prev) => [...prev, newEntry]);
+    updateEntries((prev) => [...prev, newEntry]);
     setFormState({
       date: getInitialDateTime(),
       title: "",
@@ -308,7 +416,7 @@ const App = () => {
       return;
     }
 
-    setEntries((prev) => prev.filter((entry) => entry.id !== id));
+    updateEntries((prev) => prev.filter((entry) => entry.id !== id));
     setTrashEntries((prev) => [
       ...prev.filter((entry) => entry.id !== id),
       { ...entryToDelete, deletedAt: new Date().toISOString() }
@@ -319,16 +427,27 @@ const App = () => {
    * Aktualisiert einen bestehenden Eintrag und stempelt das Bearbeitungsdatum neu.
    */
   const handleUpdate = (id, updates) => {
-    setEntries((prev) =>
+    updateEntries((prev) =>
       prev.map((entry) => {
         if (entry.id !== id) {
           return entry;
         }
-        return {
+        const nextEntry = {
           ...entry,
-          ...updates,
           editedAt: new Date().toISOString()
         };
+
+        if ("content" in updates && typeof updates.content === "string") {
+          nextEntry.content = updates.content;
+        }
+
+        if ("title" in updates) {
+          const normalizedTitle = (updates.title ?? "").trim();
+          nextEntry.title = normalizedTitle;
+          nextEntry.isAutoTitle = !normalizedTitle;
+        }
+
+        return nextEntry;
       })
     );
   };
@@ -344,7 +463,7 @@ const App = () => {
 
     const { deletedAt, ...restoredEntry } = entryToRestore;
     setTrashEntries((prev) => prev.filter((entry) => entry.id !== id));
-    setEntries((prev) => [...prev, restoredEntry]);
+    updateEntries((prev) => [...prev, restoredEntry]);
   };
 
   /**
@@ -429,14 +548,19 @@ const App = () => {
       if (!Array.isArray(parsed)) {
         throw new Error("Ungültiges Format");
       }
-      const normalized = parsed.map((entry) => ({
-        id: entry.id ?? generateId(),
-        title: entry.title ?? "",
-        content: entry.content ?? "",
-        createdAt: entry.createdAt ?? new Date().toISOString(),
-        editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString()
-      }));
-      setEntries(normalized);
+      const normalized = parsed.map((entry) => {
+        const normalizedTitle = typeof entry.title === "string" ? entry.title : "";
+        const hasManualTitle = normalizedTitle.trim().length > 0;
+        return {
+          id: entry.id ?? generateId(),
+          title: normalizedTitle,
+          content: entry.content ?? "",
+          createdAt: entry.createdAt ?? new Date().toISOString(),
+          editedAt: entry.editedAt ?? entry.createdAt ?? new Date().toISOString(),
+          isAutoTitle: entry.isAutoTitle ?? !hasManualTitle
+        };
+      });
+      setEntries(reindexAutoTitles(normalized));
       setFilter("all");
     } catch (error) {
       console.error("Import fehlgeschlagen:", error);
