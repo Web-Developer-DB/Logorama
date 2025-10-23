@@ -109,6 +109,7 @@ main {
   border-radius: inherit;
   border: 1px solid rgba(122, 246, 255, 0.22);
   opacity: 0.35;
+  pointer-events: none;
 }
 
 .app-header h1 {
