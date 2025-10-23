@@ -135,7 +135,7 @@ textarea:focus {
 
 textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 240px;
 }
 
 .actions {
@@ -305,24 +305,6 @@ button:disabled {
   background: rgba(15, 23, 42, 0.45);
 }
 
-.trash-card .trash-header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 18px;
-}
-
-.trash-card .trash-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.trash-card .trash-header p {
-  margin: 0;
-  color: rgba(226, 232, 240, 0.65);
-  font-size: 0.9rem;
-}
-
 .trash-list {
   display: flex;
   flex-direction: column;
@@ -330,12 +312,10 @@ button:disabled {
 }
 
 .trash-entry {
-  border-style: dashed;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
   background: rgba(148, 163, 184, 0.08);
-}
-
-.trash-entry header {
-  align-items: flex-start;
+  overflow: hidden;
 }
 
 .trash-title-group {
@@ -344,9 +324,63 @@ button:disabled {
   gap: 4px;
 }
 
+.trash-entry-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.trash-entry-toggle:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.trash-entry.expanded .trash-entry-toggle {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.trash-entry-toggle:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.7);
+  outline-offset: -4px;
+}
+
+.trash-entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(226, 232, 240, 0.65);
+  font-size: 0.85rem;
+}
+
 .trash-meta {
   font-size: 0.82rem;
   color: rgba(226, 232, 240, 0.6);
+}
+
+.trash-entry-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.trash-entry-body p {
+  margin: 12px 0 0;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.trash-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .trash-empty {

@@ -102,7 +102,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
           placeholder="Eintrag bearbeiten"
           style={{
             width: "100%",
-            minHeight: "120px",
+            minHeight: "240px",
             marginTop: "12px",
             borderRadius: "14px",
             border: "1px solid rgba(99, 102, 241, 0.25)",
