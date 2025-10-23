@@ -116,14 +116,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
       ) : (
         <p>{entry.content}</p>
       )}
-      <footer
-        style={{
-          display: "flex",
-          gap: "8px",
-          flexWrap: "nowrap",
-          alignItems: "center"
-        }}
-      >
+      <footer>
         <button
           type="button"
           className={isEditing ? "primary" : "secondary"}
