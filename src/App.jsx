@@ -676,7 +676,6 @@ const App = () => {
             onRestore={handleRestore}
             onDeleteForever={handleDeleteForever}
             onEmptyTrash={handleEmptyTrash}
-            description="Einträge bleiben 30 Tage erhalten, bevor sie automatisch entfernt werden."
             formatDateTime={formatDateTime}
           />
           <DataSafetyPanel
