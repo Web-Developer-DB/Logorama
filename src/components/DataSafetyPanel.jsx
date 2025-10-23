@@ -50,10 +50,10 @@ const DataSafetyPanel = ({ onExport, onImportFile, disableExport }) => {
                 onClick={onExport}
                 disabled={disableExport}
               >
-                Daten sichern (Download)
+                Daten sichern (Upload)
               </button>
               <button type="button" className="secondary" onClick={handleRestoreClick}>
-                Daten wiederherstellen (Upload)
+                Daten wiederherstellen (Download)
               </button>
             </div>
           </div>
