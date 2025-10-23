@@ -9,7 +9,7 @@ import EntryCard from "./EntryCard.jsx";
  * - Kapselt die Akkordeon-Logik für ältere Einträge (5er-Gruppen, „Weiter“-Button).
  * - Delegiert Löschaktionen an die übergebenen Handler.
  */
-const ActiveEntriesSection = ({ entries, onDelete }) => {
+const ActiveEntriesSection = ({ entries, onDelete, onUpdate }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5);
 
@@ -49,7 +49,9 @@ const ActiveEntriesSection = ({ entries, onDelete }) => {
 
   return (
     <div className="log-list">
-      {latestEntry ? <EntryCard entry={latestEntry} onDelete={onDelete} /> : null}
+      {latestEntry ? (
+        <EntryCard entry={latestEntry} onDelete={onDelete} onUpdate={onUpdate} />
+      ) : null}
 
       {olderEntries.length ? (
         <div className={`accordion ${isAccordionOpen ? "open" : ""}`}>
@@ -63,7 +65,12 @@ const ActiveEntriesSection = ({ entries, onDelete }) => {
           {isAccordionOpen ? (
             <div className="accordion-panel">
               {visibleOlderEntries.map((entry) => (
-                <EntryCard key={entry.id} entry={entry} onDelete={onDelete} />
+                <EntryCard
+                  key={entry.id}
+                  entry={entry}
+                  onDelete={onDelete}
+                  onUpdate={onUpdate}
+                />
               ))}
 
               {hasMoreOlderEntries ? (

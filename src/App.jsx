@@ -316,6 +316,24 @@ const App = () => {
   };
 
   /**
+   * Aktualisiert einen bestehenden Eintrag und stempelt das Bearbeitungsdatum neu.
+   */
+  const handleUpdate = (id, updates) => {
+    setEntries((prev) =>
+      prev.map((entry) => {
+        if (entry.id !== id) {
+          return entry;
+        }
+        return {
+          ...entry,
+          ...updates,
+          editedAt: new Date().toISOString()
+        };
+      })
+    );
+  };
+
+  /**
    * Stellt einen Eintrag aus dem Papierkorb wieder her und entfernt den Löschstempel.
    */
   const handleRestore = (id) => {
@@ -463,7 +481,11 @@ const App = () => {
               onFilterChange={setFilter}
             />
 
-            <ActiveEntriesSection entries={filteredEntries} onDelete={handleDelete} />
+            <ActiveEntriesSection
+              entries={filteredEntries}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+            />
           </section>
 
           <TrashSection
