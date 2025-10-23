@@ -125,22 +125,6 @@ const reindexAutoTitles = (entriesList) => {
 };
 
 /**
- * Vorbefüllung des Formulars mit der aktuellen lokalen Zeit (auf Minuten gerundet).
- */
-const getInitialDateTime = () => {
-  const now = new Date();
-  now.setSeconds(0, 0);
-
-  const year = now.getFullYear();
-  const month = formatTwoDigits(now.getMonth() + 1);
-  const day = formatTwoDigits(now.getDate());
-  const hours = formatTwoDigits(now.getHours());
-  const minutes = formatTwoDigits(now.getMinutes());
-
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
-};
-
-/**
  * Lädt aktive Einträge aus localStorage und normalisiert fehlende Felder.
  */
 const loadEntries = () => {
@@ -234,7 +218,6 @@ const App = () => {
   const [search, setSearch] = useState("");
   // Formulardaten für den Editor.
   const [formState, setFormState] = useState({
-    date: getInitialDateTime(),
     title: "",
     content: ""
   });
@@ -406,12 +389,12 @@ const App = () => {
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
     const trimmedContent = formState.content.trim();
-    if (!trimmedContent || !formState.date) {
+    if (!trimmedContent) {
       return;
     }
 
     const trimmedTitle = formState.title.trim();
-    const createdAt = new Date(formState.date).toISOString();
+    const createdAt = new Date().toISOString();
     const newEntry = {
       id: generateId(),
       title: trimmedTitle,
@@ -423,7 +406,6 @@ const App = () => {
 
     updateEntries((prev) => [...prev, newEntry]);
     setFormState({
-      date: getInitialDateTime(),
       title: "",
       content: ""
     });

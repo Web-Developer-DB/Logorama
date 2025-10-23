@@ -16,20 +16,28 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  min-height: 100dvh;
   background: radial-gradient(120% 120% at 50% 0%, #312e81 0%, #020617 55%, #020617 100%);
   color: inherit;
+  overflow-y: scroll;
+  scrollbar-gutter: stable both-edges;
 }
 
 main {
-  width: 100%;
-  max-width: 960px;
-  padding: 32px 18px 90px;
+  width: min(1040px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 48px) 18px 90px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  transition: width 0.25s ease;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  width: 100%;
 }
 
 .app-header {
@@ -91,6 +99,8 @@ main {
   backdrop-filter: blur(16px);
   color: #e2e8f0;
   box-shadow: 0 18px 60px rgba(15, 23, 42, 0.55);
+  width: 100%;
+  min-width: 0;
 }
 
 .log-form {
@@ -194,6 +204,7 @@ button:disabled {
   border-radius: 16px;
   background: rgba(15, 23, 42, 0.35);
   overflow: hidden;
+  width: 100%;
 }
 
 .accordion-toggle {
@@ -255,6 +266,7 @@ button:disabled {
   background: rgba(15, 23, 42, 0.65);
   box-shadow: 0 15px 35px rgba(15, 23, 42, 0.4);
   transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 0;
 }
 
 .log-entry:hover {
@@ -280,7 +292,7 @@ button:disabled {
 }
 
 .log-entry p {
-  margin: 0;
+  margin: 12px 0 0;
   color: rgba(226, 232, 240, 0.92);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -316,19 +328,23 @@ button:disabled {
   border-radius: 16px;
   background: rgba(148, 163, 184, 0.08);
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
 }
 
 .trash-title-group {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
+  min-width: 0;
 }
 
 .trash-entry-toggle {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 12px 16px;
   border: none;
@@ -352,17 +368,33 @@ button:disabled {
   outline-offset: -4px;
 }
 
+.trash-meta {
+  font-size: 0.82rem;
+  color: rgba(226, 232, 240, 0.6);
+}
+
 .trash-entry-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  min-width: 0;
+  text-align: right;
   color: rgba(226, 232, 240, 0.65);
   font-size: 0.85rem;
 }
 
-.trash-meta {
+.trash-entry-meta time {
   font-size: 0.82rem;
-  color: rgba(226, 232, 240, 0.6);
+  line-height: 1.2;
+  color: rgba(226, 232, 240, 0.68);
+  overflow-wrap: anywhere;
+}
+
+.trash-entry-meta .accordion-icon {
+  flex: 0 0 auto;
 }
 
 .trash-entry-body {
@@ -370,11 +402,14 @@ button:disabled {
   gap: 12px;
   padding: 0 16px 16px;
   border-top: 1px solid rgba(148, 163, 184, 0.15);
+  width: 100%;
 }
 
 .trash-entry-body p {
   margin: 12px 0 0;
   color: rgba(226, 232, 240, 0.85);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 .trash-entry-actions {
@@ -445,9 +480,7 @@ button.danger:hover {
   }
 
   .layout-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
