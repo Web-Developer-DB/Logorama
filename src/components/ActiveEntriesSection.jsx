@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import EntryCard from "./EntryCard.jsx";
 
 /**
@@ -86,4 +86,4 @@ const ActiveEntriesSection = ({ entries, onDelete, onUpdate }) => {
   );
 };
 
-export default ActiveEntriesSection;
+export default memo(ActiveEntriesSection);

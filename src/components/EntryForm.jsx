@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 /**
  * Vollständiges Formular zum Erfassen neuer Logeinträge.
  *
@@ -49,4 +51,4 @@ const EntryForm = ({ formState, onInputChange, onSubmit }) => (
   </form>
 );
 
-export default EntryForm;
+export default memo(EntryForm);
