@@ -19,8 +19,10 @@ ReactDOM.createRoot(rootElement).render(
 // PWA-Unterstützung: registriert den Service Worker, sobald die Seite geladen wurde.
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const serviceWorkerUrl = `${basePath}/service-worker.js`;
     navigator.serviceWorker
-      .register("/service-worker.js")
+      .register(serviceWorkerUrl)
       .catch((error) => console.error("Service Worker Registrierung fehlgeschlagen:", error));
   });
 }
