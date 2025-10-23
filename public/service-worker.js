@@ -1,15 +1,19 @@
 // Versionierter Cache-Name – bei Änderungen erhöhen, damit alte Assets invalidiert werden.
 const CACHE_NAME = "logorama-cache-v1";
+const scopeUrl =
+  self.registration && self.registration.scope ? new URL(self.registration.scope) : new URL(self.location.href);
+const BASE_PATH = scopeUrl.pathname.replace(/\/$/, "");
+const withBase = (path) => `${BASE_PATH}${path}`;
 // Fallback-Dokument für Offline-Anfragen (Client-Shell).
-const OFFLINE_FALLBACK = "/index.html";
+const OFFLINE_FALLBACK = withBase("/index.html");
 // Liste von Assets, die bereits während der Installation offline verfügbar sein sollen.
 const PRECACHE_URLS = [
-  "/",
-  "/index.html",
-  "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/icon-maskable-512.png"
+  withBase("/"),
+  OFFLINE_FALLBACK,
+  withBase("/manifest.webmanifest"),
+  withBase("/icons/icon-192.png"),
+  withBase("/icons/icon-512.png"),
+  withBase("/icons/icon-maskable-512.png")
 ];
 
 self.addEventListener("install", (event) => {
@@ -72,7 +76,7 @@ self.addEventListener("fetch", (event) => {
         fetch(request).catch(() => {
           // Bei Bildfehlern ein Icon anzeigen, sonst auf Shell verweisen.
           if (request.destination === "image") {
-            return caches.match("/icons/icon-192.png");
+            return caches.match(withBase("/icons/icon-192.png"));
           }
           return caches.match(OFFLINE_FALLBACK);
         })
