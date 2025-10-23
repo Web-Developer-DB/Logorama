@@ -301,17 +301,11 @@ button:disabled {
 
 .log-entry footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-top: 16px;
-}
-
-@media (display-mode: standalone) {
-  .log-entry footer {
-    justify-content: center;
-  }
+  width: 100%;
 }
 
 .empty-state {
@@ -473,6 +467,10 @@ button.danger:hover {
 
   button {
     width: 100%;
+  }
+
+  .log-entry footer button {
+    width: auto;
   }
 }
 
