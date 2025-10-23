@@ -303,9 +303,15 @@ button:disabled {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+
+@media (display-mode: standalone) {
+  .log-entry footer {
+    justify-content: center;
+  }
 }
 
 .empty-state {
