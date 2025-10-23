@@ -316,6 +316,7 @@ button.danger:hover::before {
   inset: -20% -30%;
   background: radial-gradient(circle, rgba(122, 246, 255, 0.14), transparent 55%);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.35s ease;
 }
 
