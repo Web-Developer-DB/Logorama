@@ -576,11 +576,6 @@ const App = () => {
         <header className="app-header">
           <h1>Logorama</h1>
           <p>Notiere Gedanken, Ideen und Fortschritte – offline verfügbar.</p>
-          <div className="chip-group">
-            <span className="chip">Offline nutzbar</span>
-            <span className="chip">PWA Installierbar</span>
-            <span className="chip">JSON Import &amp; Export</span>
-          </div>
         </header>
 
         <div className="layout-grid">
