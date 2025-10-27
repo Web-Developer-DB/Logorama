@@ -302,7 +302,7 @@ const App = () => {
   }, [trashEntries]);
 
   useEffect(() => {
-    if (location.pathname !== "/") {
+    if (location.pathname !== "/entries") {
       setFilter("all");
       setSearch("");
     }
@@ -343,9 +343,17 @@ const App = () => {
 
   const deferredSearch = useDeferredValue(search);
 
+  const sortedEntriesDesc = useMemo(
+    () =>
+      [...entries].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    [entries]
+  );
+
   const filteredEntries = useMemo(() => {
     const term = (deferredSearch ?? "").trim().toLowerCase();
-    return [...entries]
+    return sortedEntriesDesc
       .filter((entry) => filterByRange(entry, filter))
       .filter((entry) => {
         if (!term) return true;
@@ -353,11 +361,10 @@ const App = () => {
           entry.title.toLowerCase().includes(term) ||
           entry.content.toLowerCase().includes(term)
         );
-      })
-      .sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-  }, [entries, deferredSearch, filter]);
+      });
+  }, [sortedEntriesDesc, deferredSearch, filter]);
+
+  const latestEntries = useMemo(() => sortedEntriesDesc.slice(0, 3), [sortedEntriesDesc]);
 
   /**
    * Papierkorb wird separat nach Löschdatum sortiert dargestellt.
@@ -429,7 +436,7 @@ const App = () => {
       });
       // Nach dem Speichern wieder auf "Alle" schalten, damit neuer Eintrag sichtbar bleibt.
       setFilter("all");
-      navigate("/");
+      navigate("/entries");
     },
     [formState, navigate, updateEntries]
   );
@@ -639,124 +646,144 @@ const App = () => {
 
   const handleShowToday = useCallback(() => {
     setFilter("today");
-    navigate("/");
+    navigate("/entries");
   }, [navigate]);
 
   return (
     <>
       <main className="app-shell">
-        <header className="app-hero">
-          <div className="app-hero__content">
-            <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
-            <h1>Logorama</h1>
-            <p className="app-hero__lead">
-              Arbeite strukturiert an deinen Projekten: Logorama speichert Gedanken, Fortschritte
-              und Ideen offline im Browser und bietet schnelle Filter für deinen Alltag.
-            </p>
-            <div className="app-hero__actions">
-              <Link to="/new" className="primary">
-                Neuen Eintrag festhalten
-              </Link>
-              <button type="button" className="secondary" onClick={handleShowToday}>
-                Heute anzeigen
-              </button>
-              <ThemeToggle theme={theme} onToggle={toggleTheme} />
-              {installPrompt ? (
-                <button type="button" className="ghost" onClick={handleAppInstall}>
-                  App installieren
-                </button>
-              ) : null}
-            </div>
-          </div>
-          <ul className="app-hero__metrics">
-            <li>
-              <span className="metric-value">{totalEntries}</span>
-              <span className="metric-label">Gesamte Einträge</span>
-            </li>
-            <li>
-              <span className="metric-value">{todayCount}</span>
-              <span className="metric-label">Heute verfasst</span>
-            </li>
-            <li>
-              <span className="metric-value">{weekCount}</span>
-              <span className="metric-label">Diese Woche</span>
-            </li>
-            <li>
-              <span className="metric-value">{trashEntryCount}</span>
-              <span className="metric-label">Im Papierkorb</span>
-            </li>
-          </ul>
-        </header>
-
-        <div className="dashboard-grid">
-          <Routes>
-            <Route
-              path="/"
-              element={
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route
+            path="/home"
+            element={
+              <>
+                <header className="app-hero">
+                  <div className="app-hero__content">
+                    <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
+                    <h1>Logorama</h1>
+                    <p className="app-hero__lead">
+                      Arbeite strukturiert an deinen Projekten: Logorama speichert Gedanken,
+                      Fortschritte und Ideen offline im Browser und bietet schnelle Filter für deinen
+                      Alltag.
+                    </p>
+                    <div className="app-hero__actions">
+                      <Link to="/new" className="primary">
+                        Neuantrag erstellen
+                      </Link>
+                      <button type="button" className="secondary" onClick={handleShowToday}>
+                        Heute anzeigen
+                      </button>
+                      <ThemeToggle theme={theme} onToggle={toggleTheme} />
+                      {installPrompt ? (
+                        <button type="button" className="ghost" onClick={handleAppInstall}>
+                          Selbst installieren
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                  <ul className="app-hero__metrics">
+                    <li>
+                      <span className="metric-value">{totalEntries}</span>
+                      <span className="metric-label">Gesamte Einträge</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{todayCount}</span>
+                      <span className="metric-label">Heute verfasst</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{weekCount}</span>
+                      <span className="metric-label">Diese Woche</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{trashEntryCount}</span>
+                      <span className="metric-label">Im Papierkorb</span>
+                    </li>
+                  </ul>
+                </header>
                 <section className="panel">
                   <header className="panel-heading">
-                    <h2 className="panel-title">Alle Einträge</h2>
+                    <h2 className="panel-title">Aktuelle Einträge</h2>
                     <p className="panel-subtitle">
-                      Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
+                      Die drei neuesten Anträge auf einen Blick. Für weitere Details wähle den Menüpunkt
+                      „Einträge“.
                     </p>
                   </header>
-                  <SearchFilter
-                    searchValue={search}
-                    onSearchChange={handleSearchChange}
-                    filterValue={filter}
-                    onFilterChange={handleFilterChange}
-                  />
                   <ActiveEntriesSection
-                    entries={filteredEntries}
+                    entries={latestEntries}
                     onDelete={handleDelete}
                     onUpdate={handleUpdate}
                   />
                 </section>
-              }
-            />
-            <Route
-              path="/new"
-              element={
-                <section className="panel">
-                  <header className="panel-heading">
-                    <h2 className="panel-title">Neuer Eintrag</h2>
-                    <p className="panel-subtitle">
-                      Halte neue Gedanken, Ideen oder Fortschritte direkt fest.
-                    </p>
-                  </header>
-                  <EntryForm
-                    formState={formState}
-                    onInputChange={handleInputChange}
-                    onSubmit={handleSubmit}
-                  />
-                </section>
-              }
-            />
-            <Route
-              path="/trash"
-              element={
-                <TrashSection
-                  entries={sortedTrashEntries}
-                  onRestore={handleRestore}
-                  onDeleteForever={handleDeleteForever}
-                  onEmptyTrash={handleEmptyTrash}
-                  formatDateTime={formatDateTime}
+              </>
+            }
+          />
+          <Route
+            path="/entries"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Alle Einträge</h2>
+                  <p className="panel-subtitle">
+                    Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
+                  </p>
+                </header>
+                <SearchFilter
+                  searchValue={search}
+                  onSearchChange={handleSearchChange}
+                  filterValue={filter}
+                  onFilterChange={handleFilterChange}
                 />
-              }
-            />
-            <Route
-              path="/backup"
-              element={
-                <DataSafetyPanel
-                  onExport={handleExport}
-                  onImportFile={handleImport}
-                  disableExport={!entries.length}
+                <ActiveEntriesSection
+                  entries={filteredEntries}
+                  onDelete={handleDelete}
+                  onUpdate={handleUpdate}
                 />
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
+              </section>
+            }
+          />
+          <Route
+            path="/new"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Neuer Eintrag</h2>
+                  <p className="panel-subtitle">
+                    Halte neue Gedanken, Ideen oder Fortschritte direkt fest.
+                  </p>
+                </header>
+                <EntryForm
+                  formState={formState}
+                  onInputChange={handleInputChange}
+                  onSubmit={handleSubmit}
+                />
+              </section>
+            }
+          />
+          <Route
+            path="/trash"
+            element={
+              <TrashSection
+                entries={sortedTrashEntries}
+                onRestore={handleRestore}
+                onDeleteForever={handleDeleteForever}
+                onEmptyTrash={handleEmptyTrash}
+                formatDateTime={formatDateTime}
+              />
+            }
+          />
+          <Route
+            path="/backup"
+            element={
+              <DataSafetyPanel
+                onExport={handleExport}
+                onImportFile={handleImport}
+                disableExport={!entries.length}
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/home" replace />} />
+        </Routes>
       </main>
       <footer className="app-footer">
         <div className="app-footer__inner">

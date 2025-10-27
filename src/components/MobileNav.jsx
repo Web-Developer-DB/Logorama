@@ -2,6 +2,19 @@ import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle.jsx";
 
+const HomeIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M3 11.5L12 4l9 7.5M5 10.5V20h5v-4h4v4h5v-9.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const PencilIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path
@@ -60,17 +73,25 @@ const MobileNav = ({ stats, theme, onToggleTheme }) => {
   const navItems = useMemo(
     () => [
       {
-        key: "new-entry",
-        label: "Neu",
-        to: "/new",
-        icon: <PencilIcon />
+        key: "home",
+        label: "Home",
+        to: "/home",
+        icon: <HomeIcon />,
+        end: true
       },
       {
         key: "entries",
         label: "Einträge",
-        to: "/",
+        to: "/entries",
         icon: <ListIcon />,
         badge: totalEntries > 0 ? totalEntries : null,
+        end: true
+      },
+      {
+        key: "new-entry",
+        label: "Neu",
+        to: "/new",
+        icon: <PencilIcon />,
         end: true
       },
       {
@@ -78,13 +99,15 @@ const MobileNav = ({ stats, theme, onToggleTheme }) => {
         label: "Papierkorb",
         to: "/trash",
         icon: <TrashIcon />,
-        badge: trashEntryCount > 0 ? trashEntryCount : null
+        badge: trashEntryCount > 0 ? trashEntryCount : null,
+        end: true
       },
       {
         key: "backup",
         label: "Backup",
         to: "/backup",
-        icon: <CloudIcon />
+        icon: <CloudIcon />,
+        end: true
       }
     ],
     [totalEntries, trashEntryCount]
