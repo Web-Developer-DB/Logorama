@@ -85,13 +85,6 @@ const NAV_CONFIG = [
     end: true
   },
   {
-    key: "new-entry",
-    label: "Neu",
-    to: "/new",
-    Icon: PencilIcon,
-    end: true
-  },
-  {
     key: "entries",
     label: "Einträge",
     to: "/entries",
