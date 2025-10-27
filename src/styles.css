@@ -1,3 +1,7 @@
+/* ========================================================================== */
+/*  Abschnitt: Globale Theme-Grundlage                                        */
+/*  Zweck: Import der Fonts sowie Definition aller CSS Custom Properties.     */
+/* ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
@@ -60,6 +64,10 @@
   background-color: var(--color-surface);
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Abschnitt: Dark-Theme Variablen                                           */
+/*  Zweck: Ueberschreibt Variablen fuer den dunklen Anzeigemodus.             */
+/* -------------------------------------------------------------------------- */
 :root[data-theme="dark"] {
   color-scheme: dark;
   --color-surface: #0b1120;
@@ -116,6 +124,10 @@
   --footer-height: 56px;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Abschnitt: Globale Basis-Styles                                           */
+/*  Zweck: Resets, Grundtypografie und globale Element-Defaults.              */
+/* -------------------------------------------------------------------------- */
 *,
 *::before,
 *::after {
@@ -163,6 +175,12 @@ select {
   color: inherit;
 }
 
+/* ========================================================================== */
+/*  Komponente: App Shell Layout                                              */
+/*  Zweck: Aeusserer Container fuer die komplette Anwendung.                  */
+/* ========================================================================== */
+/*  Selektor: main.app-shell                                                   */
+/*  Erklaerung: Zentriert den App-Inhalt und definiert vertikale Abstaende.    */
 main.app-shell {
   width: min(1160px, calc(100vw - 48px));
   margin: 0 auto;
@@ -173,15 +191,26 @@ main.app-shell {
 }
 
 @media (max-width: 900px) {
+  /*  Selektor: main.app-shell (mobil)                                         */
+  /*  Erklaerung: Fuegt nach unten mehr Platz fuer die Mobile-Navigation hinzu.*/
   main.app-shell {
     padding-bottom: calc(var(--mobile-nav-height) + 48px);
   }
 
+  /*  Selektor: main.app-shell.app-shell--has-footer                           */
+  /*  Erklaerung: Erweiterter Abstand, wenn gleichzeitig ein Footer eingeblendet ist.*/
   main.app-shell.app-shell--has-footer {
     padding-bottom: calc(var(--mobile-nav-height) + var(--footer-height) + 48px);
   }
 }
 
+/* ========================================================================== */
+/*  Komponente: App Hero                                                      */
+/*  Zweck: Hero-Sektion mit Einleitungstext, KPIs und Handlungsaufforderung.  */
+/* ========================================================================== */
+/*  Klasse: .app-hero                                                          */
+/*  Erklaerung: Setzt die Hero-Sektion als Grid-Karte mit Hintergrund, Padding */
+/*              und Schatten, damit der erste Eindruck der App hervortritt.    */
 .app-hero {
   display: grid;
   gap: clamp(24px, 4vw, 32px);
@@ -193,18 +222,29 @@ main.app-shell {
 }
 
 @media (min-width: 900px) {
+  /*  Klasse: .app-hero (Desktop Layout)                                       */
+  /*  Erklaerung: Teilt den Hero ab Tablet aufwaerts in zwei Spalten auf, damit */
+  /*              Text und KPIs nebeneinander stehen koennen.                  */
   .app-hero {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     align-items: start;
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: App Hero                                                   */
+/*  Zweck: Inhalte, Call-to-Actions und KPI-Liste innerhalb des Hero-Blocks.  */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .app-hero__content                                                 */
+/*  Erklaerung: Ordnet Ueberschrift, Beschreibung und Buttons vertikal an.     */
 .app-hero__content {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
+/*  Klasse: .app-hero__eyebrow                                                 */
+/*  Erklaerung: Stellt die kleine Einleitungzeile in Grossbuchstaben dar.      */
 .app-hero__eyebrow {
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -213,12 +253,17 @@ main.app-shell {
   color: var(--color-hero-eyebrow);
 }
 
+/*  Klasse: .app-hero__lead                                                    */
+/*  Erklaerung: Formatiert den Einfuehrungstext und begrenzt die Breite fuer   */
+/*              leserliche Abschnitte.                                         */
 .app-hero__lead {
   font-size: clamp(1rem, 0.6vw + 1rem, 1.2rem);
   color: var(--color-hero-lead);
   max-width: 640px;
 }
 
+/*  Klasse: .app-hero__actions                                                 */
+/*  Erklaerung: Gruppiert Buttons als flexible Zeile mit Zeilenumbruch.        */
 .app-hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -226,6 +271,8 @@ main.app-shell {
   margin-top: 8px;
 }
 
+/*  Klasse: .app-hero__metrics                                                 */
+/*  Erklaerung: Zeigt Kennzahlen als Kachelraster mit Hintergrundkarte an.     */
 .app-hero__metrics {
   list-style: none;
   margin: 0;
@@ -239,6 +286,8 @@ main.app-shell {
   gap: 18px;
 }
 
+/*  Klasse: .metric-value                                                      */
+/*  Erklaerung: Hebt Zahlenwerte als groessere farbige Hauptwerte hervor.      */
 .metric-value {
   display: block;
   font-size: 1.75rem;
@@ -246,6 +295,8 @@ main.app-shell {
   color: var(--color-accent);
 }
 
+/*  Klasse: .metric-label                                                      */
+/*  Erklaerung: Beschriftet die Kennzahlen in kleinerer, dezent grauer Schrift.*/
 .metric-label {
   display: block;
   margin-top: 6px;
@@ -253,35 +304,58 @@ main.app-shell {
   color: var(--color-muted);
 }
 
+/* ========================================================================== */
+/*  Layout: Dashboard Grid                                                    */
+/*  Zweck: Raster zur Platzierung der Haupt-Panels und Spezialsektionen.      */
+/* ========================================================================== */
+/*  Klasse: .dashboard-grid                                                    */
+/*  Erklaerung: Nutzt CSS Grid, um die Panels im Hauptbereich mit Abstaenden   */
+/*              zu organisieren.                                              */
 .dashboard-grid {
   display: grid;
   gap: clamp(22px, 4vw, 32px);
 }
 
 @media (min-width: 1080px) {
+  /*  Klasse: .dashboard-grid (Wide Layout)                                     */
+  /*  Erklaerung: Verteilt die Panels in zwei Spalten und steuert Sonderfaelle. */
   .dashboard-grid {
     grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
     align-items: start;
   }
 
+  /*  Selektor: .dashboard-grid > .panel:nth-child(1)                           */
+  /*  Erklaerung: Laesst das erste Panel ueber die gesamte Breite laufen.       */
   .dashboard-grid > .panel:nth-child(1) {
     grid-column: 1 / -1;
   }
 
+  /*  Selektor: .dashboard-grid > .panel:nth-child(2)                           */
+  /*  Erklaerung: Pinnt das zweite Panel in die erste Spalte ueber zwei Zeilen. */
   .dashboard-grid > .panel:nth-child(2) {
     grid-column: 1 / 2;
     grid-row: span 2;
   }
 
+  /*  Klasse: .trash-panel innerhalb des Grids                                  */
+  /*  Erklaerung: Positioniert den Papierkorb rechts neben dem Hauptstream.     */
   .dashboard-grid > .trash-panel {
     grid-column: 2 / 3;
   }
 
+  /*  Klasse: .data-safety-panel innerhalb des Grids                            */
+  /*  Erklaerung: Platziert die Datensicherheitskarte ebenfalls rechts.         */
   .dashboard-grid > .data-safety-panel {
     grid-column: 2 / 3;
   }
 }
 
+/* ========================================================================== */
+/*  Komponente: Panel                                                         */
+/*  Zweck: Generischer Karten-Container fuer einzelne Funktionsbereiche.      */
+/* ========================================================================== */
+/*  Klasse: .panel                                                             */
+/*  Erklaerung: Basiskarte mit Hintergrund, Padding und Schatten fuer Inhalte. */
 .panel {
   border-radius: 26px;
   padding: clamp(24px, 3vw, 32px);
@@ -293,23 +367,35 @@ main.app-shell {
   gap: clamp(16px, 3vw, 24px);
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: Panel                                                      */
+/*  Zweck: Kopfzeile, Untertitel und Leerzustand von Panels.                  */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .panel-heading                                                     */
+/*  Erklaerung: Stapelt Titel und Untertitel eines Panels mit kleinem Abstand. */
 .panel-heading {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/*  Klasse: .panel-title                                                       */
+/*  Erklaerung: Steuert Typografie des Panel-Haupttitels.                      */
 .panel-title {
   font-size: clamp(1.1rem, 2.4vw, 1.35rem);
   margin: 0;
 }
 
+/*  Klasse: .panel-subtitle                                                    */
+/*  Erklaerung: Zeigt eine optionale Erklaerung unter dem Titel in Grau.       */
 .panel-subtitle {
   margin: 0;
   font-size: 0.9rem;
   color: var(--color-muted);
 }
 
+/*  Klasse: .panel-empty                                                       */
+/*  Erklaerung: Visualisiert einen Leerzustand mit gestricheltem Rahmen.       */
 .panel-empty {
   padding: 28px;
   border-radius: 20px;
@@ -320,17 +406,31 @@ main.app-shell {
   font-weight: 500;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Spezialisierung: Akzentuierte Panels                                      */
+/*  Zweck: Panels mit hervorgehobener Flaeche (Papierkorb, Datensicherheit).  */
+/* -------------------------------------------------------------------------- */
+/*  Klassen: .trash-panel, .data-safety-panel                                  */
+/*  Erklaerung: Uebernehmen denselben weichen Verlauf wie Highlight-Karten.    */
 .trash-panel,
 .data-safety-panel {
   background: var(--color-panel-accent-bg);
 }
 
+/* ========================================================================== */
+/*  Komponente: Log Formular                                                  */
+/*  Zweck: Eingabeoberflaechen fuer neue Log-Eintraege.                       */
+/* ========================================================================== */
+/*  Klasse: .log-form                                                          */
+/*  Erklaerung: Arrangiert Formularfelder und Abstaende in einer Spalte.       */
 .log-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
+/*  Selektor: .log-form label                                                  */
+/*  Erklaerung: Formatiert alle Label mit Spaltenlayout und deutlicher Schrift.*/
 .log-form label {
   display: flex;
   flex-direction: column;
@@ -340,6 +440,8 @@ main.app-shell {
   font-size: 0.9rem;
 }
 
+/*  Selektorengruppe: Formular-Eingaben                                        */
+/*  Erklaerung: Vereinheitlicht Inputs sowie Filter-Felder mit gleichen Rahmen.*/
 .log-form input,
 .log-form textarea,
 .filter-toolbar input,
@@ -352,6 +454,8 @@ main.app-shell {
   box-shadow: var(--color-input-shadow);
 }
 
+/*  Selektorengruppe: Fokuszustand                                             */
+/*  Erklaerung: Betont aktive Eingaben durch prominentere Farbe und Shadow.    */
 .log-form input:focus,
 .log-form textarea:focus,
 .filter-toolbar input:focus,
@@ -361,17 +465,31 @@ main.app-shell {
   box-shadow: var(--color-input-focus-shadow);
 }
 
+/*  Selektor: .log-form textarea                                               */
+/*  Erklaerung: Gibt dem Textbereich eine komfortable Mindesthoehe.            */
 .log-form textarea {
   min-height: 220px;
   resize: vertical;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Hilfsklasse: Actions                                                      */
+/*  Zweck: Geteilte Button-Gruppe fuer Formulare und Kartenfusszeilen.        */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .actions                                                           */
+/*  Erklaerung: Verwendet Flex-Layout, damit mehrere Buttons sauber umbrechen. */
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
 
+/* ========================================================================== */
+/*  Komponente: Filter Toolbar                                                */
+/*  Zweck: Filter- und Suchleiste fuer Log-Eintraege.                         */
+/* ========================================================================== */
+/*  Klasse: .filter-toolbar                                                    */
+/*  Erklaerung: Ordnet Filterelemente nebeneinander an und richtet sie aus.    */
 .filter-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -379,20 +497,32 @@ main.app-shell {
   align-items: center;
 }
 
+/*  Selektor: .filter-toolbar input                                            */
+/*  Erklaerung: Laesst die Eingabe zur Breite wachsen, damit sie den Platz nutzt.*/
 .filter-toolbar input {
   flex: 1 1 220px;
 }
 
+/*  Klasse: .filter-toolbar__select                                            */
+/*  Erklaerung: Setzt feste Breite fuer Dropdowns, die bei Bedarf schrumpfen.  */
 .filter-toolbar__select {
   flex: 0 0 200px;
 }
 
 @media (max-width: 600px) {
+  /*  Klasse: .filter-toolbar__select (Mobil)                                   */
+  /*  Erklaerung: Lässt Select auf kleineren Bildschirmen auf volle Breite ziehen.*/
   .filter-toolbar__select {
     flex: 1 1 160px;
   }
 }
 
+/* ========================================================================== */
+/*  Komponenten: Button-Varianten                                             */
+/*  Zweck: Einheitliche Buttons fuer Primaer-, Sekundaer-, Ghost- und Danger. */
+/* ========================================================================== */
+/*  Selektorengruppe: Buttons                                                  */
+/*  Erklaerung: Setzt allgemeine Form, Gewichtung und Animation fuer Buttons.  */
 .primary,
 .secondary,
 .ghost,
@@ -411,18 +541,24 @@ main.app-shell {
     color 0.22s ease, border-color 0.22s ease;
 }
 
+/*  Klasse: .primary                                                           */
+/*  Erklaerung: Primaerknopf in Markenfarbe mit weissem Text und Schatten.     */
 .primary {
   background: var(--color-accent);
   color: #ffffff;
   box-shadow: var(--shadow-panel);
 }
 
+/*  Zustand: .primary:hover                                                    */
+/*  Erklaerung: Hebt den Button leicht an und intensiviert die Farbe.          */
 .primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
   background: var(--color-accent-hover);
 }
 
+/*  Zustand: .primary:disabled                                                 */
+/*  Erklaerung: Entschaerft inaktiven Button und entfernt Interaktionseffekte. */
 .primary:disabled {
   cursor: not-allowed;
   opacity: 0.6;
@@ -430,24 +566,32 @@ main.app-shell {
   box-shadow: none;
 }
 
+/*  Klasse: .secondary                                                         */
+/*  Erklaerung: Alternative Button-Variante mit nur leichtem farbigen Akzent.  */
 .secondary {
   background: var(--color-secondary-bg);
   color: var(--color-accent);
   border: 1px solid var(--color-secondary-border);
 }
 
+/*  Zustand: .secondary:hover                                                  */
+/*  Erklaerung: Verleiht der Sekundaer-Variante bei Hover mehr Tiefe.          */
 .secondary:hover {
   transform: translateY(-2px);
   background: var(--color-secondary-bg-hover);
   box-shadow: var(--shadow-panel);
 }
 
+/*  Klasse: .ghost                                                             */
+/*  Erklaerung: Transparenter Button mit Rahmen fuer weniger dominante Aktionen.*/
 .ghost {
   background: var(--color-ghost-bg);
   color: var(--color-emphasis);
   border: 1px solid var(--color-ghost-border);
 }
 
+/*  Zustand: .ghost:hover                                                      */
+/*  Erklaerung: Farbwechsel und Schatten, damit der Button bei Hover reagiert. */
 .ghost:hover {
   transform: translateY(-2px);
   border-color: var(--color-ghost-border-hover);
@@ -456,24 +600,40 @@ main.app-shell {
   background: var(--color-ghost-bg-hover);
 }
 
+/*  Klasse: .danger                                                            */
+/*  Erklaerung: Warnknopf fuer gefaehrliche Aktionen mit roten Toenen.         */
 .danger {
   background: var(--color-danger-bg);
   color: #c42245;
   border: 1px solid var(--color-danger-border);
 }
 
+/*  Zustand: .danger:hover                                                     */
+/*  Erklaerung: Signalisiert Interaktion durch kraeftigeren roten Hintergrund. */
 .danger:hover {
   transform: translateY(-2px);
   background: var(--color-danger-bg-hover);
   box-shadow: var(--shadow-panel);
 }
 
+/* ========================================================================== */
+/*  Komponente: Log Liste                                                     */
+/*  Zweck: Darstellung einzelner Log-Eintraege inklusive Editor.             */
+/* ========================================================================== */
+/*  Klasse: .log-list                                                          */
+/*  Erklaerung: Ordnet mehrere Log-Eintragskarten mit vertikalem Abstand.      */
 .log-list {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: Log Entry                                                  */
+/*  Zweck: Struktur und Interaktion eines einzelnen Log-Eintrags.             */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .log-entry                                                         */
+/*  Erklaerung: Karte fuer einen einzelnen Eintrag mit Schatten und Hover-Effekt.*/
 .log-entry {
   border-radius: 24px;
   padding: 22px clamp(18px, 2vw, 26px);
@@ -486,11 +646,15 @@ main.app-shell {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/*  Zustand: .log-entry:hover                                                  */
+/*  Erklaerung: Laesst Karten leicht schweben, um Interaktivitaet zu zeigen.   */
 .log-entry:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
 }
 
+/*  Klasse: .log-entry__header                                                 */
+/*  Erklaerung: Richtet Avatar, Titel und Metainformationen nebeneinander aus. */
 .log-entry__header {
   display: flex;
   justify-content: space-between;
@@ -498,6 +662,8 @@ main.app-shell {
   gap: 12px;
 }
 
+/*  Klasse: .log-entry__title-group                                            */
+/*  Erklaerung: Hält Avatar und Titel zusammen und ermoeglicht Ellipsen.       */
 .log-entry__title-group {
   display: flex;
   align-items: center;
@@ -505,6 +671,8 @@ main.app-shell {
   min-width: 0;
 }
 
+/*  Klasse: .log-entry__avatar                                                 */
+/*  Erklaerung: Kleine runde Initiale, die den Autor repraesentiert.           */
 .log-entry__avatar {
   width: 44px;
   height: 44px;
@@ -519,6 +687,8 @@ main.app-shell {
   flex-shrink: 0;
 }
 
+/*  Klasse: .log-entry__title                                                  */
+/*  Erklaerung: Zeigt den Titel und sorgt fuer Textkuerzung bei langen Namen.  */
 .log-entry__title {
   font-size: 1.1rem;
   color: var(--color-emphasis);
@@ -529,6 +699,8 @@ main.app-shell {
   max-width: min(380px, 100%);
 }
 
+/*  Klasse: .log-entry__title-input                                            */
+/*  Erklaerung: Eingabefeld fuer Titel im Editiermodus mit staerkerem Rahmen.  */
 .log-entry__title-input {
   flex: 1;
   min-width: 0;
@@ -539,18 +711,24 @@ main.app-shell {
   font-weight: 600;
 }
 
+/*  Zustand: .log-entry__title-input:focus                                     */
+/*  Erklaerung: Markiert den aktiven Input mit farbiger Umrandung.             */
 .log-entry__title-input:focus {
   outline: none;
   border-color: var(--color-input-focus-border);
   box-shadow: var(--color-input-focus-shadow);
 }
 
+/*  Klasse: .log-entry__meta                                                   */
+/*  Erklaerung: Zeigt Datum oder andere Metaangaben in kleiner Schrift.        */
 .log-entry__meta {
   font-size: 0.85rem;
   color: var(--color-muted);
   white-space: nowrap;
 }
 
+/*  Klasse: .log-entry__editor                                                 */
+/*  Erklaerung: Textarea fuer Vollinhalte mit komfortablem Padding.            */
 .log-entry__editor {
   width: 100%;
   min-height: 220px;
@@ -563,12 +741,16 @@ main.app-shell {
   line-height: 1.6;
 }
 
+/*  Zustand: .log-entry__editor:focus                                          */
+/*  Erklaerung: Betont den Editor beim Schreiben mit Fokusrahmen.              */
 .log-entry__editor:focus {
   outline: none;
   border-color: var(--color-input-focus-border);
   box-shadow: var(--color-input-focus-shadow);
 }
 
+/*  Klasse: .log-entry__content                                                */
+/*  Erklaerung: Statischer Anzeige-Text mit weichem Zeilenabstand.             */
 .log-entry__content {
   margin: 0;
   color: var(--color-paragraph);
@@ -576,6 +758,8 @@ main.app-shell {
   white-space: pre-wrap;
 }
 
+/*  Klasse: .log-entry__footer                                                 */
+/*  Erklaerung: Platz fuer Bottom-Actions wie Buttons in der Karte.            */
 .log-entry__footer {
   display: flex;
   flex-wrap: wrap;
@@ -583,12 +767,24 @@ main.app-shell {
   justify-content: flex-end;
 }
 
+/* ========================================================================== */
+/*  Komponente: Papierkorb                                                    */
+/*  Zweck: Verwaltung geloeschter Eintraege inklusive Aktionen.               */
+/* ========================================================================== */
+/*  Klasse: .trash-list                                                        */
+/*  Erklaerung: Stapelt geloeschte Eintraege vertikal mit gleichmaessigem Abstand.*/
 .trash-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: Papierkorb Eintrag                                         */
+/*  Zweck: Darstellung einzelner geloeschter Eintraege inkl. Aktionen.        */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .trash-entry                                                       */
+/*  Erklaerung: Einzelne geloeschte Karte mit Hintergrund und Animation.      */
 .trash-entry {
   border-radius: 20px;
   border: 1px solid var(--color-log-entry-border);
@@ -608,22 +804,39 @@ main.app-shell {
   gap: 14px;
 }
 
-.trash-title-group strong {
-  font-size: 1rem;
-  color: var(--color-emphasis);
+/*  Klasse: .trash-entry-head                                                  */
+/*  Erklaerung: Positioniert Kopfzeile und Aktionsbereich nebeneinander.       */
+.trash-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
 }
 
+/*  Klasse: .trash-title-group                                                 */
+/*  Erklaerung: Gruppiert Titeltext und Metainformation im Kopfbereich.        */
 .trash-title-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/*  Selektor: .trash-title-group strong                                        */
+/*  Erklaerung: Betont den Namen des geloeschten Eintrags.                     */
+.trash-title-group strong {
+  font-size: 1rem;
+  color: var(--color-emphasis);
+}
+
+/*  Klasse: .trash-meta                                                        */
+/*  Erklaerung: Zeigt Zusatzinformationen wie Datum in kleiner Schrift.        */
 .trash-meta {
   font-size: 0.85rem;
   color: var(--color-muted);
 }
 
+/*  Klasse: .trash-entry-content                                               */
+/*  Erklaerung: Darstellung des geloeschten Inhalts mit Zeilenumbruch.         */
 .trash-entry-content {
   margin: 0;
   color: var(--color-paragraph);
@@ -631,6 +844,8 @@ main.app-shell {
   white-space: pre-wrap;
 }
 
+/*  Klasse: .trash-entry-actions                                               */
+/*  Erklaerung: Ordnet Wiederherstellen- oder Loeschen-Buttons am Kartenende.  */
 .trash-entry-actions {
   display: flex;
   flex-wrap: wrap;
@@ -638,15 +853,29 @@ main.app-shell {
   justify-content: flex-end;
 }
 
+/*  Klasse: .trash-clear                                                       */
+/*  Erklaerung: Fuegt Abstand oberhalb des Buttons zum Leeren des Papierkorbs ein.*/
 .trash-clear {
   margin-top: 18px;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Detailstil: Datensicherheits-Panel                                        */
+/*  Zweck: Textgestaltung innerhalb der Datensicherheits-Hinweise.           */
+/* -------------------------------------------------------------------------- */
+/*  Selektor: .data-safety-panel p                                             */
+/*  Erklaerung: Macht Hinweistext angenehm lesbar und leicht abgesetzt.        */
 .data-safety-panel p {
   color: var(--color-paragraph-soft);
   line-height: 1.6;
 }
 
+/* ========================================================================== */
+/*  Komponente: Hilfe / Onboarding                                            */
+/*  Zweck: Beschreibende Hilfetexte und Listen.                               */
+/* ========================================================================== */
+/*  Klasse: .help-content                                                      */
+/*  Erklaerung: Ordnet alle Hilfeabschnitte und Textblöcke untereinander an.  */
 .help-content {
   display: flex;
   flex-direction: column;
@@ -654,6 +883,12 @@ main.app-shell {
   color: var(--color-paragraph);
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: Hilfe / Onboarding                                         */
+/*  Zweck: Listen und Zwischenueberschriften im Hilfebereich.                 */
+/* -------------------------------------------------------------------------- */
+/*  Selektor: .help-content ul                                                 */
+/*  Erklaerung: Stellt Aufzaehlungen kompakt dar und fuegt Innenabstand hinzu. */
 .help-content ul {
   margin: 0;
   padding-left: 1.2rem;
@@ -662,12 +897,20 @@ main.app-shell {
   gap: 8px;
 }
 
+/*  Selektor: .help-content h3                                                 */
+/*  Erklaerung: Formatiert Unterueberschriften der Hilfetexte.                 */
 .help-content h3 {
   margin: 0;
   font-size: 1rem;
   color: var(--color-emphasis);
 }
 
+/* ========================================================================== */
+/*  Komponente: Footer                                                        */
+/*  Zweck: Abschlussbereich mit Meta-Informationen und Links.                 */
+/* ========================================================================== */
+/*  Klasse: .app-footer                                                        */
+/*  Erklaerung: Gestaltet den unteren Seitenabschluss mit Rahmen und Hintergrund.*/
 .app-footer {
   min-height: var(--footer-height);
   padding: 0;
@@ -678,17 +921,25 @@ main.app-shell {
   border-top: 1px solid var(--color-footer-border);
 }
 
+/*  Klasse: .app-footer__spacer                                                */
+/*  Erklaerung: Reserviert Platz, damit die Mobile-Navigation nichts verdeckt. */
 .app-footer__spacer {
   display: none;
 }
 
 @media (max-width: 900px) {
+  /* ------------------------------------------------------------------------ */
+  /*  Responsive: Footer Abstand                                              */
+  /*  Zweck: Reserve fuer Mobile Navigation und Safe-Area Insets.             */
+  /* ------------------------------------------------------------------------ */
   .app-footer__spacer {
     display: block;
     height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 }
 
+/*  Klasse: .app-footer__inner                                                 */
+/*  Erklaerung: Zentriert den Inhalt des Footers und richtet Text aus.         */
 .app-footer__inner {
   width: min(960px, calc(100vw - 48px));
   margin: 0 auto;
@@ -702,10 +953,18 @@ main.app-shell {
   padding: 10px 0;
 }
 
+/*  Selektor: .app-footer__inner a                                             */
+/*  Erklaerung: Betont Footer-Links mit etwas staerkerer Schrift.              */
 .app-footer__inner a {
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Accessibility Hilfen                                                      */
+/*  Zweck: Unsichtbare Sprungmarken und Screenreader-Klassen.                 */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .sr-anchor                                                         */
+/*  Erklaerung: Unsichtbare Anker, die Spruenge fuer Screenreader ermoeglichen.*/
 .sr-anchor {
   position: relative;
   display: block;
@@ -713,6 +972,8 @@ main.app-shell {
   height: 0;
 }
 
+/*  Klasse: .visually-hidden                                                   */
+/*  Erklaerung: Versteckt Elemente visuell, laesst sie aber fuer Screenreader bestehen.*/
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -725,6 +986,12 @@ main.app-shell {
   border: 0;
 }
 
+/* ========================================================================== */
+/*  Komponente: Navigation mobil                                              */
+/*  Zweck: Feste Navigationsleiste fuer kleine Viewports.                     */
+/* ========================================================================== */
+/*  Klasse: .mobile-nav                                                        */
+/*  Erklaerung: Fixierte Navigationsleiste am unteren Rand fuer Smartphones.   */
 .mobile-nav {
   position: fixed;
   bottom: 0;
@@ -742,11 +1009,23 @@ main.app-shell {
   align-items: stretch;
 }
 
+/* ========================================================================== */
+/*  Komponente: Navigation desktop                                            */
+/*  Zweck: Sticky Navigationsleiste fuer groessere Viewports.                 */
+/* ========================================================================== */
+/*  Klasse: .desktop-nav                                                       */
+/*  Erklaerung: Standardmaessig ausgeblendet, da nur auf groesseren Displays aktiv.*/
 .desktop-nav {
   display: none;
 }
 
 @media (min-width: 901px) {
+  /* ------------------------------------------------------------------------ */
+  /*  Unterelemente: Desktop Navigation                                       */
+  /*  Zweck: Navigationseintraege, Badges und Icons fuer groessere Screens.   */
+  /* ------------------------------------------------------------------------ */
+  /*  Klasse: .desktop-nav (breite Screens)                                     */
+  /*  Erklaerung: Macht die Sticky Navigation sichtbar und verleiht Kartenstil.*/
   .desktop-nav {
     display: block;
     position: sticky;
@@ -759,6 +1038,8 @@ main.app-shell {
     box-shadow: var(--shadow-panel);
   }
 
+  /*  Klasse: .desktop-nav__list                                                */
+  /*  Erklaerung: Richtet Navigationspunkte in einer Reihe mit Abstaenden aus.  */
   .desktop-nav__list {
     display: flex;
     align-items: center;
@@ -769,11 +1050,15 @@ main.app-shell {
     list-style: none;
   }
 
+  /*  Klasse: .desktop-nav__item                                                */
+  /*  Erklaerung: Erweiterbares Flex-Item fuer jeden Navigationspunkt.          */
   .desktop-nav__item {
     flex: 1;
     display: flex;
   }
 
+  /*  Klasse: .desktop-nav__link                                                */
+  /*  Erklaerung: Klickbare Flaeche mit Icon und Titel pro Navigationspunkt.    */
   .desktop-nav__link {
     flex: 1;
     display: inline-flex;
@@ -788,18 +1073,24 @@ main.app-shell {
     transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
   }
 
+  /*  Zustand: .desktop-nav__link:hover                                         */
+  /*  Erklaerung: Hebt Auswahl bei Hover durch Farbe und leichte Bewegung hervor.*/
   .desktop-nav__link:hover {
     color: var(--color-accent);
     background: var(--color-secondary-bg);
     transform: translateY(-2px);
   }
 
+  /*  Zustand: .desktop-nav__link--active                                       */
+  /*  Erklaerung: Markiert den aktiven Navigationspunkt persistent.             */
   .desktop-nav__link--active {
     color: var(--color-accent);
     background: var(--color-secondary-bg);
     box-shadow: var(--color-mobile-nav-highlight);
   }
 
+  /*  Klasse: .desktop-nav__icon                                                */
+  /*  Erklaerung: Container fuer das jeweilige Navigationssymbol.               */
   .desktop-nav__icon {
     display: inline-flex;
     align-items: center;
@@ -809,6 +1100,8 @@ main.app-shell {
     color: var(--color-accent);
   }
 
+  /*  Klasse: .desktop-nav__badge                                               */
+  /*  Erklaerung: Zeigt Benachrichtigungszahlen als kleine Chips neben Links.   */
   .desktop-nav__badge {
     display: inline-flex;
     align-items: center;
@@ -824,11 +1117,23 @@ main.app-shell {
 }
 
 @media (max-width: 900px) {
+  /* ------------------------------------------------------------------------ */
+  /*  Responsive: Mobile Navigation Aktivierung                               */
+  /*  Zweck: Navigation bei kleinen Viewports sichtbar schalten.              */
+  /* ------------------------------------------------------------------------ */
+  /*  Klasse: .mobile-nav (mobil sichtbar)                                     */
+  /*  Erklaerung: Aktiviert die Navigationsleiste, sobald der Bildschirm klein ist.*/
   .mobile-nav {
     display: flex;
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Unterelemente: Mobile Navigation                                          */
+/*  Zweck: Struktur und Interaktion der mobilen Navigationspunkte.            */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .mobile-nav__list                                                  */
+/*  Erklaerung: Verteilt Navigationspunkte gleichmaessig auf der Leiste.       */
 .mobile-nav__list {
   display: flex;
   align-items: center;
@@ -846,12 +1151,16 @@ main.app-shell {
   min-height: calc(var(--mobile-nav-height) - env(safe-area-inset-bottom, 0px));
 }
 
+/*  Klasse: .mobile-nav__item                                                  */
+/*  Erklaerung: Flex-Container je Navigationseintrag zur Zentrierung.          */
 .mobile-nav__item {
   flex: 1;
   display: flex;
   justify-content: center;
 }
 
+/*  Klasse: .mobile-nav__link                                                  */
+/*  Erklaerung: Vertikaler Button mit Icon und Label fuer jeden Tab.           */
 .mobile-nav__link {
   position: relative;
   display: inline-flex;
@@ -868,18 +1177,24 @@ main.app-shell {
   transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
+/*  Zustand: .mobile-nav__link:hover                                           */
+/*  Erklaerung: Aendert Farbe und verschiebt Link leicht fuer Hover-Feedback. */
 .mobile-nav__link:hover {
   color: var(--color-accent);
   background: var(--color-secondary-bg);
   transform: translateY(-2px);
 }
 
+/*  Zustand: .mobile-nav__link--active                                         */
+/*  Erklaerung: Markiert den gerade aktiven Navigationspunkt.                  */
 .mobile-nav__link--active {
   color: var(--color-accent);
   background: var(--color-secondary-bg);
   box-shadow: var(--color-mobile-nav-highlight);
 }
 
+/*  Klasse: .mobile-nav__icon                                                  */
+/*  Erklaerung: Quadratische Flaeche fuer das Navigation-Symbol.               */
 .mobile-nav__icon {
   display: inline-flex;
   align-items: center;
@@ -891,11 +1206,19 @@ main.app-shell {
   color: var(--color-accent);
 }
 
+/*  Zustand: .mobile-nav__link--active .mobile-nav__icon                       */
+/*  Erklaerung: Faerbt das Icon bei Aktivierung passend zum Hauptbutton ein.   */
 .mobile-nav__link--active .mobile-nav__icon {
   background: var(--color-accent);
   color: #ffffff;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Interaktion: Mobile Navigation Buttons                                    */
+/*  Zweck: Fokus- und Buttonverhalten fuer mobile Aktionslinks.               */
+/* -------------------------------------------------------------------------- */
+/*  Klasse: .mobile-nav__link--button                                          */
+/*  Erklaerung: Entfernt Standardbutton-Stile fuer Interaktionen innerhalb der Leiste.*/
 .mobile-nav__link--button {
   border: none;
   background: none;
@@ -903,11 +1226,15 @@ main.app-shell {
   font: inherit;
 }
 
+/*  Zustand: .mobile-nav__link--button:focus-visible                           */
+/*  Erklaerung: Zeichnet gut sichtbare Tastatur-Fokusringe.                    */
 .mobile-nav__link--button:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
+/*  Klasse: .mobile-nav__badge                                                 */
+/*  Erklaerung: Kleines Benachrichtigungssignet oben rechts am Navigationspunkt.*/
 .mobile-nav__badge {
   position: absolute;
   top: 6px;
@@ -922,6 +1249,12 @@ main.app-shell {
   box-shadow: 0 6px 14px rgba(37, 81, 187, 0.25);
 }
 
+/* ========================================================================== */
+/*  Komponente: Theme Toggle                                                  */
+/*  Zweck: Umschalter zwischen Light- und Dark-Theme.                         */
+/* ========================================================================== */
+/*  Klasse: .theme-toggle                                                      */
+/*  Erklaerung: Inline-flex Container fuer Switch-Element und Textlabel.       */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -929,12 +1262,16 @@ main.app-shell {
   padding-inline: 1.2rem;
 }
 
+/*  Klasse: .theme-toggle__icon                                                */
+/*  Erklaerung: Zentriert das Icon, das den aktuellen Modus widerspiegelt.     */
 .theme-toggle__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
+/*  Klasse: .theme-toggle__label                                               */
+/*  Erklaerung: Textbeschreibung des Toggles, etwas hervorgehoben.             */
 .theme-toggle__label {
   font-weight: 600;
 }
