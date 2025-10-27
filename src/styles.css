@@ -734,8 +734,12 @@ main.app-shell {
   border-top: 1px solid var(--color-mobile-nav-border);
   background: var(--color-mobile-nav-bg);
   backdrop-filter: blur(18px);
-  padding: 6px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 6px calc(clamp(12px, 6vw, 24px) + env(safe-area-inset-right, 0px))
+    calc(8px + env(safe-area-inset-bottom, 0px))
+    calc(clamp(12px, 6vw, 24px) + env(safe-area-inset-left, 0px));
   display: none;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .desktop-nav {
@@ -821,16 +825,23 @@ main.app-shell {
 
 @media (max-width: 900px) {
   .mobile-nav {
-    display: block;
+    display: flex;
   }
 }
 
 .mobile-nav__list {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: clamp(12px, 3vw, 18px);
   margin: 0;
-  padding: 0 14px;
+  padding: 0;
+  width: min(
+    448px,
+    calc(
+      (100vw - 48px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) / 1.25
+    )
+  );
   list-style: none;
   min-height: calc(var(--mobile-nav-height) - env(safe-area-inset-bottom, 0px));
 }
