@@ -12,6 +12,7 @@ import SearchFilter from "./components/SearchFilter.jsx";
 import ActiveEntriesSection from "./components/ActiveEntriesSection.jsx";
 import TrashSection from "./components/TrashSection.jsx";
 import DataSafetyPanel from "./components/DataSafetyPanel.jsx";
+import DesktopNav from "./components/DesktopNav.jsx";
 import MobileNav from "./components/MobileNav.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
 import { formatDateTime } from "./utils/formatters.js";
@@ -697,6 +698,14 @@ const App = () => {
   return (
     <>
       <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
+        <DesktopNav
+          stats={{
+            totalEntries,
+            todayCount,
+            weekCount,
+            trashEntryCount
+          }}
+        />
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route
