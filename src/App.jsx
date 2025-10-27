@@ -33,6 +33,8 @@ const WEEKDAY_NAMES = [
 const DEFAULT_TITLE_SEPARATOR = " - ";
 const THEME_STORAGE_KEY = "logorama-theme-mode";
 
+const THEME_MODES = ["system", "light", "dark"];
+
 const applyThemeAttribute = (nextTheme) => {
   if (typeof document === "undefined") {
     return;
@@ -40,21 +42,29 @@ const applyThemeAttribute = (nextTheme) => {
   document.documentElement.dataset.theme = nextTheme;
 };
 
-const getInitialTheme = () => {
-  if (typeof window === "undefined") {
+const getSystemTheme = () => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
     return "light";
   }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
+
+const resolveTheme = (mode) => {
+  if (mode === "light" || mode === "dark") {
+    return mode;
+  }
+  return getSystemTheme();
+};
+
+const getInitialThemeMode = () => {
+  if (typeof window === "undefined") {
+    return "system";
+  }
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (storedTheme === "light" || storedTheme === "dark") {
-    applyThemeAttribute(storedTheme);
+  if (storedTheme === "system" || storedTheme === "light" || storedTheme === "dark") {
     return storedTheme;
   }
-  const prefersDark =
-    typeof window.matchMedia === "function" &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const fallbackTheme = prefersDark ? "dark" : "light";
-  applyThemeAttribute(fallbackTheme);
-  return fallbackTheme;
+  return "system";
 };
 
 /**
@@ -246,7 +256,9 @@ const filterByRange = (entry, filter) => {
 const App = () => {
   // PWA: speichert das beforeinstallprompt-Event, um einen Install-Button zu zeigen.
   const [installPrompt, setInstallPrompt] = useState(null);
-  const [theme, setTheme] = useState(getInitialTheme);
+  const initialThemeMode = getInitialThemeMode();
+  const [themeMode, setThemeMode] = useState(initialThemeMode);
+  const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(initialThemeMode));
   // Aktive Einträge + Papierkorb werden aus localStorage hydriert.
   const [entries, setEntries] = useState(() => reindexAutoTitles(loadEntries()));
   const [trashEntries, setTrashEntries] = useState(loadTrashEntries);
@@ -261,13 +273,42 @@ const App = () => {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
   const location = useLocation();
+  const isHelpRoute = location.pathname === "/help";
 
   useEffect(() => {
-    applyThemeAttribute(theme);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    if (themeMode === "system") {
+      setResolvedTheme(resolveTheme("system"));
+    } else {
+      setResolvedTheme(themeMode);
     }
-  }, [theme]);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    }
+  }, [themeMode]);
+
+  useEffect(() => {
+    applyThemeAttribute(resolvedTheme);
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (event) => {
+      if (themeMode === "system") {
+        setResolvedTheme(event.matches ? "dark" : "light");
+      }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, [themeMode]);
 
   const updateEntries = useCallback((updater) => {
     setEntries((prev) => {
@@ -640,8 +681,12 @@ const App = () => {
     setFilter(value);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const cycleThemeMode = useCallback(() => {
+    setThemeMode((prev) => {
+      const index = THEME_MODES.indexOf(prev);
+      const nextIndex = index === -1 ? 0 : (index + 1) % THEME_MODES.length;
+      return THEME_MODES[nextIndex];
+    });
   }, []);
 
   const handleShowToday = useCallback(() => {
@@ -651,7 +696,7 @@ const App = () => {
 
   return (
     <>
-      <main className="app-shell">
+      <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route
@@ -674,7 +719,11 @@ const App = () => {
                       <button type="button" className="secondary" onClick={handleShowToday}>
                         Heute anzeigen
                       </button>
-                      <ThemeToggle theme={theme} onToggle={toggleTheme} />
+                      <ThemeToggle
+                        mode={themeMode}
+                        resolvedTheme={resolvedTheme}
+                        onToggle={cycleThemeMode}
+                      />
                       {installPrompt ? (
                         <button type="button" className="ghost" onClick={handleAppInstall}>
                           Selbst installieren
@@ -798,15 +847,35 @@ const App = () => {
                     <li><strong>Home:</strong> Dashboard mit Kennzahlen und den drei aktuellsten Einträgen.</li>
                     <li><strong>Neu:</strong> Formular, um einen neuen Eintrag ("Antrag") zu erfassen.</li>
                     <li><strong>Einträge:</strong> Gesamte Liste mit Suche und Filter nach Zeitraum.</li>
-                    <li><strong>Papierkorb:</strong> Gelöschte Einträge zur Wiederherstellung oder endgültigen Löschung.</li>
+                    <li>
+                      <strong>Papierkorb:</strong> Gelöschte Einträge zur Wiederherstellung oder endgültigen Löschung.
+                      Einträge werden hier automatisch nach 30 Tagen entfernt.
+                    </li>
                     <li><strong>Backup:</strong> Exportiere oder importiere deine Daten als JSON-Datei.</li>
                   </ul>
                   <h3>Tipps zum Start</h3>
                   <ul>
                     <li>Nutze den Button „Neuantrag erstellen“, um deine ersten Notizen zu erfassen.</li>
                     <li>Der Filter „Heute anzeigen“ zeigt dir nur die Einträge des aktuellen Tags.</li>
-                    <li>Über den Theme-Switch auf der Home-Seite kannst du zwischen hellem und dunklem Layout wechseln.</li>
+                    <li>Über den Theme-Switch auf der Home-Seite kannst du zwischen System-, Licht- und Dunkelmodus wechseln.</li>
                     <li>Sichere deine Daten regelmäßig über den Menüpunkt „Backup“.</li>
+                  </ul>
+                  <h3>Lizenz &amp; Komponenten</h3>
+                  <p>
+                    Logorama steht unter der MIT License. Der komplette Source Code inklusive aller React-Komponenten
+                    befindet sich auf GitHub und kann frei eingesehen oder erweitert werden.
+                  </p>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://github.com/Web-Developer-DB/Logorama"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Source Code auf GitHub
+                      </a>
+                    </li>
+                    <li>Wichtige Module: <code>App.jsx</code>, <code>MobileNav.jsx</code>, <code>ThemeToggle.jsx</code>, <code>ActiveEntriesSection.jsx</code>, <code>TrashSection.jsx</code>, <code>DataSafetyPanel.jsx</code>.</li>
                   </ul>
                 </div>
               </section>
@@ -815,18 +884,23 @@ const App = () => {
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </main>
-      <footer className="app-footer">
-        <div className="app-footer__inner">
-          <span>MIT License · Created by Dimitri B</span>
-          <a
-            href="https://github.com/Web-Developer-DB/Logorama"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Source Code auf GitHub
-          </a>
-        </div>
-      </footer>
+      {isHelpRoute ? (
+        <>
+          <footer className="app-footer">
+            <div className="app-footer__inner">
+              <span>MIT License · Created by Dimitri B</span>
+              <a
+                href="https://github.com/Web-Developer-DB/Logorama"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Source Code auf GitHub
+              </a>
+            </div>
+          </footer>
+          <div className="app-footer__spacer" />
+        </>
+      ) : null}
       <MobileNav
         stats={{
           totalEntries,

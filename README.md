@@ -4,7 +4,7 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 
 ## Highlights
 
-- 🌟 Editorial UI mit Light/Dark-Themes, gesteuert über einen globalen Theme-Switch
+- 🌟 Editorial UI mit Light/Dark-Themes inkl. System-Auto-Modus
 - 🧭 React Router + Sticky Bottom Navigation für schnelle Tab-Wechsel (Home · Neu · Einträge · Papierkorb · Backup · Hilfe)
 - 📝 Freitext-Log inkl. Datum/Uhrzeit, Suchfunktion sowie Filter für „Heute“ und „Letzte 7 Tage“
 - ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
@@ -75,7 +75,7 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 - **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen, einzeln löschen oder komplett entfernen.
 - **Inline-Bearbeitung**: Jeder Eintrag bietet einen „Bearbeiten“-Button, der Titel/Inhalt direkt in der Karte editierbar macht. Speichern aktualisiert den Zeitstempel `editedAt`.
 - **Automatische Titel**: Ohne eigenen Titel vergibt Logorama fortlaufende Namen pro Kalendertag (`1 - Montag`, `2 - Montag`, …) basierend auf der lokalen Gerätezeit.
-- **Theme Switch**: Über Hero-Button oder Mobile-Nav lässt sich zwischen hellem und dunklem Theme umschalten; die Einstellung wird im `localStorage` gespeichert.
+- **Theme Switch**: Über den Hero-Button lässt sich zwischen System-, Licht- und Dunkelmodus wechseln; die Einstellung wird gespeichert und respektiert das Geräte-Theme.
 - **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
 - **PWA**: Der Service Worker cached Grund-Assets für Offlinebetrieb; Manifest liefert Shortcuts (`#new-entry`, `#filter=today`) und sorgt für korrekte Darstellung auf Android.
 
