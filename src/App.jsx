@@ -782,6 +782,36 @@ const App = () => {
               />
             }
           />
+          <Route
+            path="/help"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Hilfe &amp; Einstieg</h2>
+                  <p className="panel-subtitle">
+                    So nutzt du Logorama – kurzer Überblick über Navigation und Kernfunktionen.
+                  </p>
+                </header>
+                <div className="help-content">
+                  <h3>Navigation</h3>
+                  <ul>
+                    <li><strong>Home:</strong> Dashboard mit Kennzahlen und den drei aktuellsten Einträgen.</li>
+                    <li><strong>Neu:</strong> Formular, um einen neuen Eintrag ("Antrag") zu erfassen.</li>
+                    <li><strong>Einträge:</strong> Gesamte Liste mit Suche und Filter nach Zeitraum.</li>
+                    <li><strong>Papierkorb:</strong> Gelöschte Einträge zur Wiederherstellung oder endgültigen Löschung.</li>
+                    <li><strong>Backup:</strong> Exportiere oder importiere deine Daten als JSON-Datei.</li>
+                  </ul>
+                  <h3>Tipps zum Start</h3>
+                  <ul>
+                    <li>Nutze den Button „Neuantrag erstellen“, um deine ersten Notizen zu erfassen.</li>
+                    <li>Der Filter „Heute anzeigen“ zeigt dir nur die Einträge des aktuellen Tags.</li>
+                    <li>Über den Theme-Switch auf der Home-Seite kannst du zwischen hellem und dunklem Layout wechseln.</li>
+                    <li>Sichere deine Daten regelmäßig über den Menüpunkt „Backup“.</li>
+                  </ul>
+                </div>
+              </section>
+            }
+          />
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </main>
@@ -804,8 +834,6 @@ const App = () => {
           weekCount,
           trashEntryCount
         }}
-        theme={theme}
-        onToggleTheme={toggleTheme}
       />
     </>
   );

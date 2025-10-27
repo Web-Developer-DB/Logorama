@@ -1,6 +1,5 @@
 import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle.jsx";
 
 const HomeIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -67,7 +66,20 @@ const CloudIcon = () => (
   </svg>
 );
 
-const MobileNav = ({ stats, theme, onToggleTheme }) => {
+const HelpIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M12 18h.01M11.1 9a1.9 1.9 0 113.8 0c0 1.9-1.9 1.9-1.9 3.8M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const MobileNav = ({ stats }) => {
   const { totalEntries = 0, trashEntryCount = 0 } = stats ?? {};
 
   const navItems = useMemo(
@@ -108,6 +120,13 @@ const MobileNav = ({ stats, theme, onToggleTheme }) => {
         to: "/backup",
         icon: <CloudIcon />,
         end: true
+      },
+      {
+        key: "help",
+        label: "Hilfe",
+        to: "/help",
+        icon: <HelpIcon />,
+        end: true
       }
     ],
     [totalEntries, trashEntryCount]
@@ -131,9 +150,6 @@ const MobileNav = ({ stats, theme, onToggleTheme }) => {
             </NavLink>
           </li>
         ))}
-        <li className="mobile-nav__item">
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} variant="nav" />
-        </li>
       </ul>
     </nav>
   );
