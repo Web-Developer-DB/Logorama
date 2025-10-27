@@ -13,9 +13,13 @@ const ActiveEntriesSection = ({ entries, onDelete, onUpdate }) => {
     );
   }
 
+  const sortedEntries = [...entries].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
   return (
     <div className="log-list">
-      {entries.map((entry) => (
+      {sortedEntries.map((entry) => (
         <EntryCard key={entry.id} entry={entry} onDelete={onDelete} onUpdate={onUpdate} />
       ))}
     </div>
