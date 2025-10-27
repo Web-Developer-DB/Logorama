@@ -853,8 +853,10 @@ const App = () => {
                 <div className="help-content">
                   <h3>Navigation</h3>
                   <ul>
-                    <li><strong>Home:</strong> Dashboard mit Kennzahlen und den drei aktuellsten Einträgen.</li>
-                    <li><strong>Neu:</strong> Formular, um einen neuen Eintrag ("Antrag") zu erfassen.</li>
+                    <li>
+                      <strong>Home:</strong> Dashboard mit Kennzahlen, den drei aktuellsten Einträgen und dem Button „Neuantrag
+                      erstellen“ für neue Notizen.
+                    </li>
                     <li><strong>Einträge:</strong> Gesamte Liste mit Suche und Filter nach Zeitraum.</li>
                     <li>
                       <strong>Papierkorb:</strong> Gelöschte Einträge zur Wiederherstellung oder endgültigen Löschung.

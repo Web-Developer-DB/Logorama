@@ -5,7 +5,7 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 ## Highlights
 
 - 🌟 Editorial UI mit Light/Dark-Themes inkl. System-Auto-Modus
-- 🧭 React Router + Sticky Bottom Navigation für schnelle Tab-Wechsel (Home · Neu · Einträge · Papierkorb · Backup · Hilfe)
+- 🧭 React Router + Sticky Bottom Navigation für schnelle Tab-Wechsel (Home · Einträge · Papierkorb · Backup · Hilfe) sowie direkten CTA für neue Einträge
 - 📝 Freitext-Log inkl. Datum/Uhrzeit, Suchfunktion sowie Filter für „Heute“ und „Letzte 7 Tage“
 - ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
 - 🗓️ Automatische Wochentags-Titel („1 - Montag“) sobald kein eigener Titel angegeben wird
@@ -70,7 +70,7 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 ## Funktionsweise
 
 - **Persistenz**: Einträge werden im Browser (`localStorage`) unter dem Key `personal-log-entries` gespeichert. Beim Import wird der vollständige Bestand ersetzt.
-- **Navigation & Layout**: Die App nutzt React Router und stellt sechs Views bereit (`/home`, `/new`, `/entries`, `/trash`, `/backup`, `/help`). Ein sticky Bottom Nav-Bar auf Mobilgeräten verlinkt direkt in die Sektionen; das Desktop-Layout kombiniert Hero-Bereich mit Kennzahlen und Panels.
+- **Navigation & Layout**: Die App nutzt React Router und stellt die Bereiche `/home`, `/entries`, `/trash`, `/backup`, `/help` bereit. Das Formular unter `/new` erreichst du über den Button „Neuantrag erstellen“ auf der Startseite. Die Sticky Bottom Nav-Bar auf Mobilgeräten verlinkt direkt in die Hauptsektionen; das Desktop-Layout kombiniert Hero-Bereich mit Kennzahlen und Panels.
 - **Filter & Suche**: Dropdown für Zeiträume (`Alle`, `Heute`, `Letzte 7 Tage`) und Freitext-Suche über Titel/Inhalt.
 - **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen, einzeln löschen oder komplett entfernen.
 - **Inline-Bearbeitung**: Jeder Eintrag bietet einen „Bearbeiten“-Button, der Titel/Inhalt direkt in der Karte editierbar macht. Speichern aktualisiert den Zeitstempel `editedAt`.
