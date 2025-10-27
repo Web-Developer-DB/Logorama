@@ -406,7 +406,10 @@ const App = () => {
       });
   }, [sortedEntriesDesc, deferredSearch, filter]);
 
-  const latestEntries = useMemo(() => sortedEntriesDesc.slice(0, 3), [sortedEntriesDesc]);
+  const latestEntries = useMemo(() => {
+    const todaysEntries = sortedEntriesDesc.filter((entry) => filterByRange(entry, "today"));
+    return todaysEntries.slice(0, 3);
+  }, [sortedEntriesDesc]);
 
   /**
    * Papierkorb wird separat nach Löschdatum sortiert dargestellt.
@@ -690,11 +693,6 @@ const App = () => {
     });
   }, []);
 
-  const handleShowToday = useCallback(() => {
-    setFilter("today");
-    navigate("/entries");
-  }, [navigate]);
-
   return (
     <>
       <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
@@ -725,9 +723,6 @@ const App = () => {
                       <Link to="/new" className="primary">
                         Neuantrag erstellen
                       </Link>
-                      <button type="button" className="secondary" onClick={handleShowToday}>
-                        Heute anzeigen
-                      </button>
                       <ThemeToggle
                         mode={themeMode}
                         resolvedTheme={resolvedTheme}
@@ -735,7 +730,7 @@ const App = () => {
                       />
                       {installPrompt ? (
                         <button type="button" className="ghost" onClick={handleAppInstall}>
-                          Selbst installieren
+                          App installieren
                         </button>
                       ) : null}
                     </div>
