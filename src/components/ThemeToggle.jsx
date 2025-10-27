@@ -26,23 +26,37 @@ const MoonIcon = () => (
   </svg>
 );
 
-const ThemeToggle = ({ theme, onToggle, variant = "hero" }) => {
-  const isDark = theme === "dark";
-  const icon = isDark ? <SunIcon /> : <MoonIcon />;
-  const heroAriaLabel = `Wechsle zu ${isDark ? "hellem" : "dunklem"} Thema`;
-  const navAriaLabel = `Schalte ${isDark ? "Lichtmodus" : "Dunkelmodus"} ein`;
+const SystemIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M4 4h16v12H4zM2 20h20M9 20v-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const ThemeToggle = ({ mode, resolvedTheme, onToggle, variant = "hero" }) => {
+  const isSystem = mode === "system";
+  const isDark = resolvedTheme === "dark";
+  const icon = isSystem ? <SystemIcon /> : isDark ? <MoonIcon /> : <SunIcon />;
+  const modeLabel = isSystem ? "Systemmodus" : isDark ? "Dunkelmodus" : "Lichtmodus";
+  const heroAriaLabel = `Theme-Modus wechseln (aktuell ${modeLabel})`;
 
   if (variant === "nav") {
+    const navLabel = isSystem ? "Auto" : isDark ? "Dunkel" : "Hell";
     return (
       <button
         type="button"
-        className={`mobile-nav__link mobile-nav__link--button${isDark ? " mobile-nav__link--active" : ""}`}
+        className="mobile-nav__link mobile-nav__link--button"
         onClick={onToggle}
-        aria-pressed={isDark}
-        aria-label={navAriaLabel}
+        aria-label={`Theme-Modus wechseln (aktuell ${navLabel})`}
       >
         <span className="mobile-nav__icon">{icon}</span>
-        <span className="mobile-nav__label">{isDark ? "Hell" : "Dunkel"}</span>
+        <span className="mobile-nav__label">{navLabel}</span>
       </button>
     );
   }
@@ -52,11 +66,10 @@ const ThemeToggle = ({ theme, onToggle, variant = "hero" }) => {
       type="button"
       className="ghost theme-toggle"
       onClick={onToggle}
-      aria-pressed={isDark}
       aria-label={heroAriaLabel}
     >
       <span className="theme-toggle__icon">{icon}</span>
-      <span className="theme-toggle__label">{isDark ? "Lichtmodus" : "Dunkelmodus"}</span>
+      <span className="theme-toggle__label">{modeLabel}</span>
     </button>
   );
 };
