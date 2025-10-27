@@ -1,9 +1,19 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import {
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate
+} from "react-router-dom";
 import EntryForm from "./components/EntryForm.jsx";
 import SearchFilter from "./components/SearchFilter.jsx";
 import ActiveEntriesSection from "./components/ActiveEntriesSection.jsx";
 import TrashSection from "./components/TrashSection.jsx";
 import DataSafetyPanel from "./components/DataSafetyPanel.jsx";
+import MobileNav from "./components/MobileNav.jsx";
+import ThemeToggle from "./components/ThemeToggle.jsx";
 import { formatDateTime } from "./utils/formatters.js";
 
 // Primary localStorage buckets: active Einträge + Papierkorb.
@@ -21,6 +31,41 @@ const WEEKDAY_NAMES = [
   "Samstag"
 ];
 const DEFAULT_TITLE_SEPARATOR = " - ";
+const THEME_STORAGE_KEY = "logorama-theme-mode";
+
+const THEME_MODES = ["system", "light", "dark"];
+
+const applyThemeAttribute = (nextTheme) => {
+  if (typeof document === "undefined") {
+    return;
+  }
+  document.documentElement.dataset.theme = nextTheme;
+};
+
+const getSystemTheme = () => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return "light";
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
+
+const resolveTheme = (mode) => {
+  if (mode === "light" || mode === "dark") {
+    return mode;
+  }
+  return getSystemTheme();
+};
+
+const getInitialThemeMode = () => {
+  if (typeof window === "undefined") {
+    return "system";
+  }
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (storedTheme === "system" || storedTheme === "light" || storedTheme === "dark") {
+    return storedTheme;
+  }
+  return "system";
+};
 
 /**
  * Prüft, ob ein Papierkorb-Eintrag älter als die Aufbewahrungsfrist ist.
@@ -211,6 +256,9 @@ const filterByRange = (entry, filter) => {
 const App = () => {
   // PWA: speichert das beforeinstallprompt-Event, um einen Install-Button zu zeigen.
   const [installPrompt, setInstallPrompt] = useState(null);
+  const initialThemeMode = getInitialThemeMode();
+  const [themeMode, setThemeMode] = useState(initialThemeMode);
+  const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(initialThemeMode));
   // Aktive Einträge + Papierkorb werden aus localStorage hydriert.
   const [entries, setEntries] = useState(() => reindexAutoTitles(loadEntries()));
   const [trashEntries, setTrashEntries] = useState(loadTrashEntries);
@@ -223,6 +271,44 @@ const App = () => {
   });
   // Filter für Zeitbereiche (Alle / Heute / Letzte 7 Tage).
   const [filter, setFilter] = useState("all");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHelpRoute = location.pathname === "/help";
+
+  useEffect(() => {
+    if (themeMode === "system") {
+      setResolvedTheme(resolveTheme("system"));
+    } else {
+      setResolvedTheme(themeMode);
+    }
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    }
+  }, [themeMode]);
+
+  useEffect(() => {
+    applyThemeAttribute(resolvedTheme);
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (event) => {
+      if (themeMode === "system") {
+        setResolvedTheme(event.matches ? "dark" : "light");
+      }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+    mediaQuery.addListener(handleChange);
+    return () => mediaQuery.removeListener(handleChange);
+  }, [themeMode]);
 
   const updateEntries = useCallback((updater) => {
     setEntries((prev) => {
@@ -256,6 +342,13 @@ const App = () => {
     window.localStorage.setItem(TRASH_STORAGE_KEY, JSON.stringify(trashEntries));
   }, [trashEntries]);
 
+  useEffect(() => {
+    if (location.pathname !== "/entries") {
+      setFilter("all");
+      setSearch("");
+    }
+  }, [location.pathname]);
+
   /**
    * Stündlicher Garbage-Collector für den Papierkorb. Dadurch werden alte
    * Einträge auch ohne Nutzerinteraktion gelöscht.
@@ -271,50 +364,6 @@ const App = () => {
     }, 60 * 60 * 1000);
     return () => window.clearInterval(intervalId);
   }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Liest die Hash-Navigation (#new-entry, #filter=...) und setzt internen Filter.
-    const applyHash = (shouldScroll = false) => {
-      const hash = window.location.hash.replace("#", "");
-      if (hash.startsWith("filter=")) {
-        const value = hash.split("=")[1];
-        if (["all", "today", "week"].includes(value)) {
-          setFilter(value);
-        }
-      } else if (hash === "new-entry" && shouldScroll) {
-        document.getElementById("new-entry")?.scrollIntoView({ behavior: "smooth" });
-      }
-    };
-
-    applyHash(true);
-
-    const listener = () => applyHash(true);
-    window.addEventListener("hashchange", listener);
-    return () => window.removeEventListener("hashchange", listener);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    // Hält URL-Hash und UI-Filter synchron, ohne Browser-Historie zu fluten.
-    const { history, location } = window;
-    const currentHash = location.hash.replace("#", "");
-    if (filter === "all") {
-      if (currentHash.startsWith("filter=")) {
-        history.replaceState(null, "", `${location.pathname}${location.search}`);
-      }
-    } else {
-      const nextHash = `filter=${filter}`;
-      if (currentHash !== nextHash) {
-        history.replaceState(
-          null,
-          "",
-          `${location.pathname}${location.search}#${nextHash}`
-        );
-      }
-    }
-  }, [filter]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -335,9 +384,17 @@ const App = () => {
 
   const deferredSearch = useDeferredValue(search);
 
+  const sortedEntriesDesc = useMemo(
+    () =>
+      [...entries].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    [entries]
+  );
+
   const filteredEntries = useMemo(() => {
     const term = (deferredSearch ?? "").trim().toLowerCase();
-    return [...entries]
+    return sortedEntriesDesc
       .filter((entry) => filterByRange(entry, filter))
       .filter((entry) => {
         if (!term) return true;
@@ -345,11 +402,10 @@ const App = () => {
           entry.title.toLowerCase().includes(term) ||
           entry.content.toLowerCase().includes(term)
         );
-      })
-      .sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-  }, [entries, deferredSearch, filter]);
+      });
+  }, [sortedEntriesDesc, deferredSearch, filter]);
+
+  const latestEntries = useMemo(() => sortedEntriesDesc.slice(0, 3), [sortedEntriesDesc]);
 
   /**
    * Papierkorb wird separat nach Löschdatum sortiert dargestellt.
@@ -363,6 +419,15 @@ const App = () => {
     });
   }, [trashEntries]);
   const trashEntryCount = sortedTrashEntries.length;
+  const totalEntries = entries.length;
+  const todayCount = useMemo(
+    () => entries.filter((entry) => filterByRange(entry, "today")).length,
+    [entries]
+  );
+  const weekCount = useMemo(
+    () => entries.filter((entry) => filterByRange(entry, "week")).length,
+    [entries]
+  );
 
   const handleAppInstall = useCallback(async () => {
     if (!installPrompt) {
@@ -386,32 +451,36 @@ const App = () => {
   }, []);
 
   // Legt neuen Eintrag an und setzt Formular zurück.
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
-    const trimmedContent = formState.content.trim();
-    if (!trimmedContent) {
-      return;
-    }
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      const trimmedContent = formState.content.trim();
+      if (!trimmedContent) {
+        return;
+      }
 
-    const trimmedTitle = formState.title.trim();
-    const createdAt = new Date().toISOString();
-    const newEntry = {
-      id: generateId(),
-      title: trimmedTitle,
-      content: trimmedContent,
-      createdAt,
-      editedAt: createdAt,
-      isAutoTitle: !trimmedTitle
-    };
+      const trimmedTitle = formState.title.trim();
+      const createdAt = new Date().toISOString();
+      const newEntry = {
+        id: generateId(),
+        title: trimmedTitle,
+        content: trimmedContent,
+        createdAt,
+        editedAt: createdAt,
+        isAutoTitle: !trimmedTitle
+      };
 
-    updateEntries((prev) => [...prev, newEntry]);
-    setFormState({
-      title: "",
-      content: ""
-    });
-    // Nach dem Speichern wieder auf "Alle" schalten, damit neuer Eintrag sichtbar bleibt.
-    setFilter("all");
-  }, [formState, updateEntries]);
+      updateEntries((prev) => [...prev, newEntry]);
+      setFormState({
+        title: "",
+        content: ""
+      });
+      // Nach dem Speichern wieder auf "Alle" schalten, damit neuer Eintrag sichtbar bleibt.
+      setFilter("all");
+      navigate("/entries");
+    },
+    [formState, navigate, updateEntries]
+  );
 
   /**
    * Verschiebt einen Eintrag in den Papierkorb. Falls es bereits eine ältere
@@ -612,72 +681,234 @@ const App = () => {
     setFilter(value);
   }, []);
 
+  const cycleThemeMode = useCallback(() => {
+    setThemeMode((prev) => {
+      const index = THEME_MODES.indexOf(prev);
+      const nextIndex = index === -1 ? 0 : (index + 1) % THEME_MODES.length;
+      return THEME_MODES[nextIndex];
+    });
+  }, []);
+
+  const handleShowToday = useCallback(() => {
+    setFilter("today");
+    navigate("/entries");
+  }, [navigate]);
+
   return (
     <>
-      <main>
-        <header className="app-header">
-          <h1>Logorama</h1>
-          <p>Notiere Gedanken, Ideen und Fortschritte – offline verfügbar.</p>
-          {installPrompt && (
-            <button
-              type="button"
-              className="install-button secondary"
-              onClick={handleAppInstall}
-            >
-              App installieren
-            </button>
-          )}
-        </header>
-
-        <div className="layout-grid">
-          <section className="card">
-            <EntryForm
-              formState={formState}
-              onInputChange={handleInputChange}
-              onSubmit={handleSubmit}
-            />
-          </section>
-
-          <section className="card">
-            <SearchFilter
-              searchValue={search}
-              onSearchChange={handleSearchChange}
-              filterValue={filter}
-              onFilterChange={handleFilterChange}
-            />
-
-            <ActiveEntriesSection
-              entries={filteredEntries}
-              onDelete={handleDelete}
-              onUpdate={handleUpdate}
-            />
-          </section>
-
-          <TrashSection
-            entries={sortedTrashEntries}
-            onRestore={handleRestore}
-            onDeleteForever={handleDeleteForever}
-            onEmptyTrash={handleEmptyTrash}
-            formatDateTime={formatDateTime}
+      <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route
+            path="/home"
+            element={
+              <>
+                <header className="app-hero">
+                  <div className="app-hero__content">
+                    <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
+                    <h1>Logorama</h1>
+                    <p className="app-hero__lead">
+                      Arbeite strukturiert an deinen Projekten: Logorama speichert Gedanken,
+                      Fortschritte und Ideen offline im Browser und bietet schnelle Filter für deinen
+                      Alltag.
+                    </p>
+                    <div className="app-hero__actions">
+                      <Link to="/new" className="primary">
+                        Neuantrag erstellen
+                      </Link>
+                      <button type="button" className="secondary" onClick={handleShowToday}>
+                        Heute anzeigen
+                      </button>
+                      <ThemeToggle
+                        mode={themeMode}
+                        resolvedTheme={resolvedTheme}
+                        onToggle={cycleThemeMode}
+                      />
+                      {installPrompt ? (
+                        <button type="button" className="ghost" onClick={handleAppInstall}>
+                          Selbst installieren
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                  <ul className="app-hero__metrics">
+                    <li>
+                      <span className="metric-value">{totalEntries}</span>
+                      <span className="metric-label">Gesamte Einträge</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{todayCount}</span>
+                      <span className="metric-label">Heute verfasst</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{weekCount}</span>
+                      <span className="metric-label">Diese Woche</span>
+                    </li>
+                    <li>
+                      <span className="metric-value">{trashEntryCount}</span>
+                      <span className="metric-label">Im Papierkorb</span>
+                    </li>
+                  </ul>
+                </header>
+                <section className="panel">
+                  <header className="panel-heading">
+                    <h2 className="panel-title">Aktuelle Einträge</h2>
+                    <p className="panel-subtitle">
+                      Die drei neuesten Anträge auf einen Blick. Für weitere Details wähle den Menüpunkt
+                      „Einträge“.
+                    </p>
+                  </header>
+                  <ActiveEntriesSection
+                    entries={latestEntries}
+                    onDelete={handleDelete}
+                    onUpdate={handleUpdate}
+                  />
+                </section>
+              </>
+            }
           />
-          <DataSafetyPanel
-            onExport={handleExport}
-            onImportFile={handleImport}
-            disableExport={!entries.length}
+          <Route
+            path="/entries"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Alle Einträge</h2>
+                  <p className="panel-subtitle">
+                    Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
+                  </p>
+                </header>
+                <SearchFilter
+                  searchValue={search}
+                  onSearchChange={handleSearchChange}
+                  filterValue={filter}
+                  onFilterChange={handleFilterChange}
+                />
+                <ActiveEntriesSection
+                  entries={filteredEntries}
+                  onDelete={handleDelete}
+                  onUpdate={handleUpdate}
+                />
+              </section>
+            }
           />
-        </div>
+          <Route
+            path="/new"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Neuer Eintrag</h2>
+                  <p className="panel-subtitle">
+                    Halte neue Gedanken, Ideen oder Fortschritte direkt fest.
+                  </p>
+                </header>
+                <EntryForm
+                  formState={formState}
+                  onInputChange={handleInputChange}
+                  onSubmit={handleSubmit}
+                />
+              </section>
+            }
+          />
+          <Route
+            path="/trash"
+            element={
+              <TrashSection
+                entries={sortedTrashEntries}
+                onRestore={handleRestore}
+                onDeleteForever={handleDeleteForever}
+                onEmptyTrash={handleEmptyTrash}
+                formatDateTime={formatDateTime}
+              />
+            }
+          />
+          <Route
+            path="/backup"
+            element={
+              <DataSafetyPanel
+                onExport={handleExport}
+                onImportFile={handleImport}
+                disableExport={!entries.length}
+              />
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <section className="panel">
+                <header className="panel-heading">
+                  <h2 className="panel-title">Hilfe &amp; Einstieg</h2>
+                  <p className="panel-subtitle">
+                    So nutzt du Logorama – kurzer Überblick über Navigation und Kernfunktionen.
+                  </p>
+                </header>
+                <div className="help-content">
+                  <h3>Navigation</h3>
+                  <ul>
+                    <li><strong>Home:</strong> Dashboard mit Kennzahlen und den drei aktuellsten Einträgen.</li>
+                    <li><strong>Neu:</strong> Formular, um einen neuen Eintrag ("Antrag") zu erfassen.</li>
+                    <li><strong>Einträge:</strong> Gesamte Liste mit Suche und Filter nach Zeitraum.</li>
+                    <li>
+                      <strong>Papierkorb:</strong> Gelöschte Einträge zur Wiederherstellung oder endgültigen Löschung.
+                      Einträge werden hier automatisch nach 30 Tagen entfernt.
+                    </li>
+                    <li><strong>Backup:</strong> Exportiere oder importiere deine Daten als JSON-Datei.</li>
+                  </ul>
+                  <h3>Tipps zum Start</h3>
+                  <ul>
+                    <li>Nutze den Button „Neuantrag erstellen“, um deine ersten Notizen zu erfassen.</li>
+                    <li>Der Filter „Heute anzeigen“ zeigt dir nur die Einträge des aktuellen Tags.</li>
+                    <li>Über den Theme-Switch auf der Home-Seite kannst du zwischen System-, Licht- und Dunkelmodus wechseln.</li>
+                    <li>Sichere deine Daten regelmäßig über den Menüpunkt „Backup“.</li>
+                  </ul>
+                  <h3>Lizenz &amp; Komponenten</h3>
+                  <p>
+                    Logorama steht unter der MIT License. Der komplette Source Code inklusive aller React-Komponenten
+                    befindet sich auf GitHub und kann frei eingesehen oder erweitert werden.
+                  </p>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://github.com/Web-Developer-DB/Logorama"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Source Code auf GitHub
+                      </a>
+                    </li>
+                    <li>Wichtige Module: <code>App.jsx</code>, <code>MobileNav.jsx</code>, <code>ThemeToggle.jsx</code>, <code>ActiveEntriesSection.jsx</code>, <code>TrashSection.jsx</code>, <code>DataSafetyPanel.jsx</code>.</li>
+                  </ul>
+                </div>
+              </section>
+            }
+          />
+          <Route path="*" element={<Navigate to="/home" replace />} />
+        </Routes>
       </main>
-      <footer className="app-footer">
-        <span>MIT License · Created by Dimitri B</span>
-        <br />
-        <a
-          href="https://github.com/Web-Developer-DB/Logorama"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source Code auf GitHub
-        </a>
-      </footer>
+      {isHelpRoute ? (
+        <>
+          <footer className="app-footer">
+            <div className="app-footer__inner">
+              <span>MIT License · Created by Dimitri B</span>
+              <a
+                href="https://github.com/Web-Developer-DB/Logorama"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Source Code auf GitHub
+              </a>
+            </div>
+          </footer>
+          <div className="app-footer__spacer" />
+        </>
+      ) : null}
+      <MobileNav
+        stats={{
+          totalEntries,
+          todayCount,
+          weekCount,
+          trashEntryCount
+        }}
+      />
     </>
   );
 };
