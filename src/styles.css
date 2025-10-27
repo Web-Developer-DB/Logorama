@@ -641,6 +641,27 @@ main.app-shell {
   line-height: 1.6;
 }
 
+.help-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: var(--color-paragraph);
+}
+
+.help-content ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.help-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-emphasis);
+}
+
 .app-footer {
   padding: 8px 0 10px;
   background: var(--color-footer-bg);
