@@ -642,7 +642,7 @@ main.app-shell {
 }
 
 .app-footer {
-  padding: 48px 0 64px;
+  padding: 8px 0 10px;
   background: var(--color-footer-bg);
   border-top: 1px solid var(--color-footer-border);
 }

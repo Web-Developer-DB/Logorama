@@ -80,18 +80,18 @@ const MobileNav = ({ stats, theme, onToggleTheme }) => {
         end: true
       },
       {
+        key: "new-entry",
+        label: "Neu",
+        to: "/new",
+        icon: <PencilIcon />,
+        end: true
+      },
+      {
         key: "entries",
         label: "Einträge",
         to: "/entries",
         icon: <ListIcon />,
         badge: totalEntries > 0 ? totalEntries : null,
-        end: true
-      },
-      {
-        key: "new-entry",
-        label: "Neu",
-        to: "/new",
-        icon: <PencilIcon />,
         end: true
       },
       {
