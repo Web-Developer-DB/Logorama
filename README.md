@@ -4,13 +4,13 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 
 ## Highlights
 
-- 🌟 Modernes UI mit Dark/Light-Unterstützung und mobiloptimierter Oberfläche
+- 🌟 Editorial UI mit Light/Dark-Themes inkl. System-Auto-Modus
+- 🧭 React Router + Sticky Bottom Navigation für schnelle Tab-Wechsel (Home · Neu · Einträge · Papierkorb · Backup · Hilfe)
 - 📝 Freitext-Log inkl. Datum/Uhrzeit, Suchfunktion sowie Filter für „Heute“ und „Letzte 7 Tage“
 - ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
 - 🗓️ Automatische Wochentags-Titel („1 - Montag“) sobald kein eigener Titel angegeben wird
 - 💾 Persistenz über `localStorage` plus verständlicher Sicherungsbereich für JSON-Export/-Import
-- 📚 Akkordeon-Ansichten für ältere Einträge sowie Papierkorb mit 5er-Paginierung
-- 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist und Restore-Option
+- 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist, Restore-Option und „Papierkorb leeren“
 - 🛡️ Zweistufiger Löschschutz: Knopf färbt sich rot, zweiter Klick löscht endgültig
 - 📂 Export fragt (sofern vom Browser unterstützt) nach Zielordner via File System Access API
 - 📦 Vite + React 18 Setup für schnelle Builds und moderne DX
@@ -48,15 +48,17 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 │   ├── manifest.webmanifest     # Web App Manifest
 │   └── service-worker.js        # Offline-Caching & Fallback-Logik
 ├── src/
-│   ├── App.jsx                  # Orchestriert State, Persistenz und Sub-Komponenten
+│   ├── App.jsx                  # Orchestriert State, Persistenz, Routing und Panels
 │   ├── components/
-│   │   ├── ActiveEntriesSection.jsx # Akkordeon-Logik für aktive Einträge
+│   │   ├── ActiveEntriesSection.jsx # Listet aktuelle Einträge
 │   │   ├── ConfirmButton.jsx    # Zwei-Klick-Bestätigung für Löschaktionen
+│   │   ├── DataSafetyPanel.jsx  # Backup & Restore Panel
 │   │   ├── EntryCard.jsx        # Darstellung eines einzelnen Log-Eintrags
 │   │   ├── EntryForm.jsx        # Formular zum Erfassen neuer Einträge
-│   │   ├── DataSafetyPanel.jsx  # Akkordeon-Karte für Backup & Wiederherstellung
+│   │   ├── MobileNav.jsx        # Sticky Bottom Navigation (React Router Tabs)
 │   │   ├── SearchFilter.jsx     # Suchfeld und Zeitraumfilter
-│   │   └── TrashSection.jsx     # Papierkorb inklusive Mehrstufigkeit
+│   │   ├── ThemeToggle.jsx      # Light/Dark Switch für Hero & Mobile Nav
+│   │   └── TrashSection.jsx     # Papierkorb Cards & Aktionen
 │   ├── main.jsx                 # React-Einstieg + Service Worker Registrierung
 │   └── styles.css               # UI-Styles
 ├── icons/                       # Ursprüngliche Icon-Dateien (optional)
@@ -68,12 +70,13 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 ## Funktionsweise
 
 - **Persistenz**: Einträge werden im Browser (`localStorage`) unter dem Key `personal-log-entries` gespeichert. Beim Import wird der vollständige Bestand ersetzt.
+- **Navigation & Layout**: Die App nutzt React Router und stellt sechs Views bereit (`/home`, `/new`, `/entries`, `/trash`, `/backup`, `/help`). Ein sticky Bottom Nav-Bar auf Mobilgeräten verlinkt direkt in die Sektionen; das Desktop-Layout kombiniert Hero-Bereich mit Kennzahlen und Panels.
 - **Filter & Suche**: Dropdown für Zeiträume (`Alle`, `Heute`, `Letzte 7 Tage`) und Freitext-Suche über Titel/Inhalt.
-- **Akkordeon-Listen**: Der jüngste Eintrag bleibt sichtbar, ältere Logs und Papierkorb-Einträge werden bei Bedarf ausgeklappt (5er-Blöcke, „Weiter“-Button).
-- **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen oder endgültig entfernen.
+- **Papierkorb**: Gelöschte Einträge wandern für 30 Tage in den Papierkorb und lassen sich jederzeit wiederherstellen, einzeln löschen oder komplett entfernen.
 - **Inline-Bearbeitung**: Jeder Eintrag bietet einen „Bearbeiten“-Button, der Titel/Inhalt direkt in der Karte editierbar macht. Speichern aktualisiert den Zeitstempel `editedAt`.
 - **Automatische Titel**: Ohne eigenen Titel vergibt Logorama fortlaufende Namen pro Kalendertag (`1 - Montag`, `2 - Montag`, …) basierend auf der lokalen Gerätezeit.
-- **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ (Akkordeon) lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
+- **Theme Switch**: Über den Hero-Button lässt sich zwischen System-, Licht- und Dunkelmodus wechseln; die Einstellung wird gespeichert und respektiert das Geräte-Theme.
+- **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
 - **PWA**: Der Service Worker cached Grund-Assets für Offlinebetrieb; Manifest liefert Shortcuts (`#new-entry`, `#filter=today`) und sorgt für korrekte Darstellung auf Android.
 
 ### Papierkorb & Aufbewahrung
@@ -81,6 +84,7 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 - Beim Löschen bleibt der Eintrag als Kopie im Papierkorb. Vorherige Versionen derselben ID werden überschrieben, damit keine Dubletten entstehen.
 - Nach 30 Tagen (oder beim nächsten App-Start) werden Papierkorb-Einträge automatisch entfernt.
 - „Wiederherstellen“ setzt den Eintrag zurück in den aktiven Bestand; „Endgültig löschen“ erfordert einen zweiten Klick auf den rot markierten Button.
+- „Papierkorb leeren“ entfernt alle Einträge nach einer Sicherheitsabfrage.
 
 ## Deployment-Hinweise
 

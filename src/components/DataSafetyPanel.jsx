@@ -1,19 +1,14 @@
-import { memo, useRef, useState } from "react";
+import { memo, useRef } from "react";
 
 /**
- * Kompakte Sicherungszentrale mit Akkordeon-Mechanik für Export & Import.
+ * Kompakte Sicherungszentrale für Export & Import.
  * Die eigentliche Logik wird von der aufrufenden Komponente (App) via Props geliefert.
  */
 const DataSafetyPanel = ({ onExport, onImportFile, disableExport }) => {
   const fileInputRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleRestoreClick = () => {
     fileInputRef.current?.click();
-  };
-
-  const toggleAccordion = () => {
-    setIsOpen((prev) => !prev);
   };
 
   const handleFileChange = (event) => {
@@ -25,46 +20,31 @@ const DataSafetyPanel = ({ onExport, onImportFile, disableExport }) => {
   };
 
   return (
-    <section className="card data-safety-card">
-      <div className={`accordion ${isOpen ? "open" : ""}`}>
-        <button
-          type="button"
-          className="accordion-toggle"
-          onClick={toggleAccordion}
-          aria-expanded={isOpen}
-        >
-          <span>Daten sichern &amp; wiederherstellen</span>
-          <span className="accordion-icon">{isOpen ? "^" : "v"}</span>
+    <section className="panel data-safety-panel">
+      <header className="panel-heading">
+        <h2 className="panel-title">Daten sichern &amp; wiederherstellen</h2>
+        <p className="panel-subtitle">
+          Exportiere deine Einträge als JSON oder spiele vorhandene Sicherungen wieder ein.
+        </p>
+      </header>
+      <p>
+        Lade eine Sicherung deiner Einträge herunter oder spiele sie bei Bedarf wieder ein. So kannst
+        du Inhalte jederzeit retten – auch wenn etwas versehentlich gelöscht wurde.
+      </p>
+      <div className="actions">
+        <button type="button" className="primary" onClick={onExport} disabled={disableExport}>
+          Daten sichern (Upload)
         </button>
-
-        {isOpen ? (
-          <div className="accordion-panel">
-            <p>
-              Lade eine Sicherung deiner Einträge herunter oder spiele sie bei Bedarf wieder ein.
-              So kannst du Inhalte jederzeit retten – auch wenn etwas versehentlich gelöscht wurde.
-            </p>
-            <div className="actions">
-              <button
-                type="button"
-                className="primary"
-                onClick={onExport}
-                disabled={disableExport}
-              >
-                Daten sichern (Upload)
-              </button>
-              <button type="button" className="secondary" onClick={handleRestoreClick}>
-                Daten wiederherstellen (Download)
-              </button>
-            </div>
-          </div>
-        ) : null}
+        <button type="button" className="secondary" onClick={handleRestoreClick}>
+          Daten wiederherstellen (Download)
+        </button>
       </div>
       <input
         ref={fileInputRef}
         type="file"
         accept="application/json"
         onChange={handleFileChange}
-        style={{ display: "none" }}
+        className="visually-hidden"
       />
     </section>
   );
