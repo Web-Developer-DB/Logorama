@@ -52,26 +52,9 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
 
   return (
     <article className="log-entry">
-      <header>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <span
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              border: "1px solid rgba(99, 102, 241, 0.4)",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-              background: "rgba(99, 102, 241, 0.15)",
-              color: "#c7d2fe",
-              flexShrink: 0
-            }}
-          >
-            {getInitial(entry)}
-          </span>
+      <header className="log-entry__header">
+        <div className="log-entry__title-group">
+          <span className="log-entry__avatar">{getInitial(entry)}</span>
           {isEditing ? (
             <input
               type="text"
@@ -79,44 +62,27 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
               onChange={(event) => setDraftTitle(event.target.value)}
               placeholder="Ohne Titel"
               maxLength={120}
-              style={{
-                flex: 1,
-                background: "rgba(15, 23, 42, 0.35)",
-                border: "1px solid rgba(99, 102, 241, 0.25)",
-                borderRadius: "12px",
-                padding: "8px 10px",
-                color: "inherit",
-                fontWeight: 600
-              }}
+              className="log-entry__title-input"
             />
           ) : (
-            <strong>{entry.title || "Ohne Titel"}</strong>
+            <strong className="log-entry__title">{entry.title || "Ohne Titel"}</strong>
           )}
         </div>
-        <time dateTime={entry.createdAt}>{formatDateTime(entry.createdAt)}</time>
+        <time className="log-entry__meta" dateTime={entry.createdAt}>
+          {formatDateTime(entry.createdAt)}
+        </time>
       </header>
       {isEditing ? (
         <textarea
           value={draftContent}
           onChange={(event) => setDraftContent(event.target.value)}
           placeholder="Eintrag bearbeiten"
-          style={{
-            width: "100%",
-            minHeight: "240px",
-            marginTop: "12px",
-            borderRadius: "14px",
-            border: "1px solid rgba(99, 102, 241, 0.25)",
-            background: "rgba(15, 23, 42, 0.35)",
-            color: "inherit",
-            padding: "12px 16px",
-            fontSize: "0.95rem",
-            resize: "vertical"
-          }}
+          className="log-entry__editor"
         />
       ) : (
-        <p>{entry.content}</p>
+        <p className="log-entry__content">{entry.content}</p>
       )}
-      <footer>
+      <footer className="log-entry__footer">
         <button
           type="button"
           className={isEditing ? "primary" : "secondary"}
