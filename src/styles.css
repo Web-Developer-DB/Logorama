@@ -738,6 +738,87 @@ main.app-shell {
   display: none;
 }
 
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .desktop-nav {
+    display: block;
+    position: sticky;
+    top: clamp(16px, 4vw, 32px);
+    z-index: 55;
+    padding: clamp(16px, 3vw, 22px) clamp(20px, 3vw, 28px);
+    border-radius: 28px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .desktop-nav__list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .desktop-nav__item {
+    flex: 1;
+    display: flex;
+  }
+
+  .desktop-nav__link {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--color-muted);
+    padding: 12px 16px;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+
+  .desktop-nav__link:hover {
+    color: var(--color-accent);
+    background: var(--color-secondary-bg);
+    transform: translateY(-2px);
+  }
+
+  .desktop-nav__link--active {
+    color: var(--color-accent);
+    background: var(--color-secondary-bg);
+    box-shadow: var(--color-mobile-nav-highlight);
+  }
+
+  .desktop-nav__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--color-accent);
+  }
+
+  .desktop-nav__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 0 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 999px;
+    background: var(--color-secondary-bg);
+    color: var(--color-accent);
+  }
+}
+
 @media (max-width: 900px) {
   .mobile-nav {
     display: block;
