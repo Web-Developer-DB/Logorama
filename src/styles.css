@@ -838,6 +838,7 @@ main.app-shell {
   color: var(--color-paragraph);
   line-height: 1.7;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /*  Klasse: .log-entry__footer                                                 */
@@ -924,6 +925,7 @@ main.app-shell {
   color: var(--color-paragraph);
   line-height: 1.6;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /*  Klasse: .trash-entry-actions                                               */
