@@ -1,8 +1,11 @@
 import { memo, useEffect, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import { PencilIcon, CheckIcon, TrashIcon } from "./icons.jsx";
 import { formatDateTime } from "../utils/formatters.js";
 
-// Ermittelt das Initial für den Avatar-Kringel – bevorzugt Titel, sonst Content.
+/**
+ * Ermittelt das Initial für den Avatar-Kringel – bevorzugt Titel, sonst Content.
+ */
 const getInitial = (entry) => {
   const source = (entry.title || entry.content || "L").trim();
   return source.charAt(0).toUpperCase();
@@ -17,6 +20,10 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
   const [draftTitle, setDraftTitle] = useState(entry.title ?? "");
   const [draftContent, setDraftContent] = useState(entry.content ?? "");
 
+  /**
+   * Wenn der Artikel nicht mehr im Edit-Modus ist, stellen wir sicher,
+   * dass die Draft-Werte wieder dem Original entsprechen.
+   */
   useEffect(() => {
     if (!isEditing) {
       setDraftTitle(entry.title ?? "");
@@ -24,6 +31,9 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
     }
   }, [entry.title, entry.content, isEditing]);
 
+  /**
+   * Schaltet zwischen Anzeige- und Edit-Modus um und schreibt Änderungen zurück.
+   */
   const handleToggleEdit = () => {
     if (!isEditing) {
       setIsEditing(true);
@@ -89,11 +99,16 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
           onClick={handleToggleEdit}
           disabled={isEditing && !draftContent.trim()}
         >
-          {isEditing ? "Speichern" : "Bearbeiten"}
+          <span className="button-icon">
+            {isEditing ? <CheckIcon /> : <PencilIcon />}
+          </span>
+          <span className="button-label">{isEditing ? "Speichern" : "Bearbeiten"}</span>
         </button>
         <ConfirmButton
           initialLabel="Löschen"
           confirmLabel="In den Papierkorb"
+          initialIcon={<TrashIcon />}
+          confirmIcon={<TrashIcon />}
           className="secondary"
           confirmClassName="danger"
           resetDelay={1200}

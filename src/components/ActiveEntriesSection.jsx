@@ -2,7 +2,9 @@ import { memo } from "react";
 import EntryCard from "./EntryCard.jsx";
 
 /**
- * Listet alle aktiven Einträge ohne Akkordeon.
+ * Rendert eine Liste aktiver Einträge in absteigender Reihenfolge.
+ * Die eigentliche Kartenkomponente übernimmt die Inline-Bearbeitung;
+ * hier kümmern wir uns nur um Sortierung und Leerzustand.
  */
 const ActiveEntriesSection = ({ entries, onDelete, onUpdate }) => {
   if (!entries.length) {

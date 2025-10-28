@@ -76,6 +76,9 @@ const HelpIcon = () => (
   </svg>
 );
 
+/**
+ * Statisches Navigationsmodell, das alle Tabs und zugehörige Icons beschreibt.
+ */
 const NAV_CONFIG = [
   {
     key: "home",
@@ -116,6 +119,9 @@ const NAV_CONFIG = [
   }
 ];
 
+/**
+ * Ermöglicht optionale Badges: Nur wenn ein Wert > 0 existiert, wird er angezeigt.
+ */
 const resolveBadge = (badgeKey, stats = {}) => {
   if (!badgeKey) {
     return null;
@@ -127,6 +133,9 @@ const resolveBadge = (badgeKey, stats = {}) => {
   return value;
 };
 
+/**
+ * Mapped das Konfigurationsarray in die Form, die Desktop- und Mobilnavigation benötigen.
+ */
 export const buildNavItems = (stats = {}) =>
   NAV_CONFIG.map(({ Icon, badgeKey, ...item }) => ({
     ...item,
