@@ -14,6 +14,7 @@
   --color-muted: #6b7280;
   --color-emphasis: #0f172a;
   --color-accent: #2551bb;
+  --color-primary-text: #ffffff;
   --color-accent-soft: rgba(37, 81, 187, 0.12);
   --color-accent-hover: #1f45a1;
   --color-danger: #ea4669;
@@ -78,6 +79,7 @@
   --color-muted: #94a3b8;
   --color-emphasis: #e2e8f0;
   --color-accent: #94a1ff;
+  --color-primary-text: #0b1120;
   --color-accent-soft: rgba(148, 161, 255, 0.24);
   --color-accent-hover: #8895ff;
   --color-danger: #ff6b9c;
@@ -640,10 +642,10 @@ main.app-shell {
 }
 
 /*  Klasse: .primary                                                           */
-/*  Erklaerung: Primaerknopf in Markenfarbe mit weissem Text und Schatten.     */
+/*  Erklaerung: Primaerknopf in Markenfarbe mit kontrastierendem Text und Schatten. */
 .primary {
   background: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-primary-text);
   box-shadow: var(--shadow-panel);
 }
 
@@ -653,6 +655,7 @@ main.app-shell {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
   background: var(--color-accent-hover);
+  color: var(--color-primary-text);
 }
 
 /*  Zustand: .primary:disabled                                                 */
