@@ -10,6 +10,7 @@ Logorama ist ein persönliches Log als Progressive Web App. Die Anwendung läuft
 - ✏️ Inline-Bearbeitung direkt in der Eintragskarte mit Autospeicherfunktion
 - 🗓️ Automatische Wochentags-Titel („1 - Montag“) sobald kein eigener Titel angegeben wird
 - 💾 Persistenz über `localStorage` plus verständlicher Sicherungsbereich für JSON-Export/-Import
+- ☁️ Optionale Google-Drive-Synchronisierung für automatische Backups inkl. Statusanzeige
 - 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist, Restore-Option und „Papierkorb leeren“
 - 🛡️ Zweistufiger Löschschutz: Knopf färbt sich rot, zweiter Klick löscht endgültig
 - 📂 Export fragt (sofern vom Browser unterstützt) nach Zielordner via File System Access API
@@ -78,6 +79,31 @@ npm run preview  # startet lokalen Server, um dist/ zu testen
 - **Theme Switch**: Über den Hero-Button lässt sich zwischen System-, Licht- und Dunkelmodus wechseln; die Einstellung wird gespeichert und respektiert das Geräte-Theme.
 - **Export/Import**: Im Bereich „Daten sichern & wiederherstellen“ lassen sich Backups als JSON herunterladen oder wiederherstellen. Export erzeugt Dateien im Format `logorama-YYYY-MM-DDTHH-MM-SS.json`. Browser mit File System Access API (Chromium-basiert) erlauben die Verzeichniswahl, andere laden direkt herunter.
 - **PWA**: Der Service Worker cached Grund-Assets für Offlinebetrieb; Manifest liefert Shortcuts (`#new-entry`, `#filter=today`) und sorgt für korrekte Darstellung auf Android.
+
+## Architektur-Überblick
+
+- **Hooks**: `useThemeManager`, `useEntriesManager`, `useInstallPrompt` und `useGoogleDriveSync` kapseln Business-Logik, Persistenz und Seiteneffekte. Komponenten konsumieren ausschließlich deren Rückgabewerte.
+- **Seitenkomponenten**: Unter `src/components/pages/` liegen reine Präsentationskomponenten (`HomePage`, `EntriesPage`, `NewEntryPage`, `TrashPage`, `BackupPage`, `HelpPage`), die Props des App-Shells rendern.
+- **Utils**: In `src/utils/entries.js` befinden sich alle Hilfsfunktionen zur Normalisierung, Generierung und Filterung von Einträgen. Die Navigation bezieht ihre Items aus `src/utils/navItems.jsx`.
+- **Kommentierung**: Jedes Modul enthält eine kurze Beschreibung und dokumentiert exportierte Funktionen/Komponenten, damit Einsteiger:innen sich schnell orientieren können.
+
+## Google Drive Synchronisierung einrichten
+
+Logorama kann Sicherungen optional automatisch mit Google Drive abgleichen. Nach dem Aktivieren der Funktion wird im Backup-Bereich der aktuelle Verbindungsstatus sowie die letzte erfolgreiche Synchronisierung angezeigt. Für die Einrichtung sind folgende Schritte erforderlich:
+
+1. **Google Cloud Projekt anlegen** (https://console.cloud.google.com) und die *Google Drive API* aktivieren.
+2. **OAuth 2.0 Client** vom Typ „Webanwendung“ erstellen. `http://localhost:5173` muss als autorisierte JavaScript-Quelle und als Weiterleitungs-URI eingetragen sein.
+3. **API-Key** für das Projekt erzeugen.
+4. Beide Werte in einer lokalen Vite-Umgebung hinterlegen, z. B. in `.env.local`:
+
+   ```env
+   VITE_GOOGLE_CLIENT_ID=dein-client-id.apps.googleusercontent.com
+   VITE_GOOGLE_API_KEY=dein-api-key
+   ```
+
+5. Dev-Server neu starten. Anschließend lässt sich die Option „Mit Google Drive synchronisieren“ auf der Backup-Seite aktivieren.
+
+Solange die Synchronisierung aktiv ist, werden Änderungen an Einträgen automatisch in das AppData-Verzeichnis von Google Drive geschrieben. Über die zusätzlichen Buttons kannst du jederzeit manuell synchronisieren oder den letzten Cloud-Stand laden. Bei fehlender Konfiguration oder Auth-Fehlern erscheint eine Statusmeldung mit Fehlertext.
 
 ### Papierkorb & Aufbewahrung
 
