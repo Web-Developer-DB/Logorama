@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import { PencilIcon, CheckIcon, TrashIcon } from "./icons.jsx";
 import { formatDateTime } from "../utils/formatters.js";
 
 /**
@@ -98,11 +99,16 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
           onClick={handleToggleEdit}
           disabled={isEditing && !draftContent.trim()}
         >
-          {isEditing ? "Speichern" : "Bearbeiten"}
+          <span className="button-icon">
+            {isEditing ? <CheckIcon /> : <PencilIcon />}
+          </span>
+          <span className="button-label">{isEditing ? "Speichern" : "Bearbeiten"}</span>
         </button>
         <ConfirmButton
           initialLabel="Löschen"
           confirmLabel="In den Papierkorb"
+          initialIcon={<TrashIcon />}
+          confirmIcon={<TrashIcon />}
           className="secondary"
           confirmClassName="danger"
           resetDelay={1200}

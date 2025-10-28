@@ -1,5 +1,6 @@
 import { memo } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import { RestoreIcon, TrashIcon } from "./icons.jsx";
 
 /**
  * Zeigt den Papierkorb ohne Akkordeon – alle Einträge werden direkt dargestellt.
@@ -37,11 +38,16 @@ const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, forma
                 <p className="trash-entry-content">{entry.content}</p>
                 <div className="trash-entry-actions">
                   <button type="button" className="secondary" onClick={() => onRestore(entry.id)}>
-                    Wiederherstellen
+                    <span className="button-icon">
+                      <RestoreIcon />
+                    </span>
+                    <span className="button-label">Wiederherstellen</span>
                   </button>
                   <ConfirmButton
                     initialLabel="Löschen"
                     confirmLabel="Endgültig löschen"
+                    initialIcon={<TrashIcon />}
+                    confirmIcon={<TrashIcon />}
                     className="secondary"
                     confirmClassName="danger"
                     resetDelay={1200}
@@ -52,7 +58,10 @@ const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, forma
             ))}
           </div>
           <button type="button" className="danger trash-clear" onClick={onEmptyTrash}>
-            Papierkorb leeren
+            <span className="button-icon">
+              <TrashIcon />
+            </span>
+            <span className="button-label">Papierkorb leeren</span>
           </button>
         </>
       ) : (

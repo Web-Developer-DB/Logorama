@@ -11,6 +11,8 @@ const ConfirmButton = ({
   resetDelay = 1200,
   className = "",
   confirmClassName = "",
+  initialIcon = null,
+  confirmIcon = null,
   ...props
 }) => {
   const [isConfirming, setIsConfirming] = useState(false);
@@ -55,6 +57,8 @@ const ConfirmButton = ({
     isConfirming && confirmClassName ? confirmClassName : ""
   }`.trim();
 
+  const iconToRender = isConfirming ? confirmIcon ?? initialIcon : initialIcon;
+
   return (
     <button
       type="button"
@@ -62,7 +66,8 @@ const ConfirmButton = ({
       className={composedClassName}
       onClick={handleClick}
     >
-      {isConfirming ? confirmLabel : initialLabel}
+      {iconToRender ? <span className="button-icon">{iconToRender}</span> : null}
+      <span className="button-label">{isConfirming ? confirmLabel : initialLabel}</span>
     </button>
   );
 };
