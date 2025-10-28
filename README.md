@@ -13,6 +13,14 @@ Logorama ist eine Progressive Web App für persönliche Lern- und Projektjournal
 - 📱 PWA-ready (Manifest, Service Worker, maskierbare Icons)
 - ⚙️ Saubere Architektur mit klar getrennten Hooks, Utils und Seitenkomponenten
 
+## Bedienungsübersicht
+
+- **Home:** Zeigt Kennzahlen, die drei neuesten Einträge sowie Buttons für „Neuantrag erstellen“, Theme-Wechsel und – falls verfügbar – die PWA-Installation.
+- **Einträge verwalten:** Neue Inhalte erfasst du über das Formular „Neuer Eintrag“. In der Liste lassen sich Titel und Text direkt inline bearbeiten, suchen und nach „Heute“ oder „Letzte 7 Tage“ filtern.
+- **Papierkorb:** Jeder Löschvorgang ist zweistufig. Einträge können wiederhergestellt oder endgültig entfernt werden; nach 30 Tagen leert Logorama den Papierkorb automatisch, zusätzlich gibt es eine Sammelaktion „Papierkorb leeren“.
+- **Backups & Synchronisierung:** JSON-Export/-Import sowie die optionale Google-Drive-Synchronisierung findest du im Bereich „Backup“. Buttons für „Jetzt synchronisieren“ und „Aus Google Drive laden“ ermöglichen manuelle Aktionen.
+- **Hilfe-Seite:** Unter `/help` ist eine ausführliche, in der App gepflegte Anleitung eingebettet – sie deckt die oben genannten Workflows mit mehr Kontext ab.
+
 ## Installation & Entwicklung
 
 ```bash
@@ -83,7 +91,7 @@ npm run preview    # startet lokalen Server, um dist/ zu testen
 - **Persistenz**: Einträge werden standardmäßig unter `personal-log-entries` im `localStorage` gespeichert. Papierkorb-Einträge liegen separat unter `personal-log-trash` und verfallen automatisch nach 30 Tagen.
 - **Suche & Filter**: `useEntriesManager` stellt gefilterte und sortierte Listen bereit; die UI-Komponenten reichen lediglich Such- oder Filterwerte zurück.
 - **Inline-Editing**: `EntryCard` ermöglicht Bearbeitung direkt in der Karte inkl. Draft-State und Rückfall, falls der Inhalt leer bleibt.
-- **Papierkorb**: `TrashPage` zeigt gelöschte Einträge mit Zeitstempeln und bietet Restore/Endgültig-Löschen über den zweistufigen `ConfirmButton`.
+- **Papierkorb**: `TrashPage` zeigt gelöschte Einträge mit Zeitstempeln und bietet Restore/Endgültig-Löschen über den zweistufigen `ConfirmButton`; ein stündlicher Bereinigungslauf löscht Elemente nach 30 Tagen, zusätzlich gibt es „Papierkorb leeren“.
 - **Backups**: Das Backup-Panel steuert JSON-Export (mit File System Access API als Fallback) und JSON-Import über das Utility `normalizeEntriesPayload`.
 - **Google Drive Sync**: Aktivierbar per Toggle. Statusmeldungen (“Verbunden”, “Synchronisation läuft…”, Fehlertexte) sowie letzte Sync-Zeit werden angezeigt. Manuelle Sync-/Restore-Buttons triggern `useGoogleDriveSync`.
 - **Theme-Steuerung**: `useThemeManager` persistiert die Moduswahl (`system`, `light`, `dark`) und synchronisiert sie mit dem `<html>`-Attribut, sodass CSS-Variablen reagieren.
