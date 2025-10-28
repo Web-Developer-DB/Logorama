@@ -1,5 +1,8 @@
 import { memo } from "react";
 
+/**
+ * Sonne-Symbol für den Hellmodus.
+ */
 const SunIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path
@@ -13,6 +16,9 @@ const SunIcon = () => (
   </svg>
 );
 
+/**
+ * Mond-Symbol für den Dunkelmodus.
+ */
 const MoonIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path
@@ -26,6 +32,9 @@ const MoonIcon = () => (
   </svg>
 );
 
+/**
+ * Monitor-Symbol für den Systemmodus.
+ */
 const SystemIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path
@@ -39,6 +48,10 @@ const SystemIcon = () => (
   </svg>
 );
 
+/**
+ * Umschalter zwischen System-, Licht- und Dunkelmodus.
+ * Zeigt je nach Kontext (Hero vs. Mobile Nav) unterschiedliche Layouts an.
+ */
 const ThemeToggle = ({ mode, resolvedTheme, onToggle, variant = "hero" }) => {
   const isSystem = mode === "system";
   const isDark = resolvedTheme === "dark";

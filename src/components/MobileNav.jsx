@@ -2,9 +2,15 @@ import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { buildNavItems } from "../utils/navItems.jsx";
 
+/**
+ * Mobile Variante der Hauptnavigation mit Icons und Badges.
+ */
 const MobileNav = ({ stats }) => {
   const { totalEntries = 0, trashEntryCount = 0 } = stats ?? {};
 
+  /**
+   * Reduziert Re-Renders, indem die Navigationspunkte nur bei Stat-Änderungen neu berechnet werden.
+   */
   const navItems = useMemo(
     () => buildNavItems({ totalEntries, trashEntryCount }),
     [totalEntries, trashEntryCount]
