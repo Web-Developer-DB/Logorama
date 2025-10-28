@@ -1124,6 +1124,15 @@ main.app-shell {
 }
 
 @media (min-width: 901px) {
+  /* Desktop: 60 % größere Buttons für mehr visuelle Präsenz */
+  .primary,
+  .secondary,
+  .ghost,
+  .danger {
+    font-size: 1.04rem;
+    padding: 0.42rem 0.64rem;
+  }
+
   /* ------------------------------------------------------------------------ */
   /*  Unterelemente: Desktop Navigation                                       */
   /*  Zweck: Navigationseintraege, Badges und Icons fuer groessere Screens.   */
