@@ -16,6 +16,9 @@ const ConfirmButton = ({
   const [isConfirming, setIsConfirming] = useState(false);
   const timeoutRef = useRef(null);
 
+  /**
+   * Räumt den Timer beim Unmount auf, damit keine State-Updates nach dem Entfernen passieren.
+   */
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -24,6 +27,10 @@ const ConfirmButton = ({
     };
   }, []);
 
+  /**
+   * Steuert den Klick-Flow: erster Klick schaltet in den Bestätigungsmodus,
+   * zweiter Klick ruft die übergebene onConfirm-Callback auf.
+   */
   const handleClick = (event) => {
     if (isConfirming) {
       if (timeoutRef.current) {

@@ -2,9 +2,16 @@ import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { buildNavItems } from "../utils/navItems.jsx";
 
+/**
+ * Desktop-Navigationsleiste mit Badge-Zählern für einzelne Bereiche.
+ * Berechnet die sichtbaren Einträge über die navItems-Utility.
+ */
 const DesktopNav = ({ stats }) => {
   const { totalEntries = 0, trashEntryCount = 0 } = stats ?? {};
 
+  /**
+   * Erzeugt das Navigationsmodell nur neu, wenn sich relevante Statistiken ändern.
+   */
   const navItems = useMemo(
     () => buildNavItems({ totalEntries, trashEntryCount }),
     [totalEntries, trashEntryCount]
