@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { jest } from "@jest/globals";
@@ -28,7 +28,7 @@ describe("HomePage", () => {
   test("zeigt Kennzahlen und den Theme-Umschalter", () => {
     const props = createProps();
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <HomePage {...props} />
       </MemoryRouter>
     );
@@ -47,7 +47,10 @@ describe("HomePage", () => {
     const props = createProps();
 
     render(
-      <MemoryRouter initialEntries={["/home"]}>
+      <MemoryRouter
+        initialEntries={["/home"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <Routes>
           <Route path="/home" element={<HomePage {...props} />} />
           <Route path="/new" element={<h2>Neuer Eintrag</h2>} />
@@ -55,7 +58,9 @@ describe("HomePage", () => {
       </MemoryRouter>
     );
 
-    await user.click(screen.getByRole("link", { name: /Neuantrag erstellen/i }));
+    await act(async () => {
+      await user.click(screen.getByRole("link", { name: /Neuantrag erstellen/i }));
+    });
     expect(screen.getByRole("heading", { name: /Neuer Eintrag/i })).toBeInTheDocument();
   });
 });

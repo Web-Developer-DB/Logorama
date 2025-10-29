@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import TrashPage from "./TrashPage.jsx";
 
@@ -27,22 +27,27 @@ const initialEntries = [
   }
 ];
 
-const TrashHarness = () => {
-  const [items, setItems] = useState(initialEntries);
+const renderTrashPage = () => {
+  let items = [...initialEntries];
 
   const handleRestore = (id) => {
-    setItems((prev) => prev.filter((entry) => entry.id !== id));
+    items = items.filter((entry) => entry.id !== id);
+    rerenderPage();
   };
 
   const handleDeleteForever = (id) => {
-    setItems((prev) => prev.filter((entry) => entry.id !== id));
+    items = items.filter((entry) => entry.id !== id);
+    rerenderPage();
   };
 
   const handleEmptyTrash = () => {
-    setItems([]);
+    items = [];
+    rerenderPage();
   };
 
-  return (
+  let rerenderPage;
+
+  const renderResult = render(
     <TrashPage
       entries={items}
       onRestoreEntry={handleRestore}
@@ -51,26 +56,48 @@ const TrashHarness = () => {
       formatDateTime={(value) => value}
     />
   );
+
+  rerenderPage = () => {
+    renderResult.rerender(
+      <TrashPage
+        entries={items}
+        onRestoreEntry={handleRestore}
+        onDeleteForever={handleDeleteForever}
+        onEmptyTrash={handleEmptyTrash}
+        formatDateTime={(value) => value}
+      />
+    );
+  };
+
+  return renderResult;
 };
 
 describe("TrashPage", () => {
   test("unterstützt Wiederherstellen, endgültiges Löschen und das Leeren des Papierkorbs", async () => {
     const user = userEvent.setup();
-    render(<TrashHarness />);
+    renderTrashPage();
 
     // Restore flow
-    await user.click(screen.getAllByRole("button", { name: /Wiederherstellen/i })[0]);
+    await act(async () => {
+      await user.click(screen.getAllByRole("button", { name: /Wiederherstellen/i })[0]);
+    });
     expect(screen.queryByText("Wiederherstellbarer Eintrag")).not.toBeInTheDocument();
 
     // Permanent delete flow
     const deleteEntry = screen.getByText("Löschkandidat").closest("article");
     const deleteButton = within(deleteEntry).getByRole("button", { name: /^Löschen$/i });
-    await user.click(deleteButton);
-    await user.click(within(deleteEntry).getByRole("button", { name: /Endgültig löschen/i }));
+    await act(async () => {
+      await user.click(deleteButton);
+    });
+    await act(async () => {
+      await user.click(within(deleteEntry).getByRole("button", { name: /Endgültig löschen/i }));
+    });
     expect(screen.queryByText("Löschkandidat")).not.toBeInTheDocument();
 
     // Empty trash flow
-    await user.click(screen.getByRole("button", { name: /Papierkorb leeren/i }));
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Papierkorb leeren/i }));
+    });
     expect(screen.queryByText("Für den Papierkorb leeren Test")).not.toBeInTheDocument();
     expect(screen.getByText(/Papierkorb ist leer/i)).toBeInTheDocument();
   });

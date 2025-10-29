@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
 import EntryCard from "./EntryCard.jsx";
@@ -17,17 +17,25 @@ describe("EntryCard", () => {
 
     render(<EntryCard entry={baseEntry} onUpdate={onUpdate} onDelete={jest.fn()} />);
 
-    await user.click(screen.getByRole("button", { name: /Bearbeiten/i }));
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Bearbeiten/i }));
+    });
 
     const titleInput = screen.getByPlaceholderText("Ohne Titel");
     const contentEditor = screen.getByPlaceholderText("Eintrag bearbeiten");
 
-    await user.clear(titleInput);
-    await user.type(titleInput, "Bearbeiteter Titel");
-    await user.clear(contentEditor);
-    await user.type(contentEditor, "Aktualisierte Notiz");
+    await act(async () => {
+      await user.clear(titleInput);
+      await user.type(titleInput, "Bearbeiteter Titel");
+    });
+    await act(async () => {
+      await user.clear(contentEditor);
+      await user.type(contentEditor, "Aktualisierte Notiz");
+    });
 
-    await user.click(screen.getByRole("button", { name: /Speichern/i }));
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Speichern/i }));
+    });
 
     expect(onUpdate).toHaveBeenCalledWith("entry-1", {
       title: "Bearbeiteter Titel",
@@ -42,8 +50,12 @@ describe("EntryCard", () => {
     render(<EntryCard entry={baseEntry} onUpdate={onUpdate} onDelete={jest.fn()} />);
 
     const toggleButton = screen.getByRole("button", { name: /Bearbeiten/i });
-    await user.click(toggleButton);
-    await user.click(screen.getByRole("button", { name: /Speichern/i }));
+    await act(async () => {
+      await user.click(toggleButton);
+    });
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Speichern/i }));
+    });
 
     expect(onUpdate).not.toHaveBeenCalled();
     expect(screen.getByRole("button", { name: /Bearbeiten/i })).toBeInTheDocument();
