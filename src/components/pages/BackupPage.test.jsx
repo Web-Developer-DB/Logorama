@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
@@ -14,13 +13,13 @@ const initialEntries = [
   }
 ];
 
-const BackupHarness = ({
+const renderBackupPage = ({
   onExport = jest.fn(),
   onToggleDriveSync = jest.fn(),
   onDriveSync = jest.fn(),
   onDriveRestore = jest.fn()
 } = {}) => {
-  const [items, setItems] = useState(initialEntries);
+  let items = [...initialEntries];
 
   const handleImportFile = async (event) => {
     const file = event.target.files?.[0];
@@ -28,10 +27,13 @@ const BackupHarness = ({
     const text = await file.text();
     const parsed = JSON.parse(text);
     const normalized = normalizeEntriesPayload(parsed);
-    setItems(normalized);
+    items = normalized;
+    rerenderPage();
   };
 
-  return (
+  let rerenderPage;
+
+  const renderResult = render(
     <>
       <BackupPage
         onExport={onExport}
@@ -53,6 +55,33 @@ const BackupHarness = ({
       </ul>
     </>
   );
+
+  rerenderPage = () => {
+    renderResult.rerender(
+      <>
+        <BackupPage
+          onExport={onExport}
+          onImportFile={handleImportFile}
+          disableExport={!items.length}
+          driveSyncEnabled={false}
+          onToggleDriveSync={onToggleDriveSync}
+          driveStatus="connected"
+          driveLastSync={items[0]?.createdAt}
+          driveError={null}
+          onDriveSync={onDriveSync}
+          onDriveRestore={onDriveRestore}
+          driveIsSyncing={false}
+        />
+        <ul aria-label="Backup-Einträge">
+          {items.map((item) => (
+            <li key={item.id}>{item.title}</li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
+  return renderResult;
 };
 
 describe("BackupPage", () => {
@@ -63,14 +92,12 @@ describe("BackupPage", () => {
     const handleDriveSync = jest.fn();
     const handleDriveRestore = jest.fn();
 
-    const { container } = render(
-      <BackupHarness
-        onExport={handleExport}
-        onToggleDriveSync={handleToggleDriveSync}
-        onDriveSync={handleDriveSync}
-        onDriveRestore={handleDriveRestore}
-      />
-    );
+    const { container } = renderBackupPage({
+      onExport: handleExport,
+      onToggleDriveSync: handleToggleDriveSync,
+      onDriveSync: handleDriveSync,
+      onDriveRestore: handleDriveRestore
+    });
 
     expect(screen.getByText("Alpha Log")).toBeInTheDocument();
 

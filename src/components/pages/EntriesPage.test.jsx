@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
@@ -26,40 +25,69 @@ const baseEntries = [
   }
 ];
 
-const EntriesHarness = ({ entries = baseEntries }) => {
-  const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
+const renderEntriesPage = (entries = baseEntries) => {
+  let filter = "all";
+  let search = "";
+  const onDeleteEntry = jest.fn();
+  const onUpdateEntry = jest.fn();
 
-  const filteredEntries = useMemo(() => {
+  const getFilteredEntries = () => {
     const term = search.trim().toLowerCase();
     return entries
       .filter((entry) => filterByRange(entry, filter))
       .filter((entry) => {
         if (!term) return true;
         return (
-          entry.title.toLowerCase().includes(term) ||
-          entry.content.toLowerCase().includes(term)
+          entry.title.toLowerCase().includes(term) || entry.content.toLowerCase().includes(term)
         );
       });
-  }, [entries, filter, search]);
+  };
 
-  return (
+  let rerenderPage;
+
+  const handleSearchChange = (value) => {
+    search = value;
+    rerenderPage();
+  };
+
+  const handleFilterChange = (value) => {
+    filter = value;
+    rerenderPage();
+  };
+
+  const renderResult = render(
     <EntriesPage
-      entries={filteredEntries}
+      entries={getFilteredEntries()}
       searchValue={search}
-      onSearchChange={setSearch}
+      onSearchChange={handleSearchChange}
       filterValue={filter}
-      onFilterChange={setFilter}
-      onDeleteEntry={jest.fn()}
-      onUpdateEntry={jest.fn()}
+      onFilterChange={handleFilterChange}
+      onDeleteEntry={onDeleteEntry}
+      onUpdateEntry={onUpdateEntry}
     />
   );
+
+  rerenderPage = () => {
+    renderResult.rerender(
+      <EntriesPage
+        entries={getFilteredEntries()}
+        searchValue={search}
+        onSearchChange={handleSearchChange}
+        filterValue={filter}
+        onFilterChange={handleFilterChange}
+        onDeleteEntry={onDeleteEntry}
+        onUpdateEntry={onUpdateEntry}
+      />
+    );
+  };
+
+  return renderResult;
 };
 
 describe("EntriesPage", () => {
   test("filtert Einträge nach Zeitraum und Suchbegriff", async () => {
     const user = userEvent.setup();
-    render(<EntriesHarness />);
+    renderEntriesPage();
 
     expect(screen.getByText("Älterer Log")).toBeInTheDocument();
     const filterSelect = screen.getByRole("combobox");
