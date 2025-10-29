@@ -18,7 +18,6 @@ import { formatDateTime } from "./utils/formatters.js";
 import useThemeManager from "./hooks/useThemeManager.js";
 import useEntriesManager from "./hooks/useEntriesManager.js";
 import useInstallPrompt from "./hooks/useInstallPrompt.js";
-import useGoogleDriveSync from "./hooks/useGoogleDriveSync.js";
 
 /**
  * Root-Komponente der Anwendung. Koordiniert globale Hooks, Routings und
@@ -62,21 +61,6 @@ const App = () => {
     }
   }, [location.pathname, resetQueryState]);
 
-  const {
-    driveSyncEnabled,
-    toggleDriveSync,
-    driveStatus,
-    driveLastSync,
-    driveError,
-    syncNow: triggerDriveSync,
-    restoreFromDrive,
-    STATUS: DRIVE_STATUS
-  } = useGoogleDriveSync({
-    entries,
-    onImportEntries: applyImportedEntries
-  });
-
-  const isDriveSyncing = driveStatus === DRIVE_STATUS.SYNCING;
   const isHelpRoute = location.pathname === "/help";
 
   /**
@@ -91,6 +75,8 @@ const App = () => {
     },
     [handleSubmit, navigate]
   );
+
+  const getEntriesForExport = useCallback(() => entries, [entries]);
 
   return (
     <>
@@ -166,17 +152,12 @@ const App = () => {
             path="/backup"
             element={
               <BackupPage
+                entries={entries}
+                setEntries={applyImportedEntries}
+                getEntriesForExport={getEntriesForExport}
                 onExport={handleExport}
                 onImportFile={handleImportFile}
                 disableExport={!entries.length}
-                driveSyncEnabled={driveSyncEnabled}
-                onToggleDriveSync={toggleDriveSync}
-                driveStatus={driveStatus}
-                driveLastSync={driveLastSync}
-                driveError={driveError}
-                onDriveSync={triggerDriveSync}
-                onDriveRestore={restoreFromDrive}
-                driveIsSyncing={isDriveSyncing}
               />
             }
           />

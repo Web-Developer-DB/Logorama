@@ -92,7 +92,7 @@ npm run preview    # startet lokalen Server, um dist/ zu testen
   - `useEntriesManager` verwaltet Einträge, Papierkorb, Suche/Filter, Export/Import.
   - `useThemeManager` steuert Theme-Wechsel, Persistenz und Systemlistener.
   - `useInstallPrompt` kapselt das `beforeinstallprompt`-Event.
-  - `useGoogleDriveSync` übernimmt OAuth, Dateisynchronisation und Statusmeldungen.
+  - `useGoogleDriveSync` nutzt Google Identity Services für OAuth, verwaltet Drive-Sync-Status und kapselt Pull/Push-Operationen.
 - **Seitenkomponenten**: Unter `components/pages/` liegen reine Präsentationskomponenten für jede Route. Sie erhalten sämtliche Props aus `App.jsx` und bleiben somit logikfrei.
 - **Utilities**: Hilfsfunktionen (z. B. Normalisierung, Navigation, Formatierung) sind unter `src/utils/` zentral abgelegt, damit keine doppelten Implementierungen entstehen.
 - **Kommentierung**: Jede Komponente und jeder Hook enthält erklärende Kommentare, die Zweck und Funktionsweise für Junior-Entwickler:innen nachvollziehbar machen.
@@ -104,26 +104,25 @@ npm run preview    # startet lokalen Server, um dist/ zu testen
 - **Inline-Editing**: `EntryCard` ermöglicht Bearbeitung direkt in der Karte inkl. Draft-State und Rückfall, falls der Inhalt leer bleibt.
 - **Papierkorb**: `TrashPage` zeigt gelöschte Einträge mit Zeitstempeln und bietet Restore/Endgültig-Löschen über den zweistufigen `ConfirmButton`; ein stündlicher Bereinigungslauf löscht Elemente nach 30 Tagen, zusätzlich gibt es „Papierkorb leeren“.
 - **Backups**: Das Backup-Panel steuert JSON-Export (mit File System Access API als Fallback) und JSON-Import über das Utility `normalizeEntriesPayload`.
-- **Google Drive Sync**: Aktivierbar per Toggle. Statusmeldungen (“Verbunden”, “Synchronisation läuft…”, Fehlertexte) sowie letzte Sync-Zeit werden angezeigt. Manuelle Sync-/Restore-Buttons triggern `useGoogleDriveSync`.
+- **Google Drive Sync**: Über einen „Mit Google verbinden“-Button wird OAuth angestoßen. Danach stehen „Aus Google Drive laden“ und „Jetzt synchronisieren“ bereit; Statusmeldungen sowie letzte Sync-Zeit stammen aus `useGoogleDriveSync`.
 - **Theme-Steuerung**: `useThemeManager` persistiert die Moduswahl (`system`, `light`, `dark`) und synchronisiert sie mit dem `<html>`-Attribut, sodass CSS-Variablen reagieren.
 - **Installation (PWA)**: `useInstallPrompt` merkt sich das Browser-Event, `HomePage` blendet einen Installationsbutton ein, solange die App installierbar ist.
 
 ## Google Drive Synchronisierung einrichten
 
-1. Google Cloud Console öffnen und ein Projekt erstellen.
-2. Google Drive API aktivieren.
-3. OAuth 2.0 Client vom Typ „Webanwendung“ anlegen (`http://localhost:5173` als autorisierte Quelle + Redirect URI eintragen).
-4. API-Key erstellen.
-5. Lokale `.env.local` (oder passende Vite-Env-Datei) ergänzen:
+1. In der Google Cloud Console ein Projekt erstellen bzw. auswählen.
+2. Unter „APIs & Services“ die Drive API aktivieren.
+3. Auf dem OAuth-Zustimmungsbildschirm Testnutzer hinzufügen.
+4. Einen OAuth-Client vom Typ „Webanwendung“ anlegen (`http://localhost:5173` als autorisierte JavaScript-Quelle und Redirect URI).
+5. Die ausgegebene Client-ID in einer lokalen Env-Datei hinterlegen, z. B. `.env.local`:
 
    ```env
    VITE_GOOGLE_CLIENT_ID=dein-client-id.apps.googleusercontent.com
-   VITE_GOOGLE_API_KEY=dein-api-key
    ```
 
-6. Dev-Server neu starten. In der App kann nun die Option „Mit Google Drive synchronisieren“ aktiviert werden.
+6. Dev-Server neu starten. Im Backup-Bereich kann nun „Mit Google verbinden“ ausgewählt werden.
 
-Solange die Synchronisierung aktiv ist, werden Änderungen automatisch in das AppData-Verzeichnis von Google Drive geschrieben. Fehler (z. B. fehlende Authentifizierung) werden im Panel angezeigt.
+Die App legt eine Datei `app-data.json` im App-Data-Folder von Google Drive an (nicht im Drive-UI sichtbar). Pull ersetzt lokale Daten vollständig, Push überschreibt den Cloud-Stand (Last-Write-Wins). Fehler wie fehlende Authentifizierung werden direkt im Panel angezeigt.
 
 ## Tests & Qualitätssicherung
 
