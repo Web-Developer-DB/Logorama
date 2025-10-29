@@ -9,14 +9,14 @@ const DataSafetyPanel = ({
   onExport,
   onImportFile,
   disableExport,
-  driveSyncEnabled,
-  onToggleDriveSync,
   driveStatus,
   driveLastSync,
   driveError,
-  onDriveSync,
-  onDriveRestore,
-  driveIsSyncing
+  driveIsConnected,
+  driveIsBusy,
+  onDriveConnect,
+  onDrivePull,
+  onDrivePush
 }) => {
   const fileInputRef = useRef(null);
 
@@ -32,39 +32,37 @@ const DataSafetyPanel = ({
     }
   };
 
-  const handleDriveToggle = () => {
-    onToggleDriveSync?.();
+  const handleDriveConnect = () => {
+    onDriveConnect?.();
   };
 
-  const handleManualSync = () => {
-    onDriveSync?.();
+  const handleDrivePull = () => {
+    onDrivePull?.();
   };
 
-  const handleDriveRestore = () => {
-    onDriveRestore?.();
+  const handleDrivePush = () => {
+    onDrivePush?.();
   };
 
   const driveStatusText = useMemo(() => {
-    if (!driveSyncEnabled) {
-      return "Deaktiviert";
-    }
     switch (driveStatus) {
       case "connecting":
         return "Verbindung wird hergestellt…";
-      case "syncing":
-        return "Synchronisation läuft…";
       case "connected":
         return "Verbunden";
+      case "loading":
+        return "Lädt Daten…";
+      case "saving":
+        return "Speichert Daten…";
       case "error":
-        return "Fehler bei der Synchronisation";
+        return "Fehler bei der Synchronisierung";
       default:
-        return "Aktiv";
+        return "Nicht verbunden";
     }
-  }, [driveStatus, driveSyncEnabled]);
+  }, [driveStatus]);
 
   const lastSyncText = driveLastSync ? formatDateTime(driveLastSync) : "Noch keine Synchronisierung";
-  const manualActionsDisabled =
-    !driveSyncEnabled || driveStatus === "connecting" || driveIsSyncing;
+  const canShowDriveActions = driveIsConnected;
 
   return (
     <section className="panel data-safety-panel">
@@ -94,47 +92,47 @@ const DataSafetyPanel = ({
         className="visually-hidden"
       />
       <div className="drive-sync">
-        <h3>Automatische Google&nbsp;Drive Synchronisierung</h3>
+        <h3>Google&nbsp;Drive Synchronisierung</h3>
         <p>
-          Synchronisiere deine Einträge automatisch mit Google Drive. Auf Wunsch kannst du die
-          Sicherung jederzeit manuell anstoßen oder den neuesten Stand aus der Cloud laden.
+          Verbinde Logorama mit Google Drive und sichere deine Einträge als JSON im App-Data-Folder.
+          Du kannst den aktuellen Stand jederzeit manuell hochladen oder den Cloud-Stand zurückholen.
         </p>
-        <label className="drive-sync__toggle">
-          <input
-            type="checkbox"
-            checked={!!driveSyncEnabled}
-            onChange={handleDriveToggle}
-            disabled={driveStatus === "connecting" || driveIsSyncing}
-          />
-          <span>Mit Google Drive synchronisieren</span>
-        </label>
-        <ul className="drive-sync__meta">
-          <li>
-            <strong>Status:</strong> {driveStatusText}
-          </li>
-          <li>
-            <strong>Letzte Synchronisierung:</strong> {lastSyncText}
-          </li>
-        </ul>
+        <p>
+          <strong>Status:</strong> {driveStatusText}
+        </p>
+        <p>
+          <strong>Letzte Synchronisierung:</strong> {lastSyncText}
+        </p>
         {driveError ? <p className="drive-sync__error">{driveError}</p> : null}
-        <div className="drive-sync__actions">
+        {!canShowDriveActions ? (
           <button
             type="button"
             className="secondary"
-            onClick={handleManualSync}
-            disabled={manualActionsDisabled}
+            onClick={handleDriveConnect}
+            disabled={driveIsBusy}
           >
-            Jetzt synchronisieren
+            Mit Google verbinden
           </button>
-          <button
-            type="button"
-            className="ghost"
-            onClick={handleDriveRestore}
-            disabled={manualActionsDisabled}
-          >
-            Aus Google Drive laden
-          </button>
-        </div>
+        ) : (
+          <div className="drive-sync__actions">
+            <button
+              type="button"
+              className="secondary"
+              onClick={handleDrivePull}
+              disabled={driveIsBusy}
+            >
+              Aus Google Drive laden
+            </button>
+            <button
+              type="button"
+              className="ghost"
+              onClick={handleDrivePush}
+              disabled={driveIsBusy}
+            >
+              Jetzt synchronisieren
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
