@@ -30,6 +30,17 @@ npm run build      # erzeugt Produktions-Build in dist/
 npm run preview    # startet lokalen Server, um dist/ zu testen
 ```
 
+## Testing
+
+- **Abhängigkeiten**: Die benötigten Pakete (`jest`, `@testing-library/*`, `@swc/jest`, `identity-obj-proxy`) sind in den Dev-Dependencies verankert – ein `npm install` reicht zur Einrichtung.
+- **Kommandos**:
+  - `npm run test` führt die gesamte Suite einmal aus.
+  - `npm run test:watch` startet Jest im Watch-Modus.
+  - `npm run test:ci` läuft sequentiell mit Coverage-Report (Ziel: ≥80 % Statements / Lines).
+- **Konventionen**: Tests liegen unter `src/` und enden auf `.test.js|.test.jsx`. Bevorzuge semantische Queries (`getByRole`, `getByLabelText`) und halte Interaktionen mit `userEvent.setup()` realistisch.
+- **Stubs & Helfer**: `src/setupTests.js` stellt Service-Worker-, File-Picker- und `gapi`-Stubs bereit. Optional lassen sich dort MSW-Handler oder Accessibility-Prüfungen einklinken – einfach die kommentierten Blöcke aktivieren.
+- **Optionale Tools**: Für A11y-Checks `npm i -D jest-axe axe-core`, für API-Mocks `npm i -D msw`, für Fetch-Polyfills `npm i -D whatwg-fetch`. Aktivierung erfolgt über die Kommentar-Hinweise in `src/setupTests.js`.
+
 ## Projektstruktur (Stand: aktuelle Architektur)
 
 ```
@@ -116,9 +127,10 @@ Solange die Synchronisierung aktiv ist, werden Änderungen automatisch in das Ap
 
 ## Tests & Qualitätssicherung
 
-- `npm run build` dient als schneller Integritätscheck, da Vite beim Bundlen Syntaxfehler anzeigt.
-- Für manuelle Tests empfehlen sich Durchläufe der Kernflows (Eintrag anlegen/bearbeiten/löschen, Papierkorb, Export/Import, Drive-Sync).
-- Optional lassen sich zusätzliche Lint- oder Testskripte ergänzen (momentan nicht konfiguriert).
+- `npm run build` dient weiterhin als schneller Integritätscheck, da Vite beim Bundlen Syntaxfehler anzeigt.
+- Ergänzend sorgt die Jest/RTL-Suite dafür, dass Formular-, Routing-, Papierkorb- und Backup-Flows stabil bleiben.
+- Für manuelle Smoke-Tests empfehlen sich Durchläufe der Kernflows (Eintrag anlegen/bearbeiten/löschen, Papierkorb, Export/Import, Drive-Sync).
+- Zusätzliche Lint- oder Integrationstests können bei Bedarf via weitere npm-Skripte ergänzt werden.
 
 ## Deployment-Hinweise
 
