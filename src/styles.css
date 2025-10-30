@@ -509,63 +509,11 @@ main.app-shell {
   gap: 12px;
 }
 
-.drive-sync {
-  margin-top: 28px;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-border-strong);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.drive-sync h3 {
-  font-size: 1.05rem;
-  margin: 0;
-}
-
-.drive-sync__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.drive-sync__toggle input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--color-primary);
-}
-
-.drive-sync__meta {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-  color: var(--color-label-strong);
+.data-safety-panel__hint {
+  margin: 20px 0 0;
   font-size: 0.95rem;
-}
-
-.drive-sync__meta li {
-  display: flex;
-  gap: 8px;
-}
-
-.drive-sync__meta strong {
-  font-weight: 600;
-}
-
-.drive-sync__error {
-  margin: 0;
-  color: var(--color-danger);
-  font-weight: 600;
-}
-
-.drive-sync__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  color: var(--color-label-strong);
+  line-height: 1.5;
 }
 
 /* ========================================================================== */
