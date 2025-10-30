@@ -1,3 +1,9 @@
+/**
+ * @file DesktopNav.jsx
+ * @description Hauptnavigation für große Viewports. Hebt aktive Route hervor
+ * und zeigt Badges mit Anzahl der Einträge bzw. Papierkorbeinträge.
+ */
+
 import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { buildNavItems } from "../utils/navItems.jsx";
@@ -5,6 +11,11 @@ import { buildNavItems } from "../utils/navItems.jsx";
 /**
  * Desktop-Navigationsleiste mit Badge-Zählern für einzelne Bereiche.
  * Berechnet die sichtbaren Einträge über die navItems-Utility.
+ *
+ * @param {Object} props React-Props.
+ * @param {{ totalEntries?: number, trashEntryCount?: number }} props.stats
+ *        Aggregierte Statistiken für Badges.
+ * @returns {JSX.Element|null} Navigationsliste oder `null`, wenn keine Items existieren.
  */
 const DesktopNav = ({ stats }) => {
   const { totalEntries = 0, trashEntryCount = 0 } = stats ?? {};

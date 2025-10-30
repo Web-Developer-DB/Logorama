@@ -1,8 +1,21 @@
+/**
+ * @file DataSafetyPanel.jsx
+ * @description UI-Baustein für Export- und Importaktionen. Bindet einen
+ * versteckten Dateiupload ein, damit Nutzende JSON-Backups auswählen können.
+ */
+
 import { memo, useRef } from "react";
 
 /**
  * Kompakte Sicherungszentrale für Export & Import.
  * Die eigentliche Logik wird von der aufrufenden Komponente (App) via Props geliefert.
+ *
+ * @param {Object} props React-Props.
+ * @param {() => void} props.onExport Löst den JSON-Export aus.
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} props.onImportFile
+ *        Verarbeitet eine ausgewählte JSON-Datei.
+ * @param {boolean} props.disableExport Deaktiviert den Export-Button, wenn keine Daten vorliegen.
+ * @returns {JSX.Element} Panel mit Aktionsknöpfen und Dateiupload.
  */
 const DataSafetyPanel = ({
   onExport,

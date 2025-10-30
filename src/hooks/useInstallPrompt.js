@@ -1,4 +1,18 @@
+/**
+ * @file useInstallPrompt.js
+ * @description Hook zum Umgang mit dem `beforeinstallprompt`-Event. Ermöglicht es,
+ * den Installationsdialog kontrolliert zu triggern und nach erfolgreicher
+ * Installation aufzuräumen.
+ */
+
 import { useCallback, useEffect, useState } from "react";
+
+/**
+ * @typedef {Event & {
+ *   prompt: () => Promise<void>;
+ *   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+ * }} PwaInstallPromptEvent
+ */
 
 /**
  * Kapselt den Umgang mit dem `beforeinstallprompt`-Event für PWAs.
@@ -46,7 +60,15 @@ const useInstallPrompt = () => {
   }, [installPromptEvent]);
 
   return {
+    /**
+     * Gespeichertes Browser-Event; `null`, wenn keine Installation möglich ist.
+     * @type {PwaInstallPromptEvent|null}
+     */
     installPromptEvent,
+    /**
+     * Öffnet die PWA-Installationsaufforderung, falls verfügbar.
+     * @returns {Promise<void>}
+     */
     promptInstall
   };
 };

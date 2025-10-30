@@ -1,3 +1,4 @@
+// @file service-worker.js - Offline-Strategie für die Logorama-PWA.
 // Versionierter Cache-Name – bei Änderungen erhöhen, damit alte Assets invalidiert werden.
 const CACHE_NAME = "logorama-cache-v2";
 const scopeHref = self.registration?.scope ?? self.location.href;

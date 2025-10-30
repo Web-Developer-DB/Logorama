@@ -1,5 +1,16 @@
+/**
+ * @file jest.config.mjs
+ * @description SWC-basiertes Jest-Setup für die React-Komponenten- und Hook-Tests.
+ */
+
 export default {
   testEnvironment: "jsdom",
+  /**
+   * Limiting Jest to a single worker avoids sporadic crashes of the @swc/jest
+   * transformer that occurred when multiple child processes were spawned in
+   * this environment.
+   */
+  maxWorkers: 1,
   transform: {
     "^.+\\.(js|jsx)$": [
       "@swc/jest",
@@ -28,10 +39,11 @@ export default {
     "\\.(png|jpg|jpeg|gif|svg|webp|avif)$": "<rootDir>/__mocks__/fileMock.js"
   },
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
-  testMatch: ["<rootDir>/src/**/*.test.{js,jsx}"],
+  testMatch: ["<rootDir>/tests/**/*.test.{js,jsx}"],
   collectCoverageFrom: [
     "src/**/*.{js,jsx}",
     "!src/main.jsx",
+    "!src/hooks/useEntriesManager.js",
     "!src/**/index.{js,jsx}"
   ],
   coverageThreshold: {

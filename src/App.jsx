@@ -1,3 +1,10 @@
+/**
+ * @file App.jsx
+ * @description Verantwortet die App-Shell der Logorama-PWA. Bindet Routing,
+ * globale Manager-Hooks und Navigation ein, sodass untergeordnete
+ * Seitenkomponenten schlank und fokussiert bleiben.
+ */
+
 import { useCallback, useEffect } from "react";
 import {
   Navigate,
@@ -8,20 +15,31 @@ import {
 } from "react-router-dom";
 import DesktopNav from "./components/DesktopNav.jsx";
 import MobileNav from "./components/MobileNav.jsx";
-import HomePage from "./components/pages/HomePage.jsx";
-import EntriesPage from "./components/pages/EntriesPage.jsx";
-import NewEntryPage from "./components/pages/NewEntryPage.jsx";
-import TrashPage from "./components/pages/TrashPage.jsx";
-import BackupPage from "./components/pages/BackupPage.jsx";
-import HelpPage from "./components/pages/HelpPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import EntriesPage from "./pages/EntriesPage.jsx";
+import NewEntryPage from "./pages/NewEntryPage.jsx";
+import TrashPage from "./pages/TrashPage.jsx";
+import BackupPage from "./pages/BackupPage.jsx";
+import HelpPage from "./pages/HelpPage.jsx";
 import { formatDateTime } from "./utils/formatters.js";
 import useThemeManager from "./hooks/useThemeManager.js";
 import useEntriesManager from "./hooks/useEntriesManager.js";
 import useInstallPrompt from "./hooks/useInstallPrompt.js";
 
 /**
- * Root-Komponente der Anwendung. Koordiniert globale Hooks, Routings und
- * reicht Daten/Handler an Seitenkomponenten weiter, damit diese schlank bleiben.
+ * Root-Komponente der Anwendung. Stellt Navigationsleisten und alle
+ * Seitenrouten bereit, delegiert dabei sämtliche Daten- und Eventflüsse an die
+ * spezialisierten Hooks.
+ *
+ * @returns {JSX.Element} Gerenderte App-Shell mit Routen und Navigation.
+ *
+ * @example
+ * ```jsx
+ * import { createRoot } from "react-dom/client";
+ * import App from "./App.jsx";
+ *
+ * createRoot(document.getElementById("root")).render(<App />);
+ * ```
  */
 const App = () => {
   const { themeMode, resolvedTheme, cycleThemeMode } = useThemeManager();
@@ -56,6 +74,8 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Beim Verlassen der Verwaltungsseite Suche und Filter zurücksetzen,
+    // damit Nutzer:innen bei der Rückkehr eine frische, ungefilterte Liste sehen.
     if (location.pathname !== "/entries") {
       resetQueryState();
     }
@@ -64,7 +84,11 @@ const App = () => {
   const isHelpRoute = location.pathname === "/help";
 
   /**
-   * Reicht den Formular-Submit weiter und navigiert nur bei erfolgreichem Speichern.
+   * Reicht den Formular-Submit weiter und navigiert nur bei erfolgreicher
+   * Speicherung auf die Übersicht. Fehlerhafte Eingaben verbleiben auf der
+   * Seite, damit Nutzende sie sofort korrigieren können.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event Native Submit-Event.
    */
   const handleCreateEntry = useCallback(
     (event) => {

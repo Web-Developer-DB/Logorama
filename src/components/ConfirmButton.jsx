@@ -1,8 +1,26 @@
+/**
+ * @file ConfirmButton.jsx
+ * @description Wiederverwendbarer Button mit zweistufiger Sicherheitsabfrage.
+ * Nutzt ein Zeitfenster, in dem die zweite Aktion bestätigt werden muss.
+ */
+
 import { useEffect, useRef, useState } from "react";
 
 /**
  * Button mit zweistufiger Bestätigung: erster Klick aktiviert den Warnzustand,
  * zweiter Klick innerhalb des Zeitfensters führt die Aktion aus.
+ *
+ * @param {Object} props React-Props.
+ * @param {string} props.initialLabel Label für den ersten Klick.
+ * @param {string} props.confirmLabel Label im Bestätigungszustand.
+ * @param {(event: React.MouseEvent<HTMLButtonElement>) => void} props.onConfirm
+ *        Callback nach erfolgreicher Zweitbestätigung.
+ * @param {number} [props.resetDelay=1200] Zeitspanne in Millisekunden, bis der Button zurückspringt.
+ * @param {string} [props.className=""] Basisklasse für den Button.
+ * @param {string} [props.confirmClassName=""] Zusatzklasse im Confirm-State.
+ * @param {React.ReactNode} [props.initialIcon=null] Optionale Ikone für den Default-Button.
+ * @param {React.ReactNode} [props.confirmIcon=null] Ikone im Warnzustand; fällt auf initialIcon zurück.
+ * @returns {JSX.Element} Button mit Sicherheitsmechanik.
  */
 const ConfirmButton = ({
   initialLabel,

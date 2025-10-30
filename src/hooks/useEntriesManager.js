@@ -1,3 +1,9 @@
+/**
+ * @file useEntriesManager.js
+ * @description Zentraler State-Container für Einträge, Papierkorb und Formular.
+ * Kapselt sämtliche LocalStorage-Zugriffe, Zeitfilter und Export/Import-Flows.
+ */
+
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import {
   filterByRange,
@@ -12,10 +18,51 @@ import {
 } from "../utils/entries.js";
 
 /**
+ * @typedef {Object} ManagedEntry
+ * @property {string} id
+ * @property {string} title
+ * @property {string} content
+ * @property {string} createdAt
+ * @property {string} editedAt
+ * @property {boolean} isAutoTitle
+ */
+
+/**
+ * @typedef {ManagedEntry & { deletedAt: string }} TrashManagedEntry
+ */
+
+/**
  * Verwaltet alle Zustände und Operationen rund um Einträge, Papierkorb,
  * Formularinhalte sowie Such- und Filterfunktionen.
  * Die Logik war ursprünglich in der Haupt-App gebündelt und wurde in einen
  * dedizierten Hook ausgelagert, damit Komponenten schlanker bleiben.
+ *
+ * @returns {{
+ *  entries: ManagedEntry[],
+ *  latestEntries: ManagedEntry[],
+ *  filteredEntries: ManagedEntry[],
+ *  sortedTrashEntries: TrashManagedEntry[],
+ *  trashEntryCount: number,
+ *  totalEntries: number,
+ *  todayCount: number,
+ *  weekCount: number,
+ *  formState: { title: string, content: string },
+ *  search: string,
+ *  filter: string,
+ *  handleInputChange: (event: import("react").ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+ *  handleSubmit: (event: import("react").FormEvent<HTMLFormElement>) => boolean,
+ *  handleDelete: (id: string) => void,
+ *  handleUpdate: (id: string, updates: { title?: string, content?: string }) => void,
+ *  handleRestore: (id: string) => void,
+ *  handleDeleteForever: (id: string) => void,
+ *  handleEmptyTrash: () => void,
+ *  handleSearchChange: (value: string) => void,
+ *  handleFilterChange: (value: string) => void,
+ *  handleExport: () => void,
+ *  handleImportFile: (event: import("react").ChangeEvent<HTMLInputElement>) => Promise<void>,
+ *  applyImportedEntries: (payload: unknown) => void,
+ *  resetQueryState: () => void
+ * }} Öffentliche API für Komponenten wie `App`.
  */
 const useEntriesManager = () => {
   const [entries, setEntries] = useState(() => reindexAutoTitles(loadEntries()));
