@@ -6,8 +6,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
-import EntriesPage from "./EntriesPage.jsx";
-import { filterByRange } from "../../utils/entries.js";
+import EntriesPage from "../../src/pages/EntriesPage.jsx";
+import { filterByRange } from "../../src/utils/entries.js";
 
 const baseEntries = [
   {

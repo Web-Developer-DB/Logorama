@@ -171,7 +171,7 @@ const HelpPage = () => {
         </ol>
         <p>
           Alle oben genannten Flows sind in den automatisierten Tests verankert (siehe{" "}
-          <code>src/components/pages/*Page.test.jsx</code>), sodass du bei Änderungen schnell
+          <code>tests/pages/*Page.test.jsx</code>), sodass du bei Änderungen schnell
           regressionsfrei bleibst.
         </p>
       </section>

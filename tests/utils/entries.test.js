@@ -15,7 +15,7 @@ import {
   normalizeTrashEntry,
   reindexAutoTitles,
   filterByRange
-} from "./entries.js";
+} from "../../src/utils/entries.js";
 
 const STORAGE_KEY = "personal-log-entries";
 const TRASH_KEY = "personal-log-trash";

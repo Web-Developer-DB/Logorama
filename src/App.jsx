@@ -15,12 +15,12 @@ import {
 } from "react-router-dom";
 import DesktopNav from "./components/DesktopNav.jsx";
 import MobileNav from "./components/MobileNav.jsx";
-import HomePage from "./components/pages/HomePage.jsx";
-import EntriesPage from "./components/pages/EntriesPage.jsx";
-import NewEntryPage from "./components/pages/NewEntryPage.jsx";
-import TrashPage from "./components/pages/TrashPage.jsx";
-import BackupPage from "./components/pages/BackupPage.jsx";
-import HelpPage from "./components/pages/HelpPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import EntriesPage from "./pages/EntriesPage.jsx";
+import NewEntryPage from "./pages/NewEntryPage.jsx";
+import TrashPage from "./pages/TrashPage.jsx";
+import BackupPage from "./pages/BackupPage.jsx";
+import HelpPage from "./pages/HelpPage.jsx";
 import { formatDateTime } from "./utils/formatters.js";
 import useThemeManager from "./hooks/useThemeManager.js";
 import useEntriesManager from "./hooks/useEntriesManager.js";

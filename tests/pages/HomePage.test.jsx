@@ -7,7 +7,7 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { jest } from "@jest/globals";
-import HomePage from "./HomePage.jsx";
+import HomePage from "../../src/pages/HomePage.jsx";
 
 /**
  * Baut ein konsistentes Props-Objekt auf. Einzelne Tests können Teilbereiche überschreiben,

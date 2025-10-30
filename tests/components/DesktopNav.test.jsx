@@ -6,8 +6,8 @@
 
 import { MemoryRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
-import DesktopNav from "./DesktopNav.jsx";
-import MobileNav from "./MobileNav.jsx";
+import DesktopNav from "../../src/components/DesktopNav.jsx";
+import MobileNav from "../../src/components/MobileNav.jsx";
 
 const stats = {
   totalEntries: 4,

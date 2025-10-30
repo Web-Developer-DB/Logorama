@@ -33,7 +33,7 @@ export default {
     "\\.(png|jpg|jpeg|gif|svg|webp|avif)$": "<rootDir>/__mocks__/fileMock.js"
   },
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
-  testMatch: ["<rootDir>/src/**/*.test.{js,jsx}"],
+  testMatch: ["<rootDir>/tests/**/*.test.{js,jsx}"],
   collectCoverageFrom: [
     "src/**/*.{js,jsx}",
     "!src/main.jsx",

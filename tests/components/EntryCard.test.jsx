@@ -6,7 +6,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
-import EntryCard from "./EntryCard.jsx";
+import EntryCard from "../../src/components/EntryCard.jsx";
 
 const baseEntry = {
   id: "entry-1",

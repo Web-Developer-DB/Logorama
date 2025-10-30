@@ -6,7 +6,7 @@
 
 import React from "react";
 import { act, cleanup, render } from "@testing-library/react";
-import useInstallPrompt from "./useInstallPrompt.js";
+import useInstallPrompt from "../../src/hooks/useInstallPrompt.js";
 
 describe("useInstallPrompt", () => {
   let manager;

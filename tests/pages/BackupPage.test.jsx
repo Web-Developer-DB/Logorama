@@ -7,8 +7,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
-import BackupPage from "./BackupPage.jsx";
-import { normalizeEntriesPayload } from "../../utils/entries.js";
+import BackupPage from "../../src/pages/BackupPage.jsx";
+import { normalizeEntriesPayload } from "../../src/utils/entries.js";
 
 const initialEntries = [
   {

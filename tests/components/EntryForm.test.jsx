@@ -7,7 +7,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
-import EntryForm from "./EntryForm.jsx";
+import EntryForm from "../../src/components/EntryForm.jsx";
 
 /**
  * Hilfsfunktion, die das Formular mit einem kontrollierten State rendert.
