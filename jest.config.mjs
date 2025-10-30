@@ -5,6 +5,12 @@
 
 export default {
   testEnvironment: "jsdom",
+  /**
+   * Limiting Jest to a single worker avoids sporadic crashes of the @swc/jest
+   * transformer that occurred when multiple child processes were spawned in
+   * this environment.
+   */
+  maxWorkers: 1,
   transform: {
     "^.+\\.(js|jsx)$": [
       "@swc/jest",
