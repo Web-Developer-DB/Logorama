@@ -4,11 +4,6 @@ import { HashRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./styles.css";
 
-// Stellt den Google-Client global bereit, damit Komponenten ohne import.meta.env darauf zugreifen können.
-if (typeof window !== "undefined") {
-  window.__LOGORAMA_GOOGLE_CLIENT_ID__ = import.meta.env?.VITE_GOOGLE_CLIENT_ID ?? null;
-}
-
 // Sicherheitsnetz: React braucht ein Root-Element, sonst Blocker werfen.
 const rootElement = document.getElementById("root");
 if (!rootElement) {

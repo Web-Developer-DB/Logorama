@@ -76,8 +76,6 @@ const App = () => {
     [handleSubmit, navigate]
   );
 
-  const getEntriesForExport = useCallback(() => entries, [entries]);
-
   return (
     <>
       <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
@@ -152,9 +150,6 @@ const App = () => {
             path="/backup"
             element={
               <BackupPage
-                entries={entries}
-                setEntries={applyImportedEntries}
-                getEntriesForExport={getEntriesForExport}
                 onExport={handleExport}
                 onImportFile={handleImportFile}
                 disableExport={!entries.length}

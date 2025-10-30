@@ -1,5 +1,4 @@
-import { memo, useMemo, useRef } from "react";
-import { formatDateTime } from "../utils/formatters.js";
+import { memo, useRef } from "react";
 
 /**
  * Kompakte Sicherungszentrale für Export & Import.
@@ -8,15 +7,7 @@ import { formatDateTime } from "../utils/formatters.js";
 const DataSafetyPanel = ({
   onExport,
   onImportFile,
-  disableExport,
-  driveStatus,
-  driveLastSync,
-  driveError,
-  driveIsConnected,
-  driveIsBusy,
-  onDriveConnect,
-  onDrivePull,
-  onDrivePush
+  disableExport
 }) => {
   const fileInputRef = useRef(null);
 
@@ -31,38 +22,6 @@ const DataSafetyPanel = ({
       fileInputRef.current.value = "";
     }
   };
-
-  const handleDriveConnect = () => {
-    onDriveConnect?.();
-  };
-
-  const handleDrivePull = () => {
-    onDrivePull?.();
-  };
-
-  const handleDrivePush = () => {
-    onDrivePush?.();
-  };
-
-  const driveStatusText = useMemo(() => {
-    switch (driveStatus) {
-      case "connecting":
-        return "Verbindung wird hergestellt…";
-      case "connected":
-        return "Verbunden";
-      case "loading":
-        return "Lädt Daten…";
-      case "saving":
-        return "Speichert Daten…";
-      case "error":
-        return "Fehler bei der Synchronisierung";
-      default:
-        return "Nicht verbunden";
-    }
-  }, [driveStatus]);
-
-  const lastSyncText = driveLastSync ? formatDateTime(driveLastSync) : "Noch keine Synchronisierung";
-  const canShowDriveActions = driveIsConnected;
 
   return (
     <section className="panel data-safety-panel">
@@ -91,49 +50,10 @@ const DataSafetyPanel = ({
         onChange={handleFileChange}
         className="visually-hidden"
       />
-      <div className="drive-sync">
-        <h3>Google&nbsp;Drive Synchronisierung</h3>
-        <p>
-          Verbinde Logorama mit Google Drive und sichere deine Einträge als JSON im App-Data-Folder.
-          Du kannst den aktuellen Stand jederzeit manuell hochladen oder den Cloud-Stand zurückholen.
-        </p>
-        <p>
-          <strong>Status:</strong> {driveStatusText}
-        </p>
-        <p>
-          <strong>Letzte Synchronisierung:</strong> {lastSyncText}
-        </p>
-        {driveError ? <p className="drive-sync__error">{driveError}</p> : null}
-        {!canShowDriveActions ? (
-          <button
-            type="button"
-            className="secondary"
-            onClick={handleDriveConnect}
-            disabled={driveIsBusy}
-          >
-            Mit Google verbinden
-          </button>
-        ) : (
-          <div className="drive-sync__actions">
-            <button
-              type="button"
-              className="secondary"
-              onClick={handleDrivePull}
-              disabled={driveIsBusy}
-            >
-              Aus Google Drive laden
-            </button>
-            <button
-              type="button"
-              className="ghost"
-              onClick={handleDrivePush}
-              disabled={driveIsBusy}
-            >
-              Jetzt synchronisieren
-            </button>
-          </div>
-        )}
-      </div>
+      <p className="data-safety-panel__hint">
+        Tipp: Lege dir regelmäßige lokale Sicherungen an, damit du Änderungen rückgängig machen oder
+        auf andere Geräte übertragen kannst.
+      </p>
     </section>
   );
 };
