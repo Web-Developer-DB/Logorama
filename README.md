@@ -1,124 +1,93 @@
 # Logorama
 
-Logorama ist eine Progressive Web App für persönliche Lern- und Projektjournale. Die Anwendung läuft vollständig im Browser, speichert Daten lokal und lässt sich über das PWA-Manifest auf unterstützten Geräten installieren. Dieser Stand der Dokumentation spiegelt die aktuelle, modularisierte Codebasis wider.
+> Progressive Web App für persönliche Lern- und Projektjournale – komplett offlinefähig, mit JSON-Backups und intuitiver Navigation.
 
-## Highlights
+![Build](https://img.shields.io/badge/build-vite_success-brightgreen.svg) ![Tests](https://img.shields.io/badge/tests-jest%20%26%20rtl-4c1.svg) ![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-blue.svg) ![PWA](https://img.shields.io/badge/pwa-ready-1f75fe.svg)
 
-- 🌟 Editorial UI mit Light/Dark Themes und System-Auto-Modus
-- 🧭 Mehrseitige App via React Router mit Desktop- und Mobile-Navigation
-- 📝 Freitext-Einträge mit Inline-Bearbeitung, automatischer Datumsnummerierung und Filteroptionen
-- 🗑️ Papierkorb mit 30 Tagen Aufbewahrungsfrist, Restore- und Leeren-Funktion
-- 💾 Backup-Panel für JSON-Export/-Import
-- ☁️ Hinweise für manuelle Sicherungen auf eigene Speicherziele
-- 📱 PWA-ready (Manifest, Service Worker, maskierbare Icons)
-- ⚙️ Saubere Architektur mit klar getrennten Hooks, Utils und Seitenkomponenten
+## Schnellstart
 
-## Bedienungsübersicht
+1. **Repository clonen** und in den Projektordner wechseln.  
+2. `npm install` ausführen – alle Abhängigkeiten (React, React Router, Jest, SWC) werden eingerichtet.  
+3. Entwicklung starten: `npm run dev` – Vite bedient die App unter [http://localhost:5173](http://localhost:5173).  
+4. Optional: `npm run preview`, um den Produktionsbuild vor dem Deploy zu prüfen.  
+5. Die integrierte Hilfe findest du jederzeit unter `/#/help` – ideal für neue Teammitglieder.
 
-- **Home:** Zeigt Kennzahlen, die drei neuesten Einträge sowie Buttons für „Neuantrag erstellen“, Theme-Wechsel und – falls verfügbar – die PWA-Installation.
-- **Einträge verwalten:** Neue Inhalte erfasst du über das Formular „Neuer Eintrag“. In der Liste lassen sich Titel und Text direkt inline bearbeiten, suchen und nach „Heute“ oder „Letzte 7 Tage“ filtern.
-- **Papierkorb:** Jeder Löschvorgang ist zweistufig. Einträge können wiederhergestellt oder endgültig entfernt werden; nach 30 Tagen leert Logorama den Papierkorb automatisch, zusätzlich gibt es eine Sammelaktion „Papierkorb leeren“.
-- **Backups:** JSON-Export/-Import findest du im Bereich „Backup“. Die erzeugten Dateien kannst du nach Belieben sichern oder auf anderen Geräten wieder einspielen.
-- **Hilfe-Seite:** Unter `/help` ist eine ausführliche, in der App gepflegte Anleitung eingebettet – sie deckt die oben genannten Workflows mit mehr Kontext ab.
+## Skripte
 
-## Installation & Entwicklung
+| Befehl | Zweck |
+| --- | --- |
+| `npm run dev` | Development-Server (Vite + Hot Module Reloading) |
+| `npm run build` | Produktionsbuild nach `dist/` mit Hashes |
+| `npm run preview` | Lokaler Preview-Server für `dist/` |
+| `npm test` | Jest einmalig ausführen |
+| `npm run test:watch` | Jest im Watch-Modus mit Hot Reload |
+| `npm run test:ci` | CI-Profil: sequentielle Tests mit Coverage-Report |
 
-```bash
-npm install
-npm run dev        # startet Vite-Dev-Server unter http://localhost:5173
-npm run build      # erzeugt Produktions-Build in dist/
-npm run preview    # startet lokalen Server, um dist/ zu testen
-```
-
-## Testing
-
-- **Abhängigkeiten**: Die benötigten Pakete (`jest`, `@testing-library/*`, `@swc/jest`, `identity-obj-proxy`) sind in den Dev-Dependencies verankert – ein `npm install` reicht zur Einrichtung.
-- **Kommandos**:
-  - `npm run test` führt die gesamte Suite einmal aus.
-  - `npm run test:watch` startet Jest im Watch-Modus.
-  - `npm run test:ci` läuft sequentiell mit Coverage-Report (Ziel: ≥80 % Statements / Lines).
-- **Konventionen**: Tests liegen unter `src/` und enden auf `.test.js|.test.jsx`. Bevorzuge semantische Queries (`getByRole`, `getByLabelText`) und halte Interaktionen mit `userEvent.setup()` realistisch.
-- **Stubs & Helfer**: `src/setupTests.js` stellt Service-Worker- und File-Picker-Stubs bereit. Optional lassen sich dort MSW-Handler oder Accessibility-Prüfungen einklinken – einfach die kommentierten Blöcke aktivieren.
-- **Optionale Tools**: Für A11y-Checks `npm i -D jest-axe axe-core`, für API-Mocks `npm i -D msw`, für Fetch-Polyfills `npm i -D whatwg-fetch`. Aktivierung erfolgt über die Kommentar-Hinweise in `src/setupTests.js`.
-
-## Projektstruktur (Stand: aktuelle Architektur)
-
-```
-.
-├── public/
-│   ├── icons/                   # PWA-Icons (inkl. maskierbarer Variante)
-│   ├── manifest.webmanifest     # Web App Manifest
-│   └── service-worker.js        # Offline-Caching & Fallback-Logik
-├── src/
-│   ├── App.jsx                  # App-Shell, Routing, Zusammenspiel der Manager-Hooks
-│   ├── components/
-│   │   ├── ActiveEntriesSection.jsx
-│   │   ├── ConfirmButton.jsx
-│   │   ├── DataSafetyPanel.jsx
-│   │   ├── DesktopNav.jsx
-│   │   ├── EntryCard.jsx
-│   │   ├── EntryForm.jsx
-│   │   ├── MobileNav.jsx
-│   │   ├── SearchFilter.jsx
-│   │   ├── ThemeToggle.jsx
-│   │   └── pages/               # Präsentations-Komponenten für Routen
-│   │       ├── BackupPage.jsx
-│   │       ├── EntriesPage.jsx
-│   │       ├── HelpPage.jsx
-│   │       ├── HomePage.jsx
-│   │       ├── NewEntryPage.jsx
-│   │       └── TrashPage.jsx
-│   ├── hooks/
-│   │   ├── useEntriesManager.js   # CRUD, Filter, LocalStorage, Ex-/Import
-│   │   ├── useInstallPrompt.js    # PWA-Installationsaufforderung
-│   │   └── useThemeManager.js     # Theme-Zustand & Systemlistener
-│   ├── utils/
-│   │   ├── entries.js             # Normalisierung, IDs, Filterlogik
-│   │   ├── formatters.js          # Datum-/Zeitformatierung
-│   │   └── navItems.jsx           # Zentrale Navigationseinträge
-│   ├── main.jsx                 # React-Einstieg + Service-Worker-Registrierung
-│   └── styles.css               # Globale UI-Styles, Breakpoints, Variablen
-├── dist/                        # Build-Artefakte nach `npm run build`
-├── icons/                       # Ursprungsdateien der App-Symbole
-├── index.html                   # Vite Entry-HTML
-├── package.json
-└── vite.config.js
-```
+> 💡 Linting: ESLint ist konfiguriert (`eslint.config.js`). Für formatierte Commits empfiehlt sich zusätzlich Prettier (`npx prettier --check \"src/**/*.{js,jsx,css}\"`). Eine Prettier-Konfiguration kann bei Bedarf ergänzt werden.
 
 ## Architektur-Überblick
 
-- **Hooks**: Alle Zustands- und Effektlogiken sind in dedizierte Hooks ausgelagert:
-  - `useEntriesManager` verwaltet Einträge, Papierkorb, Suche/Filter, Export/Import.
-  - `useThemeManager` steuert Theme-Wechsel, Persistenz und Systemlistener.
-  - `useInstallPrompt` kapselt das `beforeinstallprompt`-Event.
-- **Seitenkomponenten**: Unter `components/pages/` liegen reine Präsentationskomponenten für jede Route. Sie erhalten sämtliche Props aus `App.jsx` und bleiben somit logikfrei.
-- **Utilities**: Hilfsfunktionen (z. B. Normalisierung, Navigation, Formatierung) sind unter `src/utils/` zentral abgelegt, damit keine doppelten Implementierungen entstehen.
-- **Kommentierung**: Jede Komponente und jeder Hook enthält erklärende Kommentare, die Zweck und Funktionsweise für Junior-Entwickler:innen nachvollziehbar machen.
+```
+src/
+├─ App.jsx                # Routing, globale Hooks, Desktop/Mobile-Navigation
+├─ main.jsx               # React-Einstieg + Service-Worker-Registrierung
+├─ components/
+│  ├─ [UI-Bausteine].jsx  # Wiederverwendbare Komponenten (EntryCard, ThemeToggle, …)
+│  └─ pages/              # Presentational Routes (Home, Entries, Trash, Backup, Help)
+├─ hooks/                 # State- & Effekt-Logik (Theme, Entries, InstallPrompt)
+├─ utils/                 # Normalisierung, Navigation, Formatierung
+├─ styles.css             # Globales Stylesheet inkl. Dark-Mode-Variablen
+└─ setupTests.js          # Jest-/RTL-Setup mit Service-Worker- und FS-APIs
+```
 
-## Funktionsumfang im Detail
+- **Container vs. Präsentation:** `App.jsx` orchestriert State & Routing. Alle Seiten-/UI-Komponenten sind bewusst dünn gehalten und erhalten ihre Props/Treiber über die Hooks.  
+- **Hooks:** `useEntriesManager` kapselt CRUD, LocalStorage, Import/Export sowie Papierkorb; `useThemeManager` behandelt Persistenz & Media-Queries; `useInstallPrompt` speichert das `beforeinstallprompt`-Event.  
+- **Tests:** Jede kritische Route hat eine `*.test.jsx`-Datei mit Arrange–Act–Assert-Erklärungen.  
+- **Dokumentation im Code:** Alle Dateien besitzen Einsteiger-taugliche Header- und Inline-Kommentare (siehe `HelpPage.jsx`, `useEntriesManager.js`).
 
-- **Persistenz**: Einträge werden standardmäßig unter `personal-log-entries` im `localStorage` gespeichert. Papierkorb-Einträge liegen separat unter `personal-log-trash` und verfallen automatisch nach 30 Tagen.
-- **Suche & Filter**: `useEntriesManager` stellt gefilterte und sortierte Listen bereit; die UI-Komponenten reichen lediglich Such- oder Filterwerte zurück.
-- **Inline-Editing**: `EntryCard` ermöglicht Bearbeitung direkt in der Karte inkl. Draft-State und Rückfall, falls der Inhalt leer bleibt.
-- **Papierkorb**: `TrashPage` zeigt gelöschte Einträge mit Zeitstempeln und bietet Restore/Endgültig-Löschen über den zweistufigen `ConfirmButton`; ein stündlicher Bereinigungslauf löscht Elemente nach 30 Tagen, zusätzlich gibt es „Papierkorb leeren“.
-- **Backups**: Das Backup-Panel steuert JSON-Export (mit File System Access API als Fallback) und JSON-Import über das Utility `normalizeEntriesPayload`.
-- **Backup-Hinweise**: Nach dem Export lassen sich die JSON-Dateien auf externe Datenträger oder eigene Cloud-Speicher kopieren, um Versionen vorzuhalten oder Geräte zu wechseln.
-- **Theme-Steuerung**: `useThemeManager` persistiert die Moduswahl (`system`, `light`, `dark`) und synchronisiert sie mit dem `<html>`-Attribut, sodass CSS-Variablen reagieren.
-- **Installation (PWA)**: `useInstallPrompt` merkt sich das Browser-Event, `HomePage` blendet einen Installationsbutton ein, solange die App installierbar ist.
+## PWA-Features
 
-## Tests & Qualitätssicherung
+- **Manifest (`public/manifest.webmanifest`):** Enthält Name, Shortcuts (`Neuer Eintrag`, `Heute`), maskierbare Icons und `display: standalone`.  
+- **Service Worker (`public/service-worker.js`):**  
+  - Precaching für Shell, Icons und Manifest.  
+  - Stale-While-Revalidate für eigene Assets, Cache-First für Fremdquellen.  
+  - Offline-Fallback auf `index.html`, damit Hash-Routing funktioniert.  
+- **Installations-Flow:** `useInstallPrompt` speichert das Browser-Event, `HomePage` zeigt den Button, solange Installation möglich ist.  
+- **Lighthouse-Zielwerte:** Performance ≥ 90, PWA-Check komplett grün, A11y ≥ 90 (siehe Verifikationsbericht).
 
-- `npm run build` dient weiterhin als schneller Integritätscheck, da Vite beim Bundlen Syntaxfehler anzeigt.
-- Ergänzend sorgt die Jest/RTL-Suite dafür, dass Formular-, Routing-, Papierkorb- und Backup-Flows stabil bleiben.
-- Für manuelle Smoke-Tests empfehlen sich Durchläufe der Kernflows (Eintrag anlegen/bearbeiten/löschen, Papierkorb, Export/Import).
-- Zusätzliche Lint- oder Integrationstests können bei Bedarf via weitere npm-Skripte ergänzt werden.
+## Tests
 
-## Deployment-Hinweise
+- `npm test` prüft Komponenten und Hooks mit React Testing Library.  
+- `npm run test:ci` ermittelt Coverage (Ziel: ≥ 80 % Statements/Lines).  
+- Testdateien nutzen semantische Queries (`getByRole`, `getByLabelText`) und `userEvent.setup()` für realistische Interaktionen.  
+- `src/setupTests.js` stellt Service-Worker-/FileSystem-Stubs und optionale Hooks für MSW oder jest-axe bereit (einfach kommentierte Abschnitte aktivieren).
 
-- Produktions-Build befindet sich unter `dist/`. Dieser Ordner kann auf statische Hoster (GitHub Pages, Netlify, Vercel etc.) hochgeladen werden.
-- HTTPS ist für den Service Worker empfehlenswert (außer auf `localhost`).
-- Bei Deployments auf Unterpfade ggf. `base` in `vite.config.js` anpassen, damit Assets korrekt aufgelöst werden.
+## Coding-Standards
+
+- **ESLint:** Flat-Config (`eslint.config.js`) mit React-Empfehlungen; bewusst großzügig für Lernzwecke. Wer striktere Regeln braucht, aktiviert die auskommentierten Regeln sukzessive.  
+- **Formatierung:** Einheitliches CSS-Kommentarsystem (Abschnitt/Selektor-Erklärungen). Für JS/JSX empfiehlt sich Prettier (`npx prettier --write`), auch wenn es nicht als DevDependency vorinstalliert ist.  
+- **JSDoc:** Komponenten, Hooks und Utilities sind mit JSDoc versehen; Props und Rückgabewerte sind dokumentiert, damit IDEs Autocompletion liefern.
+
+## Barrierefreiheit & i18n
+
+- **A11y:**  
+  - Navigationslinks besitzen aussagekräftige Labels, Icons sind `aria-hidden`.  
+  - Fokus-Indikatoren werden per CSS-Variablen gesteuert; Keyboard-Nutzung ist vollständig möglich.  
+  - `HelpPage` nutzt Sprungmarken (`help-content__toc`) für Screenreader.  
+- **Internationalisierung:** App ist aktuell deutschsprachig; Texte sind zentral in Komponenten eingebettet. Für Mehrsprachigkeit empfiehlt sich ein Übersetzungs-Wrapper (z. B. `react-intl`) – Hooks und Komponenten sind klar getrennt, sodass eine spätere Erweiterung einfach bleibt.
+
+## Deployment
+
+1. `npm run build` erzeugt den Produktions-Output in `dist/`.  
+2. Den Inhalt von `dist/` auf einen statischen Hoster (Netlify, Vercel, GitHub Pages) hochladen.  
+3. Domain über HTTPS ausliefern (Pflicht für PWA-Features).  
+4. Falls ein Unterpfad genutzt wird, `base` in `vite.config.js` anpassen.  
+5. Service-Worker-Versionierung: `CACHE_NAME` in `public/service-worker.js` bei Breaking Changes erhöhen, damit alte Assets invalidiert werden.
+
+## Changelog-Hinweis
+
+Alle Änderungen sind im [CHANGELOG.md](./CHANGELOG.md) dokumentiert (Schema: *Added · Changed · Fixed · Docs*). Für Version 1.0.0 wurde der Fokus auf Kommentierung, Hilfeseite und Dokumentation gelegt.
 
 ## Lizenz
 
-Das Projekt wird unter der MIT License bereitgestellt. Anpassungen, Erweiterungen und Redistributierungen sind willkommen – Credits an Logorama bzw. den ursprünglichen Autor bleiben bestehen.
+MIT License – siehe [LICENSE](./LICENSE). Beiträge, Forks und Anpassungen sind ausdrücklich willkommen; bitte die ursprünglichen Credits erhalten.

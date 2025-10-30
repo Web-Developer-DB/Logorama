@@ -1,8 +1,13 @@
+/**
+ * @file EntriesPage.test.jsx
+ * @description Tests für die Such- und Filterleiste der Eintragsübersicht.
+ */
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
-import EntriesPage from "./EntriesPage.jsx";
-import { filterByRange } from "../../utils/entries.js";
+import EntriesPage from "../../src/pages/EntriesPage.jsx";
+import { filterByRange } from "../../src/utils/entries.js";
 
 const baseEntries = [
   {
@@ -25,6 +30,11 @@ const baseEntries = [
   }
 ];
 
+/**
+ * Rendert die Page mit kontrolliertem State, damit wir Wechsel der Filter simulieren können.
+ * Die Funktion spiegelt grob den Hook-Aufbau wider: Filter und Suche leben außerhalb der Komponente
+ * und führen bei Veränderung ein erneutes Rendern aus.
+ */
 const renderEntriesPage = (entries = baseEntries) => {
   let filter = "all";
   let search = "";
@@ -86,25 +96,32 @@ const renderEntriesPage = (entries = baseEntries) => {
 
 describe("EntriesPage", () => {
   test("filtert Einträge nach Zeitraum und Suchbegriff", async () => {
+    // Arrange
     const user = userEvent.setup();
     renderEntriesPage();
 
+    // Assert initial state: alle Einträge sichtbar.
     expect(screen.getByText("Älterer Log")).toBeInTheDocument();
     const filterSelect = screen.getByRole("combobox");
 
+    // Act: Filter auf "Heute" setzen.
     await user.selectOptions(filterSelect, "today");
     expect(screen.getByText("Heute lernen")).toBeInTheDocument();
     expect(screen.queryByText("Wöchentlicher Rückblick")).not.toBeInTheDocument();
     expect(screen.queryByText("Älterer Log")).not.toBeInTheDocument();
 
+    // Act: Filter auf "Letzte 7 Tage" ausweiten.
     await user.selectOptions(filterSelect, "week");
     expect(screen.getByText("Heute lernen")).toBeInTheDocument();
     expect(screen.getByText("Wöchentlicher Rückblick")).toBeInTheDocument();
     expect(screen.queryByText("Älterer Log")).not.toBeInTheDocument();
 
+    // Act: Suchbegriff anwenden, der nur einen Eintrag enthält.
     const searchInput = screen.getByRole("searchbox");
     await user.clear(searchInput);
     await user.type(searchInput, "rück");
+
+    // Assert: Nur passende Einträge bleiben sichtbar.
     expect(screen.getByText("Wöchentlicher Rückblick")).toBeInTheDocument();
     expect(screen.queryByText("Heute lernen")).not.toBeInTheDocument();
   });

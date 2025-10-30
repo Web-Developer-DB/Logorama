@@ -1,3 +1,9 @@
+/**
+ * @file icons.jsx
+ * @description Kleine Sammlung wiederverwendbarer SVG-Icons für Buttons.
+ * Alle Icons teilen sich gemeinsame Attribute für konsistente Darstellung.
+ */
+
 const iconProps = {
   width: 14,
   height: 14,
@@ -6,6 +12,12 @@ const iconProps = {
   focusable: "false"
 };
 
+/**
+ * Stift-Icon für Editieraktionen.
+ *
+ * @param {React.SVGProps<SVGSVGElement>} props Zusätzliche Attribute (z. B. className).
+ * @returns {JSX.Element} SVG-Symbol.
+ */
 export const PencilIcon = (props) => (
   <svg {...iconProps} {...props}>
     <path
@@ -19,6 +31,9 @@ export const PencilIcon = (props) => (
   </svg>
 );
 
+/**
+ * Check-Icon, das Bestätigungen visualisiert.
+ */
 export const CheckIcon = (props) => (
   <svg {...iconProps} {...props}>
     <path
@@ -32,6 +47,9 @@ export const CheckIcon = (props) => (
   </svg>
 );
 
+/**
+ * Papierkorb-Icon für Löschaktionen.
+ */
 export const TrashIcon = (props) => (
   <svg {...iconProps} {...props}>
     <path
@@ -45,6 +63,9 @@ export const TrashIcon = (props) => (
   </svg>
 );
 
+/**
+ * Restore-Icon zum Wiedereinfügen gelöschter Einträge.
+ */
 export const RestoreIcon = (props) => (
   <svg {...iconProps} {...props}>
     <path

@@ -1,7 +1,12 @@
-import { useState } from "react";
+/**
+ * @file TrashPage.test.jsx
+ * @description Testet die wichtigsten Interaktionspfade im Papierkorb: Restore,
+ * Hard-Delete und Sammel-Löschung.
+ */
+
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import TrashPage from "./TrashPage.jsx";
+import TrashPage from "../../src/pages/TrashPage.jsx";
 
 const initialEntries = [
   {
@@ -27,6 +32,10 @@ const initialEntries = [
   }
 ];
 
+/**
+ * Helfer, der `TrashPage` mit einem veränderbaren lokalen Array rendert. So lassen
+ * sich Zustandsänderungen simulieren, die normalerweise vom Entries-Manager kämen.
+ */
 const renderTrashPage = () => {
   let items = [...initialEntries];
 
@@ -74,6 +83,7 @@ const renderTrashPage = () => {
 
 describe("TrashPage", () => {
   test("unterstützt Wiederherstellen, endgültiges Löschen und das Leeren des Papierkorbs", async () => {
+    // Arrange
     const user = userEvent.setup();
     renderTrashPage();
 
@@ -83,7 +93,7 @@ describe("TrashPage", () => {
     });
     expect(screen.queryByText("Wiederherstellbarer Eintrag")).not.toBeInTheDocument();
 
-    // Permanent delete flow
+    // Permanent delete flow: zweistufige Sicherheitsbestätigung (ConfirmButton).
     const deleteEntry = screen.getByText("Löschkandidat").closest("article");
     const deleteButton = within(deleteEntry).getByRole("button", { name: /^Löschen$/i });
     await act(async () => {
