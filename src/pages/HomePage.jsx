@@ -4,8 +4,8 @@
  */
 
 import { Link } from "react-router-dom";
-import ActiveEntriesSection from "../ActiveEntriesSection.jsx";
-import ThemeToggle from "../ThemeToggle.jsx";
+import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 
 /**
  * Startseite mit Kennzahlen, Hero-Text und den drei neuesten Einträgen.

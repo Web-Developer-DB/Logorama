@@ -4,7 +4,7 @@
  * `DataSafetyPanel` weiter, damit sich die Seite auf das Layout konzentriert.
  */
 
-import DataSafetyPanel from "../DataSafetyPanel.jsx";
+import DataSafetyPanel from "../components/DataSafetyPanel.jsx";
 
 /**
  * Präsentationsseite für Backups. Die JSON-Aktionen werden aus der App

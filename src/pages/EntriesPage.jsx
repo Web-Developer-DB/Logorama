@@ -3,8 +3,8 @@
  * @description Route für die vollständige Eintragsliste mit Suche und Filter.
  */
 
-import SearchFilter from "../SearchFilter.jsx";
-import ActiveEntriesSection from "../ActiveEntriesSection.jsx";
+import SearchFilter from "../components/SearchFilter.jsx";
+import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
 
 /**
  * Zeigt die komplette Liste aller Einträge inklusive Suchleiste
