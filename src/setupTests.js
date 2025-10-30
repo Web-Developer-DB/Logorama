@@ -28,15 +28,6 @@ if (!("showSaveFilePicker" in globalThis)) {
   globalThis.showSaveFilePicker = createStub();
 }
 
-// Provide a minimal Google API client facade so Drive sync tests can run offline.
-if (!("gapi" in globalThis)) {
-  globalThis.gapi = {
-    load: createStub(),
-    auth2: {},
-    client: {}
-  };
-}
-
 // Optional integrations:
 // - Accessibility: uncomment to enable jest-axe helpers
 //   import { axe, toHaveNoViolations } from "jest-axe";

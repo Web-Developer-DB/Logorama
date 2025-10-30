@@ -71,7 +71,7 @@ const HelpPage = () => (
         </ul>
       </div>
       <div>
-        <h3>Backups &amp; Synchronisierung</h3>
+        <h3>Backups</h3>
         <ul>
           <li>
             <strong>JSON-Export:</strong> Sichere deine Daten lokal – bei modernen Browsern sogar über
@@ -82,9 +82,9 @@ const HelpPage = () => (
             wieder ein; das System ersetzt den kompletten Datenbestand.
           </li>
           <li>
-            <strong>Google Drive:</strong> Aktiviere den Toggle, um automatische Sicherungen in deinem
-            Drive-AppData-Ordner anzulegen. Über „Jetzt synchronisieren“ oder „Aus Google Drive
-            laden“ stößt du Aktionen manuell an.
+            <strong>Manuelle Sicherungen:</strong> Kopiere erzeugte JSON-Dateien regelmäßig an einen
+            sicheren Ort oder ein eigenes Cloud-Laufwerk, damit du bei Bedarf schnell wiederherstellen
+            kannst.
           </li>
         </ul>
       </div>
