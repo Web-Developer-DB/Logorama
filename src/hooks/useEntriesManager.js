@@ -241,7 +241,7 @@ const useEntriesManager = () => {
 
   /**
    * Ersetzt den kompletten Eintragsbestand durch einen importierten Payload.
-   * Wird sowohl für JSON-Uploads als auch für Google-Drive-Snapshots verwendet.
+   * Wird sowohl für JSON-Uploads als auch für andere wiederhergestellte Backups verwendet.
    */
   const applyImportedEntries = useCallback(
     (payload) => {

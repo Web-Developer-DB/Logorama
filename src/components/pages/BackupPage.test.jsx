@@ -13,29 +13,9 @@ const initialEntries = [
   }
 ];
 
-const createDriveSync = (overrides = {}) => ({
-  status: "idle",
-  error: null,
-  isConnected: false,
-  lastSync: null,
-  connect: jest.fn(),
-  pull: jest.fn(),
-  push: jest.fn(),
-  ...overrides
-});
-
-const renderBackupPage = ({ onExport = jest.fn(), driveSync = createDriveSync() } = {}) => {
+const renderBackupPage = ({ onExport = jest.fn() } = {}) => {
   let items = [...initialEntries];
   let rerenderPage = () => {};
-
-  const setEntries = (payload) => {
-    if (Array.isArray(payload)) {
-      items = payload;
-      rerenderPage();
-    }
-  };
-
-  const getEntriesForExport = () => items;
 
   const handleImportFile = async (event) => {
     const file = event.target.files?.[0];
@@ -50,13 +30,9 @@ const renderBackupPage = ({ onExport = jest.fn(), driveSync = createDriveSync() 
   const renderResult = render(
     <>
       <BackupPage
-        entries={items}
-        setEntries={setEntries}
-        getEntriesForExport={getEntriesForExport}
         onExport={onExport}
         onImportFile={handleImportFile}
         disableExport={!items.length}
-        driveSync={driveSync}
       />
       <ul aria-label="Backup-Einträge">
         {items.map((item) => (
@@ -70,13 +46,9 @@ const renderBackupPage = ({ onExport = jest.fn(), driveSync = createDriveSync() 
     renderResult.rerender(
       <>
         <BackupPage
-          entries={items}
-          setEntries={setEntries}
-          getEntriesForExport={getEntriesForExport}
           onExport={onExport}
           onImportFile={handleImportFile}
           disableExport={!items.length}
-          driveSync={driveSync}
         />
         <ul aria-label="Backup-Einträge">
           {items.map((item) => (
@@ -91,43 +63,13 @@ const renderBackupPage = ({ onExport = jest.fn(), driveSync = createDriveSync() 
 };
 
 describe("BackupPage", () => {
-  beforeEach(() => {
-    if (typeof window !== "undefined") {
-      window.__LOGORAMA_GOOGLE_CLIENT_ID__ = "test-client-id";
-    }
-  });
-
-  test("zeigt Google-Verbindungsbutton und stößt Connect an", async () => {
-    const user = userEvent.setup();
-    const driveSync = createDriveSync();
-    renderBackupPage({ driveSync });
-
-    expect(screen.getByText("Alpha Log")).toBeInTheDocument();
-
-    const connectButton = screen.getByRole("button", { name: /Mit Google verbinden/i });
-    expect(connectButton).toBeEnabled();
-
-    await user.click(connectButton);
-    expect(driveSync.connect).toHaveBeenCalledTimes(1);
-  });
-
-  test("führt Export, Import sowie Drive-Aktionen aus", async () => {
-    const driveSync = createDriveSync({ status: "connected", isConnected: true });
-
+  test("führt Export und Import aus", async () => {
     const user = userEvent.setup();
     const handleExport = jest.fn();
-    const { container } = renderBackupPage({ onExport: handleExport, driveSync });
+    const { container } = renderBackupPage({ onExport: handleExport });
 
     await user.click(screen.getByRole("button", { name: /Daten sichern/i }));
     expect(handleExport).toHaveBeenCalledTimes(1);
-
-    const pullButton = screen.getByRole("button", { name: /Aus Google Drive laden/i });
-    await user.click(pullButton);
-    expect(driveSync.pull).toHaveBeenCalledTimes(1);
-
-    const pushButton = screen.getByRole("button", { name: /Jetzt synchronisieren/i });
-    await user.click(pushButton);
-    expect(driveSync.push).toHaveBeenCalledTimes(1);
 
     const fileInput = container.querySelector('input[type="file"]');
     const importPayload = [
