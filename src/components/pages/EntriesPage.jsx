@@ -1,10 +1,26 @@
+/**
+ * @file EntriesPage.jsx
+ * @description Route für die vollständige Eintragsliste mit Suche und Filter.
+ */
+
 import SearchFilter from "../SearchFilter.jsx";
 import ActiveEntriesSection from "../ActiveEntriesSection.jsx";
 
 /**
  * Zeigt die komplette Liste aller Einträge inklusive Suchleiste
- * und Zeitraumfilter. DieFiltering-Logik liegt in den Elternkomponenten,
+ * und Zeitraumfilter. Die Filtering-Logik liegt in den Elternkomponenten,
  * diese Präsentations-Komponente kümmert sich nur um Markup.
+ *
+ * @param {Object} props React-Props.
+ * @param {Array} props.entries Vorverfilterte Einträge aus den Hooks.
+ * @param {string} props.searchValue Aktueller Suchtext.
+ * @param {(value: string) => void} props.onSearchChange Aktualisiert den Suchtext.
+ * @param {"all"|"today"|"week"} props.filterValue Gewählter Zeitraumfilter.
+ * @param {(value: "all"|"today"|"week") => void} props.onFilterChange Handler für das Dropdown.
+ * @param {(id: string) => void} props.onDeleteEntry Verschiebt Einträge in den Papierkorb.
+ * @param {(id: string, updates: { title?: string, content?: string }) => void} props.onUpdateEntry
+ *        Persistiert Inline-Bearbeitungen.
+ * @returns {JSX.Element} Panel mit Filterleiste und Eintragsliste.
  */
 const EntriesPage = ({
   entries,

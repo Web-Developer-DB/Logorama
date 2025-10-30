@@ -1,10 +1,28 @@
+/**
+ * @file EntryCard.jsx
+ * @description Einzelkarte eines Logeintrags mit Inline-Bearbeitung,
+ * Anzeige des Erstellungszeitpunkts und zweistufiger Löschinteraktion.
+ */
+
 import { memo, useEffect, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
 import { PencilIcon, CheckIcon, TrashIcon } from "./icons.jsx";
 import { formatDateTime } from "../utils/formatters.js";
 
 /**
+ * @typedef {Object} Entry
+ * @property {string} id
+ * @property {string} title
+ * @property {string} content
+ * @property {string} createdAt
+ * @property {string} editedAt
+ */
+
+/**
  * Ermittelt das Initial für den Avatar-Kringel – bevorzugt Titel, sonst Content.
+ *
+ * @param {Entry} entry Eintrag, dessen Initial berechnet werden soll.
+ * @returns {string} Großbuchstabe für den Avatar-Kreis.
  */
 const getInitial = (entry) => {
   const source = (entry.title || entry.content || "L").trim();
@@ -14,6 +32,13 @@ const getInitial = (entry) => {
 /**
  * Präsentationskomponente für einen einzelnen Logeintrag.
  * Unterstützt Inline-Bearbeitung der Inhalte sowie den zweistufigen Löschvorgang.
+ *
+ * @param {Object} props React-Props.
+ * @param {Entry} props.entry Datensatz für die Karte.
+ * @param {(id: string) => void} props.onDelete Callback zum Verschieben in den Papierkorb.
+ * @param {(id: string, updates: { title?: string, content?: string }) => void} props.onUpdate
+ *        Persistiert Änderungen an Titel oder Inhalt.
+ * @returns {JSX.Element} Artikel mit Bearbeitungsoptionen.
  */
 const EntryCard = ({ entry, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);

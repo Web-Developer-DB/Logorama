@@ -1,3 +1,8 @@
+/**
+ * @file HomePage.jsx
+ * @description Landing-Route mit Kennzahlen, Hero-Text und Schnellzugriffen.
+ */
+
 import { Link } from "react-router-dom";
 import ActiveEntriesSection from "../ActiveEntriesSection.jsx";
 import ThemeToggle from "../ThemeToggle.jsx";
@@ -6,6 +11,20 @@ import ThemeToggle from "../ThemeToggle.jsx";
  * Startseite mit Kennzahlen, Hero-Text und den drei neuesten Einträgen.
  * Die Komponente ist bewusst presentational und erhält alle Aktionen/Stände
  * über Props, damit sie sich leicht testen lässt.
+ *
+ * @param {Object} props React-Props.
+ * @param {{ totalEntries: number, todayCount: number, weekCount: number, trashEntryCount: number }} props.stats
+ *        Aggregierte Kennzahlen.
+ * @param {Array} props.latestEntries Neueste Einträge (bereits reduziert auf drei Elemente).
+ * @param {(id: string) => void} props.onDeleteEntry Übergibt Löschwünsche an die App.
+ * @param {(id: string, updates: { title?: string, content?: string }) => void} props.onUpdateEntry
+ *        Persistiert Inline-Änderungen.
+ * @param {"system"|"light"|"dark"} props.themeMode Gewählter Modus-Schalter.
+ * @param {"light"|"dark"} props.resolvedTheme Tatsächlich aktives Theme.
+ * @param {() => void} props.onToggleTheme Durchläuft die Theme-Modi.
+ * @param {() => void} props.onInstallApp Löst die PWA-Installation aus.
+ * @param {boolean} props.canInstall Steuert, ob der Installationsbutton sichtbar ist.
+ * @returns {JSX.Element} Kompletter Home-Screen.
  */
 const HomePage = ({
   stats,

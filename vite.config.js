@@ -1,3 +1,8 @@
+/**
+ * @file vite.config.js
+ * @description Build- und Dev-Server-Konfiguration für die React-PWA.
+ */
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
