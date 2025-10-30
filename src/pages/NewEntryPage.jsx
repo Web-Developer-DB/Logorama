@@ -3,7 +3,7 @@
  * @description Route für das Formular zum Anlegen neuer Einträge.
  */
 
-import EntryForm from "../EntryForm.jsx";
+import EntryForm from "../components/EntryForm.jsx";
 
 /**
  * Stellt das Formular für neue Einträge bereit. Die Komponente erhält

@@ -4,7 +4,7 @@
  * Handler-Benennungen der App bei, um Prop-Weitergaben übersichtlich zu halten.
  */
 
-import TrashSection from "../TrashSection.jsx";
+import TrashSection from "../components/TrashSection.jsx";
 
 /**
  * Präsentationskomponente für den Papierkorb-Tab. Sie delegiert sämtliche
