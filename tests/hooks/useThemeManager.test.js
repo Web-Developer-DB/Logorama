@@ -5,7 +5,7 @@
 
 import React from "react";
 import { act, cleanup, render } from "@testing-library/react";
-import useThemeManager from "./useThemeManager.js";
+import useThemeManager from "../../src/hooks/useThemeManager.js";
 
 const matchMediaMock = () => {
   let listener = null;

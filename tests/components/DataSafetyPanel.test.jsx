@@ -5,7 +5,7 @@
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import DataSafetyPanel from "./DataSafetyPanel.jsx";
+import DataSafetyPanel from "../../src/components/DataSafetyPanel.jsx";
 
 describe("DataSafetyPanel", () => {
   test("reicht Export/Import-Callbacks weiter und blendet Disable-State ein", async () => {

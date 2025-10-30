@@ -6,15 +6,15 @@
 
 import { MemoryRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
-import App from "./App.jsx";
+import App from "../src/App.jsx";
 
-jest.mock("./hooks/useEntriesManager.js", () => jest.fn());
-jest.mock("./hooks/useThemeManager.js", () => jest.fn());
-jest.mock("./hooks/useInstallPrompt.js", () => jest.fn());
+jest.mock("../src/hooks/useEntriesManager.js", () => jest.fn());
+jest.mock("../src/hooks/useThemeManager.js", () => jest.fn());
+jest.mock("../src/hooks/useInstallPrompt.js", () => jest.fn());
 
-const useEntriesManager = jest.requireMock("./hooks/useEntriesManager.js");
-const useThemeManager = jest.requireMock("./hooks/useThemeManager.js");
-const useInstallPrompt = jest.requireMock("./hooks/useInstallPrompt.js");
+const useEntriesManager = jest.requireMock("../src/hooks/useEntriesManager.js");
+const useThemeManager = jest.requireMock("../src/hooks/useThemeManager.js");
+const useInstallPrompt = jest.requireMock("../src/hooks/useInstallPrompt.js");
 
 const buildEntriesManager = () => ({
   entries: [{ id: "1", title: "Titel", content: "Content", createdAt: new Date().toISOString(), editedAt: new Date().toISOString() }],

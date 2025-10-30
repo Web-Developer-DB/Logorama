@@ -5,7 +5,7 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ThemeToggle from "./ThemeToggle.jsx";
+import ThemeToggle from "../../src/components/ThemeToggle.jsx";
 
 describe("ThemeToggle", () => {
   test("zeigt Label entsprechend des Modus und löst Toggle aus", async () => {

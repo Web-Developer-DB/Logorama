@@ -5,7 +5,7 @@
 
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ConfirmButton from "./ConfirmButton.jsx";
+import ConfirmButton from "../../src/components/ConfirmButton.jsx";
 
 describe("ConfirmButton", () => {
   test("fordert Bestätigung an und ruft Callback erst beim zweiten Klick auf", async () => {

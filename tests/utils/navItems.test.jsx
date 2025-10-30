@@ -3,7 +3,7 @@
  * @description Validiert Badgelogik und Icon-Vergabe der Navigationshilfe.
  */
 
-import { buildNavItems } from "./navItems.jsx";
+import { buildNavItems } from "../../src/utils/navItems.jsx";
 
 describe("buildNavItems", () => {
   test("liefert für jede Route ein Icon und optionales Badge", () => {

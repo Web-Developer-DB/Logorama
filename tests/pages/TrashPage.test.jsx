@@ -6,7 +6,7 @@
 
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import TrashPage from "./TrashPage.jsx";
+import TrashPage from "../../src/pages/TrashPage.jsx";
 
 const initialEntries = [
   {
