@@ -1,8 +1,22 @@
+/**
+ * @file TrashPage.jsx
+ * @description Route für den Papierkorb. Nutzt `TrashSection`, behält aber die
+ * Handler-Benennungen der App bei, um Prop-Weitergaben übersichtlich zu halten.
+ */
+
 import TrashSection from "../TrashSection.jsx";
 
 /**
  * Präsentationskomponente für den Papierkorb-Tab. Sie delegiert sämtliche
  * Aktionen an Props und kann so unkompliziert getestet werden.
+ *
+ * @param {Object} props React-Props.
+ * @param {Array} props.entries Papierkorb-Einträge einschließlich Zeitstempel.
+ * @param {(id: string) => void} props.onRestoreEntry Stellt einen Eintrag wieder her.
+ * @param {(id: string) => void} props.onDeleteForever Entfernt den Eintrag dauerhaft.
+ * @param {() => void} props.onEmptyTrash Entfernt alle Einträge mit Nutzerbestätigung.
+ * @param {(isoString: string) => string} props.formatDateTime Formatiert Datum in menschenlesbare Form.
+ * @returns {JSX.Element} Panel-Wrapper für den Papierkorb.
  */
 const TrashPage = ({
   entries,

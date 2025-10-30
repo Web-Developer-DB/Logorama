@@ -1,3 +1,9 @@
+/**
+ * @file navItems.jsx
+ * @description Stellt Navigationseinträge und zugehörige Icons bereit. Desktop und Mobile Nav
+ * greifen auf dieselbe Datenquelle zurück.
+ */
+
 const HomeIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <path
@@ -135,6 +141,12 @@ const resolveBadge = (badgeKey, stats = {}) => {
 
 /**
  * Mapped das Konfigurationsarray in die Form, die Desktop- und Mobilnavigation benötigen.
+ */
+/**
+ * Baut das Navigationsmodell inklusive Icon-Komponenten und optionalen Badges.
+ *
+ * @param {{ totalEntries?: number, trashEntryCount?: number }} [stats={}] Aggregierte Zahlenwerte.
+ * @returns {Array<{ key: string, label: string, to: string, end: boolean, icon: JSX.Element, badge: number|null }>}
  */
 export const buildNavItems = (stats = {}) =>
   NAV_CONFIG.map(({ Icon, badgeKey, ...item }) => ({

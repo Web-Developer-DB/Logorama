@@ -1,9 +1,20 @@
+/**
+ * @file MobileNav.jsx
+ * @description Kompakte Hauptnavigation für kleinere Displays. Nutzt dieselbe
+ * Datenquelle wie die Desktop-Variante, rendert jedoch Touch-optimierte Buttons.
+ */
+
 import { memo, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { buildNavItems } from "../utils/navItems.jsx";
 
 /**
  * Mobile Variante der Hauptnavigation mit Icons und Badges.
+ *
+ * @param {Object} props React-Props.
+ * @param {{ totalEntries?: number, trashEntryCount?: number }} props.stats
+ *        Summen, die optional als Badges angezeigt werden.
+ * @returns {JSX.Element} Navigationsleiste für mobile Geräte.
  */
 const MobileNav = ({ stats }) => {
   const { totalEntries = 0, trashEntryCount = 0 } = stats ?? {};

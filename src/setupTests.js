@@ -1,3 +1,9 @@
+/**
+ * @file setupTests.js
+ * @description Gemeinsamer Jest-Setup für React Testing Library. Stellt DOM-/PWA-Stubs bereit
+ * und dokumentiert optionale Erweiterungen (Accessibility, MSW).
+ */
+
 import "@testing-library/jest-dom";
 
 // Helper to create a mock function regardless of whether Jest globals exist yet.

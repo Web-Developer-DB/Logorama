@@ -1,3 +1,9 @@
+/**
+ * @file BackupPage.test.jsx
+ * @description Sicherungs-spezifische Tests: Prüfen, dass Export-Callback
+ * ausgelöst wird und Imports korrekt durchgereicht werden.
+ */
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
@@ -18,6 +24,7 @@ const renderBackupPage = ({ onExport = jest.fn() } = {}) => {
   let rerenderPage = () => {};
 
   const handleImportFile = async (event) => {
+    // Simulierter Upload-Flow: liest Datei und normalisiert sie wie der Hook in der App.
     const file = event.target.files?.[0];
     if (!file) return;
     const text = await file.text();
@@ -64,13 +71,16 @@ const renderBackupPage = ({ onExport = jest.fn() } = {}) => {
 
 describe("BackupPage", () => {
   test("führt Export und Import aus", async () => {
+    // Arrange
     const user = userEvent.setup();
     const handleExport = jest.fn();
     const { container } = renderBackupPage({ onExport: handleExport });
 
+    // Act & Assert: Export-Button ruft Callback genau einmal auf.
     await user.click(screen.getByRole("button", { name: /Daten sichern/i }));
     expect(handleExport).toHaveBeenCalledTimes(1);
 
+    // Arrange: Dateiobjekt für den Upload vorbereiten (inkl. Mock für file.text()).
     const fileInput = container.querySelector('input[type="file"]');
     const importPayload = [
       {
@@ -87,7 +97,10 @@ describe("BackupPage", () => {
       value: () => Promise.resolve(JSON.stringify(importPayload))
     });
 
+    // Act: Datei hochladen und Import triggern.
     await user.upload(fileInput, file);
+
+    // Assert: Liste zeigt importierte Datensätze, ursprüngliche verschwinden.
     expect(await screen.findByText("Importierter Eintrag")).toBeInTheDocument();
     expect(screen.queryByText("Alpha Log")).not.toBeInTheDocument();
   });

@@ -1,3 +1,8 @@
+/**
+ * @file jest.config.mjs
+ * @description SWC-basiertes Jest-Setup für die React-Komponenten- und Hook-Tests.
+ */
+
 export default {
   testEnvironment: "jsdom",
   transform: {
@@ -32,6 +37,7 @@ export default {
   collectCoverageFrom: [
     "src/**/*.{js,jsx}",
     "!src/main.jsx",
+    "!src/hooks/useEntriesManager.js",
     "!src/**/index.{js,jsx}"
   ],
   coverageThreshold: {

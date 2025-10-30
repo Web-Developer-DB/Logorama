@@ -1,3 +1,9 @@
+/**
+ * @file useThemeManager.js
+ * @description Hook, der Theme-Modi (System, Light, Dark) inkl. Persistenz und
+ * OS-Listenern verwaltet.
+ */
+
 import { useCallback, useEffect, useState } from "react";
 
 const THEME_STORAGE_KEY = "logorama-theme-mode";
@@ -52,6 +58,12 @@ const getInitialThemeMode = () => {
  * Kapselt das komplette Theme-State-Handling inklusive Persistenz,
  * System-Listenern und Wechsel-Shortcut. Komponenten konsumieren nur noch
  * die Rückgabewerte und müssen keine Seiteneffekte mehr selbst verwalten.
+ *
+ * @returns {{
+ *   themeMode: "system"|"light"|"dark",
+ *   resolvedTheme: "light"|"dark",
+ *   cycleThemeMode: () => void
+ * }} Steuerobjekt für Theme-Umschalter.
  */
 const useThemeManager = () => {
   const initialThemeMode = getInitialThemeMode();

@@ -1,3 +1,9 @@
+/**
+ * @file ThemeToggle.jsx
+ * @description Umschalter zwischen System-, Hell- und Dunkelmodus. Stellt
+ * separate Darstellungen für Hero-Bereich und mobile Navigation bereit.
+ */
+
 import { memo } from "react";
 
 /**
@@ -51,6 +57,13 @@ const SystemIcon = () => (
 /**
  * Umschalter zwischen System-, Licht- und Dunkelmodus.
  * Zeigt je nach Kontext (Hero vs. Mobile Nav) unterschiedliche Layouts an.
+ *
+ * @param {Object} props React-Props.
+ * @param {"system"|"light"|"dark"} props.mode Aktueller Modus.
+ * @param {"light"|"dark"} props.resolvedTheme Tatsächlich aktives Farbschema.
+ * @param {() => void} props.onToggle Callback zum Weiterblättern des Modus.
+ * @param {"hero"|"nav"} [props.variant="hero"] Layoutvariante.
+ * @returns {JSX.Element} Button mit passendem Icon.
  */
 const ThemeToggle = ({ mode, resolvedTheme, onToggle, variant = "hero" }) => {
   const isSystem = mode === "system";

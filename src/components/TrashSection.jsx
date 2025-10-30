@@ -1,9 +1,23 @@
+/**
+ * @file TrashSection.jsx
+ * @description Zeigt sämtliche gelöschten Einträge mit Wiederherstellungs- und
+ * Löschoptionen. Wird sowohl in der Seite als auch potenziell in Dialogen verwendet.
+ */
+
 import { memo } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
 import { RestoreIcon, TrashIcon } from "./icons.jsx";
 
 /**
  * Zeigt den Papierkorb ohne Akkordeon – alle Einträge werden direkt dargestellt.
+ *
+ * @param {Object} props React-Props.
+ * @param {Array} props.entries Papierkorb-Einträge mit Zeitstempeln.
+ * @param {(id: string) => void} props.onRestore Handler zur Wiederherstellung.
+ * @param {(id: string) => void} props.onDeleteForever Endgültiges Entfernen.
+ * @param {() => void} props.onEmptyTrash Leert den gesamten Papierkorb.
+ * @param {(isoString: string) => string} props.formatDateTime Hilfsfunktion für Datumsausgabe.
+ * @returns {JSX.Element} Panel mit Papierkorb-Einträgen oder Leerzustand.
  */
 const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, formatDateTime }) => {
   const hasEntries = entries.length > 0;
