@@ -25,25 +25,53 @@
 
 > 💡 Linting: ESLint ist konfiguriert (`eslint.config.js`). Für formatierte Commits empfiehlt sich zusätzlich Prettier (`npx prettier --check \"src/**/*.{js,jsx,css}\"`). Eine Prettier-Konfiguration kann bei Bedarf ergänzt werden.
 
-## Architektur-Überblick
+## Projektstruktur
 
 ```
-src/
-├─ App.jsx                # Routing, globale Hooks, Desktop/Mobile-Navigation
-├─ main.jsx               # React-Einstieg + Service-Worker-Registrierung
-├─ components/
-│  ├─ [UI-Bausteine].jsx  # Wiederverwendbare Komponenten (EntryCard, ThemeToggle, …)
-│  └─ pages/              # Presentational Routes (Home, Entries, Trash, Backup, Help)
-├─ hooks/                 # State- & Effekt-Logik (Theme, Entries, InstallPrompt)
-├─ utils/                 # Normalisierung, Navigation, Formatierung
-├─ styles.css             # Globales Stylesheet inkl. Dark-Mode-Variablen
-└─ setupTests.js          # Jest-/RTL-Setup mit Service-Worker- und FS-APIs
+.
+├─ src/
+│  ├─ App.jsx                # App-Shell mit Routing und State-Orchestrierung
+│  ├─ main.jsx               # React-Einstieg + Service-Worker-Registrierung
+│  ├─ styles.css             # Globales Stylesheet inkl. Dark-Mode-Variablen
+│  ├─ setupTests.js          # Jest-/RTL-Bootstrap mit SW-/FS-Stubs
+│  ├─ components/
+│  │  ├─ DesktopNav.jsx      # Navigationsleiste für große Viewports
+│  │  ├─ MobileNav.jsx       # Kompakte Navigation + Floating Actions
+│  │  ├─ EntryCard.jsx       # Darstellung einzelner Logbuch-Einträge
+│  │  ├─ EntryForm.jsx       # Formulare für neue/aktualisierte Einträge
+│  │  ├─ ThemeToggle.jsx     # Umschalten zwischen Hell-/Dunkelmodus
+│  │  ├─ ActiveEntriesSection.jsx, TrashSection.jsx, SearchFilter.jsx, …
+│  │  └─ icons.jsx           # Sammlung optimierter SVG-Icons
+│  ├─ pages/
+│  │  ├─ HomePage.jsx        # Dashboard mit Statistiken & neuesten Einträgen
+│  │  ├─ EntriesPage.jsx     # Verwaltung mit Suche, Filter & Bulk-Actions
+│  │  ├─ NewEntryPage.jsx    # Eingabe-Assistent für neue Logbucheinträge
+│  │  ├─ TrashPage.jsx       # Papierkorb inkl. Wiederherstellung/Entfernen
+│  │  ├─ BackupPage.jsx      # Import-/Export-Flows und Datensicherung
+│  │  └─ HelpPage.jsx        # Integriertes Handbuch & Onboarding
+│  ├─ hooks/
+│  │  ├─ useEntriesManager.js  # CRUD, Persistenz, Sync & Papierkorb-Logik
+│  │  ├─ useThemeManager.js    # Theme-Zustand + Media-Query-Integration
+│  │  └─ useInstallPrompt.js   # Verwaltung des beforeinstallprompt-Events
+│  └─ utils/
+│     ├─ entries.js           # Normalisierung & Transformation von Einträgen
+│     ├─ formatters.js        # Datum-/Textformatierung & Anzeige-Helfer
+│     └─ navItems.jsx         # Zentraler Katalog für Routen & Navigation
+├─ public/
+│  ├─ manifest.webmanifest    # PWA-Metadaten, Shortcuts & Icon-Setup
+│  └─ service-worker.js       # Cache-Strategien & Offline-Fallback
+├─ tests/
+│  ├─ App.test.jsx            # Smoke- & Navigations-Checks
+│  ├─ components/*.test.jsx   # Unit-Tests für UI-Bausteine
+│  ├─ hooks/*.test.js         # Logik-Tests mit Mocked Browser-APIs
+│  └─ pages/*.test.jsx        # Arrange–Act–Assert je Route
+└─ vite.config.js             # Build-/Dev-Server-Konfiguration
 ```
 
-- **Container vs. Präsentation:** `App.jsx` orchestriert State & Routing. Alle Seiten-/UI-Komponenten sind bewusst dünn gehalten und erhalten ihre Props/Treiber über die Hooks.  
-- **Hooks:** `useEntriesManager` kapselt CRUD, LocalStorage, Import/Export sowie Papierkorb; `useThemeManager` behandelt Persistenz & Media-Queries; `useInstallPrompt` speichert das `beforeinstallprompt`-Event.  
-- **Tests:** Jede kritische Route hat eine `*.test.jsx`-Datei mit Arrange–Act–Assert-Erklärungen.  
-- **Dokumentation im Code:** Alle Dateien besitzen Einsteiger-taugliche Header- und Inline-Kommentare (siehe `HelpPage.jsx`, `useEntriesManager.js`).
+- **Trennung von Zuständen und UI:** `App.jsx` reicht ausschließlich vorbereitete Daten/Handler weiter, damit Komponenten und Seiten presentational bleiben.  
+- **Spezialisierte Hooks:** `useEntriesManager` kapselt CRUD, LocalStorage, Import/Export und Papierkorb; `useThemeManager` verwaltet Theme-Persistenz und Media Queries; `useInstallPrompt` puffert das Installations-Event.  
+- **Testabdeckung pro Schicht:** Komponenten-, Seiten- und Hook-Tests spiegeln den Ordneraufbau wider und nutzen identische Arrange–Act–Assert-Muster.  
+- **Stringente Inline-Dokumentation:** Header-Kommentare erläutern Zweck & Kontext jeder Datei (siehe `src/pages/HelpPage.jsx`, `src/hooks/useEntriesManager.js`).
 
 ## PWA-Features
 
