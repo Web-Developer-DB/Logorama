@@ -1010,6 +1010,29 @@ main.app-shell {
   font-size: 0.9rem;
 }
 
+/*  Klasse: .help-content__image                                              */
+/*  Erklaerung: Stellt eingebettete Screenshots responsiv und sauber dar.     */
+.help-content__image {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 24px rgba(8, 12, 30, 0.4);
+}
+
+/*  Klasse: .help-content__figure-grid                                        */
+/*  Erklaerung: Platziert mehrere Screenshots nebeneinander (mobile gestapelt).*/
+.help-content__figure-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.help-content__figure-grid .help-content__image {
+  flex: 1 1 240px;
+  min-width: 220px;
+}
+
 /*  Klasse: .help-content__footer                                             */
 /*  Erklaerung: Hinweisbereich mit Verweisen auf Dokumentation.               */
 .help-content__footer {
