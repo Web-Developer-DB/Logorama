@@ -3,7 +3,7 @@
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei festgehalten.
 Das Format orientiert sich an [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) und SemVer.
 
-## [Unreleased]
+## [1.0.2] - 2025-10-31
 
 ### Added
 - Komprimierte App-Screenshots (`public/images/help/*.webp`) samt Styles für eine bildgestützte Hilfe.
