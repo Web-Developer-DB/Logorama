@@ -16,10 +16,10 @@ describe("HelpPage", () => {
 
     render(<HelpPage />);
 
-    await user.click(screen.getByRole("button", { name: "Erste Schritte" }));
+    await user.click(screen.getByRole("button", { name: "Schnellüberblick" }));
 
     expect(scrollMock).toHaveBeenCalled();
-    const section = document.getElementById("quickstart");
+    const section = document.getElementById("overview");
     expect(section).not.toBeNull();
     expect(section?.contains(document.activeElement)).toBe(true);
 

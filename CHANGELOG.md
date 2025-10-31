@@ -3,6 +3,15 @@
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei festgehalten.
 Das Format orientiert sich an [Keep a Changelog](https://keepachangelog.com/de/1.1.0/) und SemVer.
 
+## [Unreleased]
+
+### Added
+- Komprimierte App-Screenshots (`public/images/help/*.webp`) samt Styles für eine bildgestützte Hilfe.
+
+### Changed
+- Hilfeseite inhaltlich und visuell überarbeitet: Screenshots eingebunden, Texte an aktuelle UI angepasst.
+- HelpPage-Test auf die neuen TOC-Bezeichnungen aktualisiert.
+
 ## [1.0.0] - 2025-10-30
 
 ### Added
