@@ -5,6 +5,7 @@
 
 import SearchFilter from "../components/SearchFilter.jsx";
 import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
+import Seo from "../components/Seo.jsx";
 
 /**
  * Zeigt die komplette Liste aller Einträge inklusive Suchleiste
@@ -31,21 +32,29 @@ const EntriesPage = ({
   onDeleteEntry,
   onUpdateEntry
 }) => (
-  <section className="panel">
-    <header className="panel-heading">
-      <h2 className="panel-title">Alle Einträge</h2>
-      <p className="panel-subtitle">
-        Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
-      </p>
-    </header>
-    <SearchFilter
-      searchValue={searchValue}
-      onSearchChange={onSearchChange}
-      filterValue={filterValue}
-      onFilterChange={onFilterChange}
+  <>
+    <Seo
+      title="Einträge durchsuchen – Logorama"
+      description="Durchsuche dein Logbuch nach Stichwort oder Zeitraum, um erledigte Schritte und Ideen blitzschnell zu finden."
+      path="/entries"
+      keywords="Logbuch durchsuchen, Filter Ansicht, Notizen finden, Einträge Liste"
     />
-    <ActiveEntriesSection entries={entries} onDelete={onDeleteEntry} onUpdate={onUpdateEntry} />
-  </section>
+    <section className="panel">
+      <header className="panel-heading">
+        <h2 className="panel-title">Alle Einträge</h2>
+        <p className="panel-subtitle">
+          Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
+        </p>
+      </header>
+      <SearchFilter
+        searchValue={searchValue}
+        onSearchChange={onSearchChange}
+        filterValue={filterValue}
+        onFilterChange={onFilterChange}
+      />
+      <ActiveEntriesSection entries={entries} onDelete={onDeleteEntry} onUpdate={onUpdateEntry} />
+    </section>
+  </>
 );
 
 export default EntriesPage;

@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import Seo from "../components/Seo.jsx";
 
 /**
  * @file HelpPage.jsx
@@ -13,6 +14,23 @@ const HelpPage = () => {
     { id: "trash", label: "Papierkorb nutzen" },
     { id: "backup", label: "Backup & Restore" },
     { id: "faq", label: "Tipps & FAQ" }
+  ];
+  const faqSchemaEntries = [
+    {
+      question: "Wie lege ich einen neuen Log an?",
+      answer:
+        "Öffne den Tab Neuer Eintrag oder den CTA auf der Startseite, gib Titel und Inhalt ein und speichere. Der Beitrag wird lokal im Browser persistent gespeichert."
+    },
+    {
+      question: "Kann ich gelöschte Notizen wiederherstellen?",
+      answer:
+        "Ja, alle entfernten Logs landen im Papierkorb. Von dort lässt sich jeder Eintrag wiederherstellen oder endgültig löschen."
+    },
+    {
+      question: "Wie sichere ich meine Daten mit Logorama?",
+      answer:
+        "Besuche den Bereich Backup & Restore und exportiere deine Einträge als JSON-Datei oder importiere eine vorhandene Sicherung."
+    }
   ];
 
   /**
@@ -43,6 +61,25 @@ const HelpPage = () => {
 
   return (
     <section className="panel help-panel" aria-labelledby="help-title">
+      <Seo
+        title="Hilfe & FAQ – Logorama"
+        description="Tutorials, FAQ und Screenshots zeigen dir Schritt für Schritt, wie du dein Lernjournal in Logorama führst."
+        path="/help"
+        keywords="Logorama Hilfe, FAQ, Anleitung, Lernjournal Support, Logbuch PWA"
+        structuredData={({ canonicalUrl }) => ({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          url: canonicalUrl,
+          mainEntity: faqSchemaEntries.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer
+            }
+          }))
+        })}
+      />
       <header className="panel-heading">
         <h2 id="help-title" className="panel-title">
           Hilfe &amp; Einstieg

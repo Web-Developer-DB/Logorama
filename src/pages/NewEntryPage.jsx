@@ -4,6 +4,7 @@
  */
 
 import EntryForm from "../components/EntryForm.jsx";
+import Seo from "../components/Seo.jsx";
 
 /**
  * Stellt das Formular für neue Einträge bereit. Die Komponente erhält
@@ -18,13 +19,21 @@ import EntryForm from "../components/EntryForm.jsx";
  * @returns {JSX.Element} Panel mit Formular.
  */
 const NewEntryPage = ({ formState, onInputChange, onSubmit }) => (
-  <section className="panel">
-    <header className="panel-heading">
-      <h2 className="panel-title">Neuer Eintrag</h2>
-      <p className="panel-subtitle">Halte neue Gedanken, Ideen oder Fortschritte direkt fest.</p>
-    </header>
-    <EntryForm formState={formState} onInputChange={onInputChange} onSubmit={onSubmit} />
-  </section>
+  <>
+    <Seo
+      title="Neuen Eintrag erstellen – Logorama"
+      description="Dokumentiere neue Gedanken, Tickets oder Lernfortschritte direkt im Browser – komplett offline-fähig."
+      path="/new"
+      keywords="Neuer Log, Eintrag erstellen, Notiz hinzufügen, Lernjournal erstellen"
+    />
+    <section className="panel">
+      <header className="panel-heading">
+        <h2 className="panel-title">Neuer Eintrag</h2>
+        <p className="panel-subtitle">Halte neue Gedanken, Ideen oder Fortschritte direkt fest.</p>
+      </header>
+      <EntryForm formState={formState} onInputChange={onInputChange} onSubmit={onSubmit} />
+    </section>
+  </>
 );
 
 export default NewEntryPage;

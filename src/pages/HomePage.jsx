@@ -6,6 +6,7 @@
 import { Link } from "react-router-dom";
 import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
 import ThemeToggle from "../components/ThemeToggle.jsx";
+import Seo from "../components/Seo.jsx";
 
 /**
  * Startseite mit Kennzahlen, Hero-Text und den drei neuesten Einträgen.
@@ -38,6 +39,38 @@ const HomePage = ({
   canInstall
 }) => (
   <>
+    <Seo
+      title="Logorama – Offline Lernjournal & Notiz-PWA"
+      description="Plane Projekte, halte Fortschritte fest und arbeite offline weiter – Logorama speichert deine Einträge lokal, bietet Filter und lässt sich als PWA installieren."
+      path="/home"
+      keywords="Logorama, Lernjournal, Offline Notizen, Productivity App, PWA, Hash Router, JSON Export"
+      structuredData={({ canonicalUrl }) => ({
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "Logorama",
+        url: canonicalUrl,
+        applicationCategory: "ProductivityApplication",
+        operatingSystem: "Web",
+        inLanguage: "de-DE",
+        description:
+          "Logorama ist eine kostenlose Web-App, die persönliche Logs offline speichert, filtert und als PWA installierbar ist.",
+        creator: {
+          "@type": "Person",
+          name: "Dimitri B"
+        },
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "EUR"
+        },
+        featureList: [
+          "Offline nutzbar ohne Konto",
+          "JSON Export & Import",
+          "Filter für Zeiträume und Suche",
+          "Installierbar als Progressive Web App"
+        ]
+      })}
+    />
     <header className="app-hero">
       <div className="app-hero__content">
         <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
