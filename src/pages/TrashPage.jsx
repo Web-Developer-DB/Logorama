@@ -5,6 +5,7 @@
  */
 
 import TrashSection from "../components/TrashSection.jsx";
+import Seo from "../components/Seo.jsx";
 
 /**
  * Präsentationskomponente für den Papierkorb-Tab. Sie delegiert sämtliche
@@ -25,13 +26,22 @@ const TrashPage = ({
   onEmptyTrash,
   formatDateTime
 }) => (
-  <TrashSection
-    entries={entries}
-    onRestore={onRestoreEntry}
-    onDeleteForever={onDeleteForever}
-    onEmptyTrash={onEmptyTrash}
-    formatDateTime={formatDateTime}
-  />
+  <>
+    <Seo
+      title="Papierkorb & Wiederherstellung – Logorama"
+      description="Stelle gelöschte Notizen wieder her oder entferne sie endgültig. Logorama bewahrt alles sicher im Browser auf."
+      path="/trash"
+      noindex
+      keywords="Papierkorb, Einträge wiederherstellen, gelöschte Notizen, Trash Logbuch"
+    />
+    <TrashSection
+      entries={entries}
+      onRestore={onRestoreEntry}
+      onDeleteForever={onDeleteForever}
+      onEmptyTrash={onEmptyTrash}
+      formatDateTime={formatDateTime}
+    />
+  </>
 );
 
 export default TrashPage;

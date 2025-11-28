@@ -5,6 +5,7 @@
  */
 
 import DataSafetyPanel from "../components/DataSafetyPanel.jsx";
+import Seo from "../components/Seo.jsx";
 
 /**
  * Präsentationsseite für Backups. Die JSON-Aktionen werden aus der App
@@ -22,7 +23,20 @@ const BackupPage = ({
   onImportFile,
   disableExport
 }) => (
-  <DataSafetyPanel onExport={onExport} onImportFile={onImportFile} disableExport={disableExport} />
+  <>
+    <Seo
+      title="Backup & Restore – Logorama"
+      description="Erstelle ein JSON-Backup deines Lernjournals oder importiere bestehende Logs – ideal für Versionsstände oder Gerätewechsel."
+      path="/backup"
+      noindex
+      keywords="JSON Export, Logorama Backup, Datenimport, Notizen sichern"
+    />
+    <DataSafetyPanel
+      onExport={onExport}
+      onImportFile={onImportFile}
+      disableExport={disableExport}
+    />
+  </>
 );
 
 export default BackupPage;
