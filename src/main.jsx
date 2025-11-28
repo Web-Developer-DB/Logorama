@@ -8,6 +8,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import { inject } from "@vercel/analytics";
 import App from "./App.jsx";
 import "./styles.css";
 
@@ -17,12 +19,19 @@ if (!rootElement) {
   throw new Error("Root-Element nicht gefunden");
 }
 
+// Vercel Analytics liefert Privacy-freundliche Seitenstatistiken in Production-Builds.
+if (import.meta.env.PROD) {
+  inject();
+}
+
 // StrictMode sorgt für zusätzliche Checks in der Entwicklung (z. B. doppelte Effects).
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
+    <HelmetProvider>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </HelmetProvider>
   </React.StrictMode>
 );
 
