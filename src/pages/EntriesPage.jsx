@@ -40,17 +40,24 @@ const EntriesPage = ({
       keywords="Logbuch durchsuchen, Filter Ansicht, Notizen finden, Einträge Liste"
     />
     <section className="panel">
-      <header className="panel-heading">
-        <h2 className="panel-title">Alle Einträge</h2>
-        <p className="panel-subtitle">
-          Filtere nach Zeitraum und Stichwort, um deine Notizen schneller zu finden.
-        </p>
+      <header className="panel-heading panel-heading--split">
+        <div>
+          <p className="panel-eyebrow">Archiv</p>
+          <h2 className="panel-title">Alle Einträge</h2>
+          <p className="panel-subtitle">
+            Filtere nach Zeitraum und Stichwort, um relevante Notizen schneller zu finden.
+          </p>
+        </div>
+        <span className="panel-badge" aria-live="polite">
+          {entries.length} {entries.length === 1 ? "Ergebnis" : "Ergebnisse"}
+        </span>
       </header>
       <SearchFilter
         searchValue={searchValue}
         onSearchChange={onSearchChange}
         filterValue={filterValue}
         onFilterChange={onFilterChange}
+        resultCount={entries.length}
       />
       <ActiveEntriesSection entries={entries} onDelete={onDeleteEntry} onUpdate={onUpdateEntry} />
     </section>

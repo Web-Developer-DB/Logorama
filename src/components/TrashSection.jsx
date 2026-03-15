@@ -24,13 +24,24 @@ const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, forma
 
   return (
     <section className="panel trash-panel">
-      <header className="panel-heading">
-        <h2 className="panel-title">Papierkorb</h2>
-        <p className="panel-subtitle">
-          {hasEntries
-            ? `${entries.length} ${entries.length === 1 ? "Eintrag" : "Einträge"}`
-            : "Keine Einträge im Papierkorb"}
-        </p>
+      <header className="panel-heading panel-heading--split">
+        <div>
+          <p className="panel-eyebrow">Aufbewahrung</p>
+          <h2 className="panel-title">Papierkorb</h2>
+          <p className="panel-subtitle">
+            {hasEntries
+              ? `${entries.length} ${entries.length === 1 ? "Eintrag" : "Einträge"}`
+              : "Keine Einträge im Papierkorb"}
+          </p>
+        </div>
+        {hasEntries ? (
+          <button type="button" className="danger trash-clear" onClick={onEmptyTrash}>
+            <span className="button-icon">
+              <TrashIcon />
+            </span>
+            <span className="button-label">Papierkorb leeren</span>
+          </button>
+        ) : null}
       </header>
 
       {hasEntries ? (
@@ -71,12 +82,6 @@ const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, forma
               </article>
             ))}
           </div>
-          <button type="button" className="danger trash-clear" onClick={onEmptyTrash}>
-            <span className="button-icon">
-              <TrashIcon />
-            </span>
-            <span className="button-label">Papierkorb leeren</span>
-          </button>
         </>
       ) : (
         <div className="panel-empty">

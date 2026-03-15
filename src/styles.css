@@ -1,147 +1,103 @@
-/* @file styles.css - Globale Layout- und Komponenten-Styles der Logorama-PWA. */
-/* ========================================================================== */
-/*  Abschnitt: Globale Theme-Grundlage                                        */
-/*  Zweck: Import der Fonts sowie Definition aller CSS Custom Properties.     */
-/* ========================================================================== */
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
   color-scheme: light;
-  --color-surface: #f7f8fd;
-  --color-panel: #ffffff;
-  --color-panel-muted: #f1f4ff;
-  --color-border: rgba(37, 81, 187, 0.12);
-  --color-border-strong: rgba(37, 81, 187, 0.25);
-  --color-muted: #6b7280;
-  --color-emphasis: #0f172a;
-  --color-accent: #2551bb;
-  --color-primary-text: #ffffff;
-  --color-accent-soft: rgba(37, 81, 187, 0.12);
-  --color-accent-hover: #1f45a1;
-  --color-danger: #ea4669;
-  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.08);
-  --shadow-panel: 0 12px 28px rgba(15, 23, 42, 0.06);
-  --shadow-hover: 0 22px 46px rgba(37, 81, 187, 0.14);
-  --mobile-nav-height: 84px;
-  --color-hero-bg: linear-gradient(135deg, rgba(37, 81, 187, 0.18), rgba(37, 81, 187, 0.06));
-  --color-hero-border: rgba(37, 81, 187, 0.22);
-  --color-hero-eyebrow: rgba(15, 23, 42, 0.64);
-  --color-hero-lead: rgba(15, 23, 42, 0.72);
-  --color-metrics-bg: rgba(255, 255, 255, 0.9);
-  --color-metrics-border: rgba(37, 81, 187, 0.16);
-  --color-metrics-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  --color-label-strong: rgba(15, 23, 42, 0.85);
-  --color-input-bg: rgba(255, 255, 255, 0.9);
-  --color-input-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
-  --color-input-focus-border: rgba(37, 81, 187, 0.5);
-  --color-input-focus-shadow: 0 0 0 3px rgba(37, 81, 187, 0.16);
-  --color-secondary-bg: rgba(37, 81, 187, 0.08);
-  --color-secondary-bg-hover: rgba(37, 81, 187, 0.16);
-  --color-secondary-border: rgba(37, 81, 187, 0.22);
-  --color-ghost-border: rgba(15, 23, 42, 0.08);
-  --color-ghost-border-hover: rgba(37, 81, 187, 0.3);
-  --color-ghost-bg: transparent;
-  --color-ghost-bg-hover: transparent;
-  --color-danger-bg: rgba(234, 70, 105, 0.08);
-  --color-danger-bg-hover: rgba(234, 70, 105, 0.16);
-  --color-danger-border: rgba(234, 70, 105, 0.32);
-  --color-log-entry-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(241, 244, 255, 0.85));
-  --color-log-entry-border: rgba(37, 81, 187, 0.16);
-  --color-avatar-border: rgba(37, 81, 187, 0.35);
-  --color-avatar-bg: rgba(37, 81, 187, 0.12);
-  --color-paragraph: rgba(15, 23, 42, 0.78);
-  --color-paragraph-soft: rgba(15, 23, 42, 0.7);
-  --color-panel-empty-border: rgba(37, 81, 187, 0.24);
-  --color-panel-empty-bg: rgba(241, 244, 255, 0.55);
-  --color-panel-accent-bg: linear-gradient(180deg, rgba(241, 244, 255, 0.85), rgba(255, 255, 255, 0.94));
-  --color-footer-bg: linear-gradient(180deg, rgba(241, 244, 255, 0.6), rgba(255, 255, 255, 0.95));
-  --color-footer-border: rgba(37, 81, 187, 0.16);
-  --color-mobile-nav-bg: rgba(255, 255, 255, 0.94);
-  --color-mobile-nav-border: rgba(37, 81, 187, 0.2);
-  --color-mobile-nav-icon-bg: rgba(37, 81, 187, 0.1);
-  --color-mobile-nav-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  --footer-height: 56px;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.6;
+  --font-sans: "Manrope", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+  --color-surface: #f4f6f3;
+  --color-surface-accent: rgba(87, 116, 161, 0.12);
+  --color-panel: rgba(255, 255, 255, 0.88);
+  --color-panel-strong: #ffffff;
+  --color-panel-muted: rgba(244, 247, 251, 0.92);
+  --color-panel-accent: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 251, 0.96));
+  --color-border: rgba(34, 57, 89, 0.1);
+  --color-border-strong: rgba(34, 57, 89, 0.18);
+  --color-text: #172030;
+  --color-text-soft: rgba(23, 32, 48, 0.76);
+  --color-text-muted: #6b7483;
+  --color-accent: #225ea8;
+  --color-accent-hover: #184b89;
+  --color-accent-soft: rgba(34, 94, 168, 0.1);
+  --color-accent-soft-strong: rgba(34, 94, 168, 0.18);
+  --color-danger: #b84f5d;
+  --color-danger-soft: rgba(184, 79, 93, 0.12);
+  --color-danger-border: rgba(184, 79, 93, 0.24);
+  --color-input: rgba(255, 255, 255, 0.94);
+  --color-input-focus: rgba(34, 94, 168, 0.16);
+  --color-shadow: 0 16px 42px rgba(16, 24, 40, 0.08);
+  --color-shadow-soft: 0 8px 26px rgba(16, 24, 40, 0.06);
+  --color-shadow-strong: 0 24px 54px rgba(16, 24, 40, 0.12);
+  --color-mobile-nav-bg: rgba(246, 248, 245, 0.92);
+  --color-mobile-nav-border: rgba(34, 57, 89, 0.1);
+  --color-mobile-nav-highlight: rgba(34, 94, 168, 0.1);
+  --color-footer-bg: rgba(255, 255, 255, 0.74);
+  --color-footer-border: rgba(34, 57, 89, 0.08);
+  --mobile-nav-height: 90px;
+  --footer-height: 58px;
+  font-family: var(--font-sans);
+  line-height: 1.5;
   background-color: var(--color-surface);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Abschnitt: Dark-Theme Variablen                                           */
-/*  Zweck: Ueberschreibt Variablen fuer den dunklen Anzeigemodus.             */
-/* -------------------------------------------------------------------------- */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-surface: #0b1120;
-  --color-panel: #111a2e;
-  --color-panel-muted: #16223a;
-  --color-border: rgba(148, 161, 255, 0.18);
-  --color-border-strong: rgba(148, 161, 255, 0.35);
-  --color-muted: #94a3b8;
-  --color-emphasis: #e2e8f0;
-  --color-accent: #94a1ff;
-  --color-primary-text: #0b1120;
-  --color-accent-soft: rgba(148, 161, 255, 0.24);
-  --color-accent-hover: #8895ff;
-  --color-danger: #ff6b9c;
-  --shadow-soft: 0 26px 60px rgba(5, 11, 26, 0.55);
-  --shadow-panel: 0 20px 48px rgba(2, 8, 20, 0.5);
-  --shadow-hover: 0 24px 56px rgba(12, 22, 44, 0.55);
-  --color-hero-bg: linear-gradient(135deg, rgba(37, 81, 187, 0.12), rgba(13, 22, 45, 0.92));
-  --color-hero-border: rgba(148, 161, 255, 0.2);
-  --color-hero-eyebrow: rgba(148, 163, 255, 0.8);
-  --color-hero-lead: rgba(226, 232, 240, 0.78);
-  --color-metrics-bg: rgba(17, 27, 47, 0.85);
-  --color-metrics-border: rgba(148, 161, 255, 0.22);
-  --color-metrics-shadow: inset 0 1px 0 rgba(148, 161, 255, 0.08);
-  --color-label-strong: rgba(226, 232, 240, 0.92);
-  --color-input-bg: rgba(18, 29, 52, 0.92);
-  --color-input-shadow: inset 0 1px 2px rgba(2, 8, 20, 0.6);
-  --color-input-focus-border: rgba(148, 161, 255, 0.55);
-  --color-input-focus-shadow: 0 0 0 3px rgba(148, 161, 255, 0.18);
-  --color-secondary-bg: rgba(148, 161, 255, 0.16);
-  --color-secondary-bg-hover: rgba(148, 161, 255, 0.24);
-  --color-secondary-border: rgba(148, 161, 255, 0.28);
-  --color-ghost-border: rgba(148, 161, 255, 0.22);
-  --color-ghost-border-hover: rgba(148, 161, 255, 0.4);
-  --color-ghost-bg: rgba(255, 255, 255, 0.02);
-  --color-ghost-bg-hover: rgba(148, 161, 255, 0.1);
-  --color-danger-bg: rgba(255, 107, 156, 0.12);
-  --color-danger-bg-hover: rgba(255, 107, 156, 0.2);
-  --color-danger-border: rgba(255, 107, 156, 0.35);
-  --color-log-entry-bg: linear-gradient(145deg, rgba(24, 35, 58, 0.98), rgba(17, 28, 48, 0.92));
-  --color-log-entry-border: rgba(148, 161, 255, 0.18);
-  --color-avatar-border: rgba(148, 161, 255, 0.35);
-  --color-avatar-bg: rgba(148, 161, 255, 0.16);
-  --color-paragraph: rgba(226, 232, 240, 0.86);
-  --color-paragraph-soft: rgba(203, 213, 225, 0.78);
-  --color-panel-empty-border: rgba(148, 161, 255, 0.28);
-  --color-panel-empty-bg: rgba(19, 30, 52, 0.85);
-  --color-panel-accent-bg: linear-gradient(180deg, rgba(24, 38, 68, 0.94), rgba(16, 26, 46, 0.92));
-  --color-footer-bg: linear-gradient(180deg, rgba(14, 22, 40, 0.82), rgba(10, 16, 30, 0.94));
-  --color-footer-border: rgba(148, 161, 255, 0.22);
-  --color-mobile-nav-bg: rgba(10, 16, 30, 0.95);
-  --color-mobile-nav-border: rgba(148, 161, 255, 0.2);
-  --color-mobile-nav-icon-bg: rgba(148, 161, 255, 0.16);
-  --color-mobile-nav-highlight: inset 0 1px 0 rgba(148, 161, 255, 0.12);
-  --footer-height: 56px;
+  --color-surface: #0c1118;
+  --color-surface-accent: rgba(84, 117, 165, 0.22);
+  --color-panel: rgba(17, 24, 35, 0.88);
+  --color-panel-strong: rgba(20, 28, 40, 0.96);
+  --color-panel-muted: rgba(20, 30, 44, 0.92);
+  --color-panel-accent: linear-gradient(180deg, rgba(20, 28, 40, 0.94), rgba(16, 23, 34, 0.98));
+  --color-border: rgba(153, 176, 207, 0.12);
+  --color-border-strong: rgba(153, 176, 207, 0.2);
+  --color-text: #eef3fb;
+  --color-text-soft: rgba(238, 243, 251, 0.78);
+  --color-text-muted: #94a1b3;
+  --color-accent: #7cb0f0;
+  --color-accent-hover: #95c1f5;
+  --color-accent-soft: rgba(124, 176, 240, 0.16);
+  --color-accent-soft-strong: rgba(124, 176, 240, 0.28);
+  --color-danger: #f08795;
+  --color-danger-soft: rgba(240, 135, 149, 0.16);
+  --color-danger-border: rgba(240, 135, 149, 0.24);
+  --color-input: rgba(13, 20, 31, 0.94);
+  --color-input-focus: rgba(124, 176, 240, 0.18);
+  --color-shadow: 0 24px 56px rgba(0, 0, 0, 0.32);
+  --color-shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.24);
+  --color-shadow-strong: 0 32px 68px rgba(0, 0, 0, 0.4);
+  --color-mobile-nav-bg: rgba(12, 17, 24, 0.92);
+  --color-mobile-nav-border: rgba(153, 176, 207, 0.12);
+  --color-mobile-nav-highlight: rgba(124, 176, 240, 0.14);
+  --color-footer-bg: rgba(12, 17, 24, 0.84);
+  --color-footer-border: rgba(153, 176, 207, 0.12);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Abschnitt: Globale Basis-Styles                                           */
-/*  Zweck: Resets, Grundtypografie und globale Element-Defaults.              */
-/* -------------------------------------------------------------------------- */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--color-surface);
-  color: var(--color-emphasis);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top left, var(--color-surface-accent), transparent 28%),
+    radial-gradient(circle at top right, rgba(196, 208, 230, 0.14), transparent 22%),
+    var(--color-surface);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
 
 h1,
@@ -150,24 +106,22 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
-  color: var(--color-emphasis);
-  line-height: 1.2;
   margin: 0;
+  color: var(--color-text);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
 }
 
-p {
+p,
+ul,
+ol,
+dl {
   margin: 0;
 }
 
 a {
-  color: var(--color-accent);
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--color-accent-hover);
 }
 
 button,
@@ -178,402 +132,529 @@ select {
   color: inherit;
 }
 
-/* ========================================================================== */
-/*  Komponente: App Shell Layout                                              */
-/*  Zweck: Aeusserer Container fuer die komplette Anwendung.                  */
-/* ========================================================================== */
-/*  Selektor: main.app-shell                                                   */
-/*  Erklaerung: Zentriert den App-Inhalt und definiert vertikale Abstaende.    */
+button {
+  background: none;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 main.app-shell {
-  width: min(1160px, calc(100vw - 48px));
-  max-width: 100%;
+  width: min(1380px, calc(100vw - 40px));
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 64px) 0 clamp(92px, 10vw, 140px);
+  padding: clamp(24px, 4vw, 36px) 0 clamp(108px, 11vw, 140px);
+  display: grid;
+  gap: clamp(20px, 3vw, 28px);
+}
+
+.app-shell__content {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 5vw, 48px);
+  gap: clamp(20px, 3vw, 28px);
 }
 
-@media (max-width: 600px) {
+.app-canvas {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 28px);
+}
+
+@media (min-width: 1080px) {
   main.app-shell {
-    width: min(1160px, calc(100vw - 28px));
-    padding-top: clamp(24px, 8vw, 40px);
-    gap: clamp(24px, 8vw, 36px);
-  }
-}
-
-@media (max-width: 900px) {
-  /*  Selektor: main.app-shell (mobil)                                         */
-  /*  Erklaerung: Fuegt nach unten mehr Platz fuer die Mobile-Navigation hinzu.*/
-  main.app-shell {
-    padding-bottom: calc(var(--mobile-nav-height) + 48px);
-  }
-
-  /*  Selektor: main.app-shell.app-shell--has-footer                           */
-  /*  Erklaerung: Erweiterter Abstand, wenn gleichzeitig ein Footer eingeblendet ist.*/
-  main.app-shell.app-shell--has-footer {
-    padding-bottom: calc(var(--mobile-nav-height) + var(--footer-height) + 48px);
-  }
-}
-
-/* ========================================================================== */
-/*  Komponente: App Hero                                                      */
-/*  Zweck: Hero-Sektion mit Einleitungstext, KPIs und Handlungsaufforderung.  */
-/* ========================================================================== */
-/*  Klasse: .app-hero                                                          */
-/*  Erklaerung: Setzt die Hero-Sektion als Grid-Karte mit Hintergrund, Padding */
-/*              und Schatten, damit der erste Eindruck der App hervortritt.    */
-.app-hero {
-  display: grid;
-  gap: clamp(24px, 4vw, 32px);
-  padding: clamp(32px, 5vw, 48px);
-  border-radius: 32px;
-  background: var(--color-hero-bg);
-  border: 1px solid var(--color-hero-border);
-  box-shadow: var(--shadow-soft);
-}
-
-@media (min-width: 900px) {
-  /*  Klasse: .app-hero (Desktop Layout)                                       */
-  /*  Erklaerung: Teilt den Hero ab Tablet aufwaerts in zwei Spalten auf, damit */
-  /*              Text und KPIs nebeneinander stehen koennen.                  */
-  .app-hero {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-columns: 280px minmax(0, 1fr);
     align-items: start;
   }
 }
 
-@media (max-width: 600px) {
-  .app-hero {
-    padding: clamp(22px, 8vw, 36px);
-    border-radius: 24px;
+@media (max-width: 767px) {
+  main.app-shell {
+    width: min(1380px, calc(100vw - 24px));
+    padding-top: 18px;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: App Hero                                                   */
-/*  Zweck: Inhalte, Call-to-Actions und KPI-Liste innerhalb des Hero-Blocks.  */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .app-hero__content                                                 */
-/*  Erklaerung: Ordnet Ueberschrift, Beschreibung und Buttons vertikal an.     */
-.app-hero__content {
+@media (max-width: 1079px) {
+  main.app-shell {
+    padding-bottom: calc(var(--mobile-nav-height) + 44px);
+  }
+
+  main.app-shell.app-shell--has-footer {
+    padding-bottom: calc(var(--mobile-nav-height) + var(--footer-height) + 44px);
+  }
+}
+
+.app-topbar,
+.desktop-nav,
+.panel,
+.mobile-nav {
+  backdrop-filter: blur(20px);
+}
+
+.app-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: clamp(20px, 3vw, 24px);
+  border-radius: 28px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  box-shadow: var(--color-shadow);
+}
+
+.app-topbar__brand {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.app-topbar__eyebrow,
+.panel-eyebrow,
+.desktop-nav__eyebrow,
+.app-hero__eyebrow,
+.app-hero__section-label,
+.filter-toolbar__label,
+.desktop-nav__summary-title {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.app-topbar__brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.app-topbar__title {
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.app-topbar__pills,
+.app-topbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.app-topbar__pill,
+.panel-badge,
+.log-entry__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-soft);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.home-grid,
+.new-entry-layout {
+  display: grid;
+  gap: clamp(20px, 3vw, 28px);
+}
+
+@media (min-width: 1120px) {
+  .new-entry-layout {
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.82fr);
+    align-items: start;
+  }
+}
+
+.app-hero {
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  padding: clamp(26px, 4vw, 36px);
+  border-radius: 32px;
+  border: 1px solid var(--color-border);
+  background:
+    linear-gradient(145deg, var(--color-panel-strong), var(--color-panel-muted)),
+    var(--color-panel);
+  box-shadow: var(--color-shadow-strong);
+}
+
+@media (min-width: 920px) {
+  .app-hero {
+    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.92fr);
+    align-items: start;
+  }
+}
+
+.app-hero__content,
+.app-hero__aside {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-hero__content {
   gap: 18px;
 }
 
-/*  Klasse: .app-hero__eyebrow                                                 */
-/*  Erklaerung: Stellt die kleine Einleitungzeile in Grossbuchstaben dar.      */
-.app-hero__eyebrow {
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-hero-eyebrow);
+.app-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
 }
 
-/*  Klasse: .app-hero__lead                                                    */
-/*  Erklaerung: Formatiert den Einfuehrungstext und begrenzt die Breite fuer   */
-/*              leserliche Abschnitte.                                         */
 .app-hero__lead {
-  font-size: clamp(1rem, 0.6vw + 1rem, 1.2rem);
-  color: var(--color-hero-lead);
-  max-width: 640px;
+  max-width: 58ch;
+  color: var(--color-text-soft);
+  font-size: clamp(1rem, 1.4vw, 1.08rem);
 }
 
-/*  Klasse: .app-hero__actions                                                 */
-/*  Erklaerung: Gruppiert Buttons als flexible Zeile mit Zeilenumbruch.        */
 .app-hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 8px;
 }
 
-/*  Klasse: .app-hero__metrics                                                 */
-/*  Erklaerung: Zeigt Kennzahlen als Kachelraster mit Hintergrundkarte an.     */
+.app-hero__note {
+  color: var(--color-text-muted);
+  max-width: 56ch;
+}
+
+.app-hero__aside {
+  gap: 14px;
+  padding: clamp(18px, 2vw, 22px);
+  border-radius: 24px;
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(34, 94, 168, 0.08);
+}
+
 .app-hero__metrics {
   list-style: none;
-  margin: 0;
-  padding: clamp(20px, 3vw, 28px);
-  border-radius: 24px;
-  background: var(--color-metrics-bg);
-  border: 1px solid var(--color-metrics-border);
-  box-shadow: var(--color-metrics-shadow);
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.app-hero__metrics li {
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--color-panel-strong);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--color-shadow-soft);
+}
+
+.metric-value {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.metric-label {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.panel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: clamp(22px, 3vw, 30px);
+  border-radius: 28px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  box-shadow: var(--color-shadow);
+}
+
+.panel--spotlight,
+.trash-panel,
+.data-safety-panel {
+  background: var(--color-panel-accent);
+}
+
+.panel--aside {
   gap: 18px;
 }
 
-/*  Klasse: .metric-value                                                      */
-/*  Erklaerung: Hebt Zahlenwerte als groessere farbige Hauptwerte hervor.      */
-.metric-value {
-  display: block;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-/*  Klasse: .metric-label                                                      */
-/*  Erklaerung: Beschriftet die Kennzahlen in kleinerer, dezent grauer Schrift.*/
-.metric-label {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.85rem;
-  color: var(--color-muted);
-}
-
-/* ========================================================================== */
-/*  Layout: Dashboard Grid                                                    */
-/*  Zweck: Raster zur Platzierung der Haupt-Panels und Spezialsektionen.      */
-/* ========================================================================== */
-/*  Klasse: .dashboard-grid                                                    */
-/*  Erklaerung: Nutzt CSS Grid, um die Panels im Hauptbereich mit Abstaenden   */
-/*              zu organisieren.                                              */
-.dashboard-grid {
-  display: grid;
-  gap: clamp(22px, 4vw, 32px);
-}
-
-@media (min-width: 1080px) {
-  /*  Klasse: .dashboard-grid (Wide Layout)                                     */
-  /*  Erklaerung: Verteilt die Panels in zwei Spalten und steuert Sonderfaelle. */
-  .dashboard-grid {
-    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
-    align-items: start;
-  }
-
-  /*  Selektor: .dashboard-grid > .panel:nth-child(1)                           */
-  /*  Erklaerung: Laesst das erste Panel ueber die gesamte Breite laufen.       */
-  .dashboard-grid > .panel:nth-child(1) {
-    grid-column: 1 / -1;
-  }
-
-  /*  Selektor: .dashboard-grid > .panel:nth-child(2)                           */
-  /*  Erklaerung: Pinnt das zweite Panel in die erste Spalte ueber zwei Zeilen. */
-  .dashboard-grid > .panel:nth-child(2) {
-    grid-column: 1 / 2;
-    grid-row: span 2;
-  }
-
-  /*  Klasse: .trash-panel innerhalb des Grids                                  */
-  /*  Erklaerung: Positioniert den Papierkorb rechts neben dem Hauptstream.     */
-  .dashboard-grid > .trash-panel {
-    grid-column: 2 / 3;
-  }
-
-  /*  Klasse: .data-safety-panel innerhalb des Grids                            */
-  /*  Erklaerung: Platziert die Datensicherheitskarte ebenfalls rechts.         */
-  .dashboard-grid > .data-safety-panel {
-    grid-column: 2 / 3;
+@media (min-width: 1120px) {
+  .panel--aside {
+    position: sticky;
+    top: 24px;
   }
 }
 
-/* ========================================================================== */
-/*  Komponente: Panel                                                         */
-/*  Zweck: Generischer Karten-Container fuer einzelne Funktionsbereiche.      */
-/* ========================================================================== */
-/*  Klasse: .panel                                                             */
-/*  Erklaerung: Basiskarte mit Hintergrund, Padding und Schatten fuer Inhalte. */
-.panel {
-  border-radius: 26px;
-  padding: clamp(24px, 3vw, 32px);
-  background: var(--color-panel);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-panel);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 3vw, 24px);
-}
-
-@media (max-width: 600px) {
-  .panel {
-    padding: clamp(20px, 6vw, 28px);
-    border-radius: 22px;
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: Panel                                                      */
-/*  Zweck: Kopfzeile, Untertitel und Leerzustand von Panels.                  */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .panel-heading                                                     */
-/*  Erklaerung: Stapelt Titel und Untertitel eines Panels mit kleinem Abstand. */
 .panel-heading {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
-/*  Klasse: .panel-title                                                       */
-/*  Erklaerung: Steuert Typografie des Panel-Haupttitels.                      */
+.panel-heading--split {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .panel-title {
-  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
-  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
 }
 
-/*  Klasse: .panel-subtitle                                                    */
-/*  Erklaerung: Zeigt eine optionale Erklaerung unter dem Titel in Grau.       */
 .panel-subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-muted);
+  max-width: 62ch;
+  color: var(--color-text-muted);
 }
 
-/*  Klasse: .panel-empty                                                       */
-/*  Erklaerung: Visualisiert einen Leerzustand mit gestricheltem Rahmen.       */
 .panel-empty {
-  padding: 28px;
-  border-radius: 20px;
-  border: 1px dashed var(--color-panel-empty-border);
-  background: var(--color-panel-empty-bg);
+  padding: 32px 24px;
+  border-radius: 22px;
+  border: 1px dashed var(--color-border-strong);
+  background: var(--color-panel-muted);
+  color: var(--color-text-muted);
   text-align: center;
-  color: var(--color-muted);
-  font-weight: 500;
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Spezialisierung: Akzentuierte Panels                                      */
-/*  Zweck: Panels mit hervorgehobener Flaeche (Papierkorb, Datensicherheit).  */
-/* -------------------------------------------------------------------------- */
-/*  Klassen: .trash-panel, .data-safety-panel                                  */
-/*  Erklaerung: Uebernehmen denselben weichen Verlauf wie Highlight-Karten.    */
-.trash-panel,
-.data-safety-panel {
-  background: var(--color-panel-accent-bg);
+.info-list {
+  padding-left: 1.15rem;
+  color: var(--color-text-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* ========================================================================== */
-/*  Komponente: Log Formular                                                  */
-/*  Zweck: Eingabeoberflaechen fuer neue Log-Eintraege.                       */
-/* ========================================================================== */
-/*  Klasse: .log-form                                                          */
-/*  Erklaerung: Arrangiert Formularfelder und Abstaende in einer Spalte.       */
+.filter-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(200px, 0.9fr) auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.filter-toolbar__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.filter-toolbar__meta {
+  align-self: center;
+  padding-bottom: 12px;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .filter-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-toolbar__meta {
+    align-self: flex-start;
+    padding-bottom: 0;
+  }
+}
+
 .log-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/*  Selektor: .log-form label                                                  */
-/*  Erklaerung: Formatiert alle Label mit Spaltenlayout und deutlicher Schrift.*/
-.log-form label {
+.log-form__field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  font-weight: 600;
-  color: var(--color-label-strong);
-  font-size: 0.9rem;
+  gap: 10px;
 }
 
-/*  Selektorengruppe: Formular-Eingaben                                        */
-/*  Erklaerung: Vereinheitlicht Inputs sowie Filter-Felder mit gleichen Rahmen.*/
+.log-form__label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.log-form__meta {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.log-form__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.log-form__hint,
+.data-safety-panel__hint,
+.data-safety-panel__card p {
+  color: var(--color-text-soft);
+}
+
+.log-form__hint {
+  max-width: 48ch;
+}
+
 .log-form input,
 .log-form textarea,
 .filter-toolbar input,
-.filter-toolbar__select {
-  border-radius: 14px;
-  border: 1px solid var(--color-border-strong);
-  padding: 12px 16px;
-  background: var(--color-input-bg);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: var(--color-input-shadow);
+.filter-toolbar__select,
+.log-entry__title-input,
+.log-entry__editor {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-input);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
-/*  Selektorengruppe: Fokuszustand                                             */
-/*  Erklaerung: Betont aktive Eingaben durch prominentere Farbe und Shadow.    */
+.log-form input,
+.filter-toolbar input,
+.filter-toolbar__select,
+.log-entry__title-input {
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+.log-form textarea,
+.log-entry__editor {
+  min-height: 240px;
+  padding: 16px 18px;
+  resize: vertical;
+  line-height: 1.65;
+}
+
 .log-form input:focus,
 .log-form textarea:focus,
 .filter-toolbar input:focus,
-.filter-toolbar__select:focus {
+.filter-toolbar__select:focus,
+.log-entry__title-input:focus,
+.log-entry__editor:focus {
   outline: none;
-  border-color: var(--color-input-focus-border);
-  box-shadow: var(--color-input-focus-shadow);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-input-focus);
 }
 
-/*  Selektor: .log-form textarea                                               */
-/*  Erklaerung: Gibt dem Textbereich eine komfortable Mindesthoehe.            */
-.log-form textarea {
-  min-height: 220px;
-  resize: vertical;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Hilfsklasse: Actions                                                      */
-/*  Zweck: Geteilte Button-Gruppe fuer Formulare und Kartenfusszeilen.        */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .actions                                                           */
-/*  Erklaerung: Verwendet Flex-Layout, damit mehrere Buttons sauber umbrechen. */
-.actions {
+.actions,
+.log-entry__footer,
+.trash-entry-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
-.data-safety-panel__hint {
-  margin: 20px 0 0;
-  font-size: 0.95rem;
-  color: var(--color-label-strong);
-  line-height: 1.5;
+.log-entry__footer,
+.trash-entry-actions {
+  justify-content: flex-end;
 }
 
-/* ========================================================================== */
-/*  Komponente: Filter Toolbar                                                */
-/*  Zweck: Filter- und Suchleiste fuer Log-Eintraege.                         */
-/* ========================================================================== */
-/*  Klasse: .filter-toolbar                                                    */
-/*  Erklaerung: Ordnet Filterelemente nebeneinander an und richtet sie aus.    */
-.filter-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  align-items: center;
-}
-
-/*  Selektor: .filter-toolbar input                                            */
-/*  Erklaerung: Laesst die Eingabe zur Breite wachsen, damit sie den Platz nutzt.*/
-.filter-toolbar input {
-  flex: 1 1 220px;
-}
-
-/*  Klasse: .filter-toolbar__select                                            */
-/*  Erklaerung: Setzt feste Breite fuer Dropdowns, die bei Bedarf schrumpfen.  */
-.filter-toolbar__select {
-  flex: 0 0 200px;
-}
-
-@media (max-width: 600px) {
-  /*  Klasse: .filter-toolbar__select (Mobil)                                   */
-  /*  Erklaerung: Lässt Select auf kleineren Bildschirmen auf volle Breite ziehen.*/
-  .filter-toolbar__select {
-    flex: 1 1 160px;
-  }
-}
-
-/* ========================================================================== */
-/*  Komponenten: Button-Varianten                                             */
-/*  Zweck: Einheitliche Buttons fuer Primaer-, Sekundaer-, Ghost- und Danger. */
-/* ========================================================================== */
-/*  Selektorengruppe: Buttons                                                  */
-/*  Erklaerung: Setzt allgemeine Form, Gewichtung und Animation fuer Buttons.  */
 .primary,
 .secondary,
 .ghost,
 .danger {
-  font-weight: 600;
-  border-radius: 999px;
-  padding: 0.26rem 0.4rem;
-  font-size: 0.65rem;
-  line-height: 1.2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  border: none;
-  text-decoration: none;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease,
-    color 0.22s ease, border-color 0.22s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.primary:hover,
+.secondary:hover,
+.ghost:hover,
+.danger:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--color-shadow-soft);
+}
+
+.primary:disabled,
+.secondary:disabled,
+.ghost:disabled,
+.danger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.primary {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.secondary {
+  background: var(--color-accent-soft);
+  border-color: rgba(34, 94, 168, 0.12);
+  color: var(--color-accent);
+}
+
+.secondary:hover {
+  background: var(--color-accent-soft-strong);
+}
+
+.ghost {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.ghost:hover {
+  border-color: var(--color-border-strong);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.danger {
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger-border);
+  color: var(--color-danger);
 }
 
 .button-icon {
@@ -590,130 +671,58 @@ main.app-shell {
   white-space: nowrap;
 }
 
-/*  Klasse: .primary                                                           */
-/*  Erklaerung: Primaerknopf in Markenfarbe mit kontrastierendem Text und Schatten. */
-.primary {
-  background: var(--color-accent);
-  color: var(--color-primary-text);
-  box-shadow: var(--shadow-panel);
-}
-
-/*  Zustand: .primary:hover                                                    */
-/*  Erklaerung: Hebt den Button leicht an und intensiviert die Farbe.          */
-.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-  background: var(--color-accent-hover);
-  color: var(--color-primary-text);
-}
-
-/*  Zustand: .primary:disabled                                                 */
-/*  Erklaerung: Entschaerft inaktiven Button und entfernt Interaktionseffekte. */
-.primary:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  transform: none;
-  box-shadow: none;
-}
-
-/*  Klasse: .secondary                                                         */
-/*  Erklaerung: Alternative Button-Variante mit nur leichtem farbigen Akzent.  */
-.secondary {
-  background: var(--color-secondary-bg);
-  color: var(--color-accent);
-  border: 1px solid var(--color-secondary-border);
-}
-
-/*  Zustand: .secondary:hover                                                  */
-/*  Erklaerung: Verleiht der Sekundaer-Variante bei Hover mehr Tiefe.          */
-.secondary:hover {
-  transform: translateY(-2px);
-  background: var(--color-secondary-bg-hover);
-  box-shadow: var(--shadow-panel);
-}
-
-/*  Klasse: .ghost                                                             */
-/*  Erklaerung: Transparenter Button mit Rahmen fuer weniger dominante Aktionen.*/
-.ghost {
-  background: var(--color-ghost-bg);
-  color: var(--color-emphasis);
-  border: 1px solid var(--color-ghost-border);
-}
-
-/*  Zustand: .ghost:hover                                                      */
-/*  Erklaerung: Farbwechsel und Schatten, damit der Button bei Hover reagiert. */
-.ghost:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-ghost-border-hover);
-  color: var(--color-accent);
-  box-shadow: var(--shadow-panel);
-  background: var(--color-ghost-bg-hover);
-}
-
-/*  Klasse: .danger                                                            */
-/*  Erklaerung: Warnknopf fuer gefaehrliche Aktionen mit roten Toenen.         */
-.danger {
-  background: var(--color-danger-bg);
-  color: #c42245;
-  border: 1px solid var(--color-danger-border);
-}
-
-/*  Zustand: .danger:hover                                                     */
-/*  Erklaerung: Signalisiert Interaktion durch kraeftigeren roten Hintergrund. */
-.danger:hover {
-  transform: translateY(-2px);
-  background: var(--color-danger-bg-hover);
-  box-shadow: var(--shadow-panel);
-}
-
-/* ========================================================================== */
-/*  Komponente: Log Liste                                                     */
-/*  Zweck: Darstellung einzelner Log-Eintraege inklusive Editor.             */
-/* ========================================================================== */
-/*  Klasse: .log-list                                                          */
-/*  Erklaerung: Ordnet mehrere Log-Eintragskarten mit vertikalem Abstand.      */
-.log-list {
+.log-list,
+.trash-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: Log Entry                                                  */
-/*  Zweck: Struktur und Interaktion eines einzelnen Log-Eintrags.             */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .log-entry                                                         */
-/*  Erklaerung: Karte fuer einen einzelnen Eintrag mit Schatten und Hover-Effekt.*/
-.log-entry {
+.log-entry,
+.trash-entry {
   border-radius: 24px;
-  padding: 22px clamp(18px, 2vw, 26px);
-  background: var(--color-log-entry-bg);
-  border: 1px solid var(--color-log-entry-border);
-  box-shadow: var(--shadow-panel);
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-strong);
+  box-shadow: var(--color-shadow-soft);
+}
+
+.log-entry {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-/*  Zustand: .log-entry:hover                                                  */
-/*  Erklaerung: Laesst Karten leicht schweben, um Interaktivitaet zu zeigen.   */
 .log-entry:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--color-shadow);
+  border-color: var(--color-border-strong);
 }
 
-/*  Klasse: .log-entry__header                                                 */
-/*  Erklaerung: Richtet Avatar, Titel und Metainformationen nebeneinander aus. */
-.log-entry__header {
+.log-entry__header,
+.trash-entry-head {
   display: flex;
   justify-content: space-between;
+  gap: 16px;
   align-items: flex-start;
-  gap: 12px;
 }
 
-/*  Klasse: .log-entry__title-group                                            */
-/*  Erklaerung: Hält Avatar und Titel zusammen und ermoeglicht Ellipsen.       */
+@media (max-width: 720px) {
+  .log-entry__header,
+  .trash-entry-head {
+    flex-direction: column;
+  }
+}
+
+.log-entry__title-stack,
+.trash-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
 .log-entry__title-group {
   display: flex;
   align-items: center;
@@ -721,426 +730,557 @@ main.app-shell {
   min-width: 0;
 }
 
-/*  Klasse: .log-entry__avatar                                                 */
-/*  Erklaerung: Kleine runde Initiale, die den Autor repraesentiert.           */
 .log-entry__avatar {
-  width: 16px;
-  height: 16px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  border: 1px solid var(--color-avatar-border);
-  background: var(--color-avatar-bg);
-  font-weight: 600;
-  font-size: 0.55rem;
+  border-radius: 14px;
+  background: var(--color-accent-soft);
   color: var(--color-accent);
-  flex-shrink: 0;
+  font-weight: 800;
 }
 
-/*  Klasse: .log-entry__title                                                  */
-/*  Erklaerung: Zeigt den Titel und sorgt fuer Textkuerzung bei langen Namen.  */
 .log-entry__title {
-  font-size: 1.1rem;
-  color: var(--color-emphasis);
-  display: inline-block;
+  font-size: 1.06rem;
+  font-weight: 800;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: min(380px, 100%);
 }
 
-/*  Klasse: .log-entry__title-input                                            */
-/*  Erklaerung: Eingabefeld fuer Titel im Editiermodus mit staerkerem Rahmen.  */
-.log-entry__title-input {
-  flex: 1;
-  min-width: 0;
-  border-radius: 12px;
-  border: 1px solid var(--color-border-strong);
-  padding: 10px 14px;
-  background: var(--color-input-bg);
-  font-weight: 600;
-}
-
-/*  Zustand: .log-entry__title-input:focus                                     */
-/*  Erklaerung: Markiert den aktiven Input mit farbiger Umrandung.             */
-.log-entry__title-input:focus {
-  outline: none;
-  border-color: var(--color-input-focus-border);
-  box-shadow: var(--color-input-focus-shadow);
-}
-
-/*  Klasse: .log-entry__meta                                                   */
-/*  Erklaerung: Zeigt Datum oder andere Metaangaben in kleiner Schrift.        */
-.log-entry__meta {
-  font-size: 0.85rem;
-  color: var(--color-muted);
-  white-space: nowrap;
-}
-
-/*  Klasse: .log-entry__editor                                                 */
-/*  Erklaerung: Textarea fuer Vollinhalte mit komfortablem Padding.            */
-.log-entry__editor {
-  width: 100%;
-  min-height: 220px;
-  border-radius: 16px;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-input-bg);
-  padding: 14px 18px;
-  resize: vertical;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/*  Zustand: .log-entry__editor:focus                                          */
-/*  Erklaerung: Betont den Editor beim Schreiben mit Fokusrahmen.              */
-.log-entry__editor:focus {
-  outline: none;
-  border-color: var(--color-input-focus-border);
-  box-shadow: var(--color-input-focus-shadow);
-}
-
-/*  Klasse: .log-entry__content                                                */
-/*  Erklaerung: Statischer Anzeige-Text mit weichem Zeilenabstand.             */
-.log-entry__content {
-  margin: 0;
-  color: var(--color-paragraph);
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-/*  Klasse: .log-entry__footer                                                 */
-/*  Erklaerung: Platz fuer Bottom-Actions wie Buttons in der Karte.            */
-.log-entry__footer {
+.log-entry__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-end;
+  gap: 8px;
 }
 
-/* ========================================================================== */
-/*  Komponente: Papierkorb                                                    */
-/*  Zweck: Verwaltung geloeschter Eintraege inklusive Aktionen.               */
-/* ========================================================================== */
-/*  Klasse: .trash-list                                                        */
-/*  Erklaerung: Stapelt geloeschte Eintraege vertikal mit gleichmaessigem Abstand.*/
-.trash-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: Papierkorb Eintrag                                         */
-/*  Zweck: Darstellung einzelner geloeschter Eintraege inkl. Aktionen.        */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .trash-entry                                                       */
-/*  Erklaerung: Einzelne geloeschte Karte mit Hintergrund und Animation.      */
-.trash-entry {
-  border-radius: 20px;
-  border: 1px solid var(--color-log-entry-border);
-  background: var(--color-panel-empty-bg);
-  overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.trash-entry-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-/*  Klasse: .trash-entry-head                                                  */
-/*  Erklaerung: Positioniert Kopfzeile und Aktionsbereich nebeneinander.       */
-.trash-entry-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-/*  Klasse: .trash-title-group                                                 */
-/*  Erklaerung: Gruppiert Titeltext und Metainformation im Kopfbereich.        */
-.trash-title-group {
+.log-entry__meta-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  align-items: flex-end;
 }
 
-/*  Selektor: .trash-title-group strong                                        */
-/*  Erklaerung: Betont den Namen des geloeschten Eintrags.                     */
-.trash-title-group strong {
-  font-size: 1rem;
-  color: var(--color-emphasis);
+@media (max-width: 720px) {
+  .log-entry__meta-group {
+    align-items: flex-start;
+  }
 }
 
-/*  Klasse: .trash-meta                                                        */
-/*  Erklaerung: Zeigt Zusatzinformationen wie Datum in kleiner Schrift.        */
+.log-entry__meta,
 .trash-meta {
-  font-size: 0.85rem;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
-/*  Klasse: .trash-entry-content                                               */
-/*  Erklaerung: Darstellung des geloeschten Inhalts mit Zeilenumbruch.         */
-.trash-entry-content {
-  margin: 0;
-  color: var(--color-paragraph);
-  line-height: 1.6;
+.log-entry__content,
+.trash-entry-content,
+.help-content p,
+.help-content li,
+.help-content dd {
+  color: var(--color-text-soft);
+  line-height: 1.68;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-/*  Klasse: .trash-entry-actions                                               */
-/*  Erklaerung: Ordnet Wiederherstellen- oder Loeschen-Buttons am Kartenende.  */
-.trash-entry-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-/*  Klasse: .trash-clear                                                       */
-/*  Erklaerung: Fuegt Abstand oberhalb des Buttons zum Leeren des Papierkorbs ein.*/
-.trash-clear {
-  margin-top: 18px;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Detailstil: Datensicherheits-Panel                                        */
-/*  Zweck: Textgestaltung innerhalb der Datensicherheits-Hinweise.           */
-/* -------------------------------------------------------------------------- */
-/*  Selektor: .data-safety-panel p                                             */
-/*  Erklaerung: Macht Hinweistext angenehm lesbar und leicht abgesetzt.        */
-.data-safety-panel p {
-  color: var(--color-paragraph-soft);
-  line-height: 1.6;
-}
-
-/* ========================================================================== */
-/*  Komponente: Hilfe / Onboarding                                            */
-/*  Zweck: Beschreibende Hilfetexte und Listen.                               */
-/* ========================================================================== */
-/*  Klasse: .help-content                                                      */
-/*  Erklaerung: Ordnet alle Hilfeabschnitte und Textblöcke untereinander an.  */
-/*  Klasse: .help-panel                                                        */
-/*  Erklaerung: Fuegt vertikale Abstaende zwischen In-App-Hilfeabschnitten ein.*/
-.help-panel {
+.trash-entry {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  background: var(--color-panel-muted);
+}
+
+.trash-title-group strong,
+.data-safety-panel__card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.trash-clear {
+  align-self: flex-start;
+}
+
+.data-safety-panel__grid {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 860px) {
+  .data-safety-panel__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.data-safety-panel__card,
+.data-safety-panel__note {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-strong);
+}
+
+.data-safety-panel__card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.data-safety-panel__note strong {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.help-panel {
   gap: 24px;
 }
 
-/*  Klasse: .help-content__toc                                                 */
-/*  Erklaerung: Stilisierter Inhaltsindex fuer Sprunglinks.                   */
+.help-layout {
+  display: grid;
+  gap: 22px;
+}
+
+@media (min-width: 1080px) {
+  .help-layout {
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
 .help-content__toc {
-  background: var(--color-panel-accent-bg);
+  padding: 18px;
+  border-radius: 22px;
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: 16px 20px;
+  background: var(--color-panel-muted);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-/*  Selektor: .help-content__toc-title                                        */
-/*  Erklaerung: Betont Ueberschrift des Inhaltsverzeichnisses.                */
+@media (min-width: 1080px) {
+  .help-content__toc {
+    position: sticky;
+    top: 24px;
+  }
+}
+
 .help-content__toc-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: 0;
-  color: var(--color-emphasis);
+  color: var(--color-text);
 }
 
-/*  Selektor: .help-content__toc ul                                           */
-/*  Erklaerung: Macht Sprunglinks angenehm lesbar.                            */
 .help-content__toc ul {
-  margin: 0;
-  padding-left: 1rem;
+  list-style: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-/*  Klasse: .help-content__toc-button                                       */
-/*  Erklaerung: Button-Styles fuer die Inline-Navigation.                   */
 .help-content__toc-button {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: none;
-  padding: 4px 0;
-  color: var(--color-accent);
-  font: inherit;
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid transparent;
   text-align: left;
+  cursor: pointer;
+  color: var(--color-text-soft);
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 .help-content__toc-button:hover,
 .help-content__toc-button:focus-visible {
-  color: var(--color-accent-hover);
-  text-decoration: underline;
-}
-
-/*  Klasse: .help-content__figure                                             */
-/*  Erklaerung: Gruppiert Screenshots/Diagramme mit Bildunterschriften.       */
-.help-content__figure {
-  margin: 20px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/*  Klasse: .help-content__figure-placeholder                                 */
-/*  Erklaerung: Platzhalter fuer zukuenftige Assets.                          */
-.help-content__figure-placeholder {
-  background: var(--color-panel-muted);
-  border: 1px dashed var(--color-border);
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
-
-/*  Klasse: .help-content__image                                              */
-/*  Erklaerung: Stellt eingebettete Screenshots responsiv und sauber dar.     */
-.help-content__image {
-  width: 100%;
-  height: auto;
-  border-radius: 14px;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 8px 24px rgba(8, 12, 30, 0.4);
-}
-
-/*  Klasse: .help-content__figure-grid                                        */
-/*  Erklaerung: Platziert mehrere Screenshots nebeneinander (mobile gestapelt).*/
-.help-content__figure-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.help-content__figure-grid .help-content__image {
-  flex: 1 1 240px;
-  min-width: 220px;
-}
-
-/*  Klasse: .help-content__footer                                             */
-/*  Erklaerung: Hinweisbereich mit Verweisen auf Dokumentation.               */
-.help-content__footer {
-  margin-top: 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-paragraph-soft);
-  line-height: 1.6;
+  background: var(--color-panel-strong);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .help-content {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  color: var(--color-paragraph);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: Hilfe / Onboarding                                         */
-/*  Zweck: Listen und Zwischenueberschriften im Hilfebereich.                 */
-/* -------------------------------------------------------------------------- */
-/*  Selektor: .help-content ul                                                 */
-/*  Erklaerung: Stellt Aufzaehlungen kompakt dar und fuegt Innenabstand hinzu. */
-.help-content ul {
-  margin: 0;
+.help-content > section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 3vw, 26px);
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-muted);
+}
+
+.help-content h3 {
+  font-size: 1.08rem;
+}
+
+.help-content ul,
+.help-content ol {
   padding-left: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/*  Selektor: .help-content h3                                                 */
-/*  Erklaerung: Formatiert Unterueberschriften der Hilfetexte.                 */
-.help-content h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-emphasis);
+.help-content dl {
+  display: grid;
+  gap: 14px;
 }
 
-/* ========================================================================== */
-/*  Komponente: Footer                                                        */
-/*  Zweck: Abschlussbereich mit Meta-Informationen und Links.                 */
-/* ========================================================================== */
-/*  Klasse: .app-footer                                                        */
-/*  Erklaerung: Gestaltet den unteren Seitenabschluss mit Rahmen und Hintergrund.*/
+.help-content dt {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.help-content__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.help-content__figure figcaption,
+.help-content__footer {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.help-content__figure-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 780px) {
+  .help-content__figure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.help-content__image {
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--color-shadow-soft);
+}
+
+.help-content__footer {
+  padding-top: 6px;
+  border-top: 1px solid var(--color-border);
+}
+
 .app-footer {
   min-height: var(--footer-height);
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-footer-bg);
   border-top: 1px solid var(--color-footer-border);
+  background: var(--color-footer-bg);
+  backdrop-filter: blur(16px);
 }
 
-/*  Klasse: .app-footer__spacer                                                */
-/*  Erklaerung: Reserviert Platz, damit die Mobile-Navigation nichts verdeckt. */
+.app-footer__inner {
+  width: min(1180px, calc(100vw - 40px));
+  margin: 0 auto;
+  padding: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.app-footer__inner a {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
 .app-footer__spacer {
   display: none;
 }
 
-@media (max-width: 900px) {
-  /* ------------------------------------------------------------------------ */
-  /*  Responsive: Footer Abstand                                              */
-  /*  Zweck: Reserve fuer Mobile Navigation und Safe-Area Insets.             */
-  /* ------------------------------------------------------------------------ */
+@media (max-width: 1079px) {
   .app-footer__spacer {
     display: block;
     height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 }
 
-/*  Klasse: .app-footer__inner                                                 */
-/*  Erklaerung: Zentriert den Inhalt des Footers und richtet Text aus.         */
-.app-footer__inner {
-  width: min(960px, calc(100vw - 48px));
-  margin: 0 auto;
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .desktop-nav {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px;
+    border-radius: 28px;
+    border: 1px solid var(--color-border);
+    background: var(--color-panel);
+    box-shadow: var(--color-shadow);
+  }
+
+  .desktop-nav__section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .desktop-nav__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .desktop-nav__item {
+    display: flex;
+  }
+
+  .desktop-nav__link {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 14px;
+    border-radius: 16px;
+    color: var(--color-text-muted);
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      transform 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  .desktop-nav__link:hover {
+    color: var(--color-text);
+    background: var(--color-panel-muted);
+    transform: translateX(2px);
+  }
+
+  .desktop-nav__link--active {
+    color: var(--color-text);
+    background: var(--color-accent-soft);
+  }
+
+  .desktop-nav__icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: var(--color-panel-strong);
+    color: var(--color-accent);
+    border: 1px solid var(--color-border);
+  }
+
+  .desktop-nav__label {
+    min-width: 0;
+    flex: 1;
+    font-weight: 700;
+  }
+
+  .desktop-nav__badge {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-nav__summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid var(--color-border);
+    background: var(--color-panel-muted);
+  }
+
+  .desktop-nav__summary-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+  }
+
+  .desktop-nav__summary-item {
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-panel-strong);
+  }
+
+  .desktop-nav__summary-item dt {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  .desktop-nav__summary-item dd {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  .desktop-nav__summary-copy {
+    color: var(--color-text-soft);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+}
+
+.mobile-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  justify-content: center;
+  padding:
+    8px calc(14px + env(safe-area-inset-right, 0px))
+    calc(14px + env(safe-area-inset-bottom, 0px))
+    calc(14px + env(safe-area-inset-left, 0px));
+  background: var(--color-mobile-nav-bg);
+  border-top: 1px solid var(--color-mobile-nav-border);
+}
+
+@media (max-width: 1079px) {
+  .mobile-nav {
+    display: flex;
+  }
+}
+
+.mobile-nav__list {
+  width: min(620px, 100%);
+  min-height: calc(var(--mobile-nav-height) - env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mobile-nav__item {
+  min-width: 0;
+}
+
+.mobile-nav__link {
+  position: relative;
+  width: 100%;
+  min-height: 68px;
+  padding: 10px 8px;
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.mobile-nav__link:hover {
+  color: var(--color-text);
+  background: var(--color-mobile-nav-highlight);
+}
+
+.mobile-nav__link--active {
+  color: var(--color-text);
+  background: var(--color-mobile-nav-highlight);
+}
+
+.mobile-nav__icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.38);
+  color: var(--color-accent);
+}
+
+:root[data-theme="dark"] .mobile-nav__icon {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mobile-nav__label {
+  font-size: 0.72rem;
+  font-weight: 700;
   text-align: center;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  padding: 10px 0;
+  line-height: 1.2;
 }
 
-/*  Selektor: .app-footer__inner a                                             */
-/*  Erklaerung: Betont Footer-Links mit etwas staerkerer Schrift.              */
-.app-footer__inner a {
-  font-weight: 600;
+.mobile-nav__badge {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-size: 0.64rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Accessibility Hilfen                                                      */
-/*  Zweck: Unsichtbare Sprungmarken und Screenreader-Klassen.                 */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .sr-anchor                                                         */
-/*  Erklaerung: Unsichtbare Anker, die Spruenge fuer Screenreader ermoeglichen.*/
-.sr-anchor {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 0;
+.mobile-nav__link--button {
+  border: none;
+  font: inherit;
 }
 
-/*  Klasse: .visually-hidden                                                   */
-/*  Erklaerung: Versteckt Elemente visuell, laesst sie aber fuer Screenreader bestehen.*/
+.theme-toggle {
+  padding: 0 14px;
+}
+
+.theme-toggle__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle__label {
+  font-weight: 700;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1153,304 +1293,17 @@ main.app-shell {
   border: 0;
 }
 
-/* ========================================================================== */
-/*  Komponente: Navigation mobil                                              */
-/*  Zweck: Feste Navigationsleiste fuer kleine Viewports.                     */
-/* ========================================================================== */
-/*  Klasse: .mobile-nav                                                        */
-/*  Erklaerung: Fixierte Navigationsleiste am unteren Rand fuer Smartphones.   */
-.mobile-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  border-top: 1px solid var(--color-mobile-nav-border);
-  background: var(--color-mobile-nav-bg);
-  backdrop-filter: blur(18px);
-  padding: 6px calc(clamp(10px, 4vw, 20px) + env(safe-area-inset-right, 0px))
-    calc(12px + env(safe-area-inset-bottom, 0px))
-    calc(clamp(10px, 4vw, 20px) + env(safe-area-inset-left, 0px));
-  display: none;
-  justify-content: center;
-  align-items: stretch;
-}
-
-/* ========================================================================== */
-/*  Komponente: Navigation desktop                                            */
-/*  Zweck: Sticky Navigationsleiste fuer groessere Viewports.                 */
-/* ========================================================================== */
-/*  Klasse: .desktop-nav                                                       */
-/*  Erklaerung: Standardmaessig ausgeblendet, da nur auf groesseren Displays aktiv.*/
-.desktop-nav {
-  display: none;
-}
-
-@media (min-width: 901px) {
-  /* Desktop: 60 % größere Buttons für mehr visuelle Präsenz */
-  .primary,
-  .secondary,
-  .ghost,
-  .danger {
-    font-size: 1.04rem;
-    padding: 0.42rem 0.64rem;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  /* ------------------------------------------------------------------------ */
-  /*  Unterelemente: Desktop Navigation                                       */
-  /*  Zweck: Navigationseintraege, Badges und Icons fuer groessere Screens.   */
-  /* ------------------------------------------------------------------------ */
-  /*  Klasse: .desktop-nav (breite Screens)                                     */
-  /*  Erklaerung: Macht die Sticky Navigation sichtbar und verleiht Kartenstil.*/
-  .desktop-nav {
-    display: block;
-    position: sticky;
-    top: clamp(16px, 4vw, 32px);
-    z-index: 55;
-    padding: clamp(16px, 3vw, 22px) clamp(20px, 3vw, 28px);
-    border-radius: 28px;
-    background: var(--color-panel);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-panel);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-
-  /*  Klasse: .desktop-nav__list                                                */
-  /*  Erklaerung: Richtet Navigationspunkte in einer Reihe mit Abstaenden aus.  */
-  .desktop-nav__list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  /*  Klasse: .desktop-nav__item                                                */
-  /*  Erklaerung: Erweiterbares Flex-Item fuer jeden Navigationspunkt.          */
-  .desktop-nav__item {
-    flex: 1;
-    display: flex;
-  }
-
-  /*  Klasse: .desktop-nav__link                                                */
-  /*  Erklaerung: Klickbare Flaeche mit Icon und Titel pro Navigationspunkt.    */
-  .desktop-nav__link {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-weight: 600;
-    color: var(--color-muted);
-    padding: 12px 16px;
-    border-radius: 16px;
-    text-decoration: none;
-    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-  }
-
-  /*  Zustand: .desktop-nav__link:hover                                         */
-  /*  Erklaerung: Hebt Auswahl bei Hover durch Farbe und leichte Bewegung hervor.*/
-  .desktop-nav__link:hover {
-    color: var(--color-accent);
-    background: var(--color-secondary-bg);
-    transform: translateY(-2px);
-  }
-
-  /*  Zustand: .desktop-nav__link--active                                       */
-  /*  Erklaerung: Markiert den aktiven Navigationspunkt persistent.             */
-  .desktop-nav__link--active {
-    color: var(--color-accent);
-    background: var(--color-secondary-bg);
-    box-shadow: var(--color-mobile-nav-highlight);
-  }
-
-  /*  Klasse: .desktop-nav__icon                                                */
-  /*  Erklaerung: Container fuer das jeweilige Navigationssymbol.               */
-  .desktop-nav__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    color: var(--color-accent);
-  }
-
-  /*  Klasse: .desktop-nav__badge                                               */
-  /*  Erklaerung: Zeigt Benachrichtigungszahlen als kleine Chips neben Links.   */
-  .desktop-nav__badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    padding: 0 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    border-radius: 999px;
-    background: var(--color-secondary-bg);
-    color: var(--color-accent);
-  }
-}
-
-@media (max-width: 900px) {
-  /* ------------------------------------------------------------------------ */
-  /*  Responsive: Mobile Navigation Aktivierung                               */
-  /*  Zweck: Navigation bei kleinen Viewports sichtbar schalten.              */
-  /* ------------------------------------------------------------------------ */
-  /*  Klasse: .mobile-nav (mobil sichtbar)                                     */
-  /*  Erklaerung: Aktiviert die Navigationsleiste, sobald der Bildschirm klein ist.*/
-  .mobile-nav {
-    display: flex;
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Unterelemente: Mobile Navigation                                          */
-/*  Zweck: Struktur und Interaktion der mobilen Navigationspunkte.            */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .mobile-nav__list                                                  */
-/*  Erklaerung: Verteilt Navigationspunkte gleichmaessig auf der Leiste.       */
-.mobile-nav__list {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(8px, 3vw, 14px);
-  margin: 0;
-  padding: 0;
-  width: min(520px, 100%);
-  list-style: none;
-  min-height: calc(var(--mobile-nav-height) - env(safe-area-inset-bottom, 0px));
-}
-
-/*  Klasse: .mobile-nav__item                                                  */
-/*  Erklaerung: Flex-Container je Navigationseintrag zur Zentrierung.          */
-.mobile-nav__item {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  min-width: 0;
-}
-
-/*  Klasse: .mobile-nav__link                                                  */
-/*  Erklaerung: Vertikaler Button mit Icon und Label fuer jeden Tab.           */
-.mobile-nav__link {
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-decoration: none;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--color-muted);
-  padding: 10px 10px;
-  border-radius: 16px;
-  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-  width: 100%;
-}
-
-@media (max-width: 480px) {
-  .mobile-nav__link {
-    padding: 8px 8px;
-  }
-}
-
-/*  Zustand: .mobile-nav__link:hover                                           */
-/*  Erklaerung: Aendert Farbe und verschiebt Link leicht fuer Hover-Feedback. */
-.mobile-nav__link:hover {
-  color: var(--color-accent);
-  background: var(--color-secondary-bg);
-  transform: translateY(-2px);
-}
-
-/*  Zustand: .mobile-nav__link--active                                         */
-/*  Erklaerung: Markiert den gerade aktiven Navigationspunkt.                  */
-.mobile-nav__link--active {
-  color: var(--color-accent);
-  background: var(--color-secondary-bg);
-  box-shadow: var(--color-mobile-nav-highlight);
-}
-
-/*  Klasse: .mobile-nav__icon                                                  */
-/*  Erklaerung: Quadratische Flaeche fuer das Navigation-Symbol.               */
-.mobile-nav__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--color-mobile-nav-icon-bg);
-  color: var(--color-accent);
-}
-
-/*  Zustand: .mobile-nav__link--active .mobile-nav__icon                       */
-/*  Erklaerung: Faerbt das Icon bei Aktivierung passend zum Hauptbutton ein.   */
-.mobile-nav__link--active .mobile-nav__icon {
-  background: var(--color-accent);
-  color: #ffffff;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Interaktion: Mobile Navigation Buttons                                    */
-/*  Zweck: Fokus- und Buttonverhalten fuer mobile Aktionslinks.               */
-/* -------------------------------------------------------------------------- */
-/*  Klasse: .mobile-nav__link--button                                          */
-/*  Erklaerung: Entfernt Standardbutton-Stile fuer Interaktionen innerhalb der Leiste.*/
-.mobile-nav__link--button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font: inherit;
-}
-
-/*  Zustand: .mobile-nav__link--button:focus-visible                           */
-/*  Erklaerung: Zeichnet gut sichtbare Tastatur-Fokusringe.                    */
-.mobile-nav__link--button:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/*  Klasse: .mobile-nav__badge                                                 */
-/*  Erklaerung: Kleines Benachrichtigungssignet oben rechts am Navigationspunkt.*/
-.mobile-nav__badge {
-  position: absolute;
-  top: 6px;
-  right: 10px;
-  min-width: 18px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: var(--color-accent);
-  color: #ffffff;
-  font-size: 0.65rem;
-  line-height: 1;
-  box-shadow: 0 6px 14px rgba(37, 81, 187, 0.25);
-}
-
-/* ========================================================================== */
-/*  Komponente: Theme Toggle                                                  */
-/*  Zweck: Umschalter zwischen Light- und Dark-Theme.                         */
-/* ========================================================================== */
-/*  Klasse: .theme-toggle                                                      */
-/*  Erklaerung: Inline-flex Container fuer Switch-Element und Textlabel.       */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-inline: 1.2rem;
-}
-
-/*  Klasse: .theme-toggle__icon                                                */
-/*  Erklaerung: Zentriert das Icon, das den aktuellen Modus widerspiegelt.     */
-.theme-toggle__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/*  Klasse: .theme-toggle__label                                               */
-/*  Erklaerung: Textbeschreibung des Toggles, etwas hervorgehoben.             */
-.theme-toggle__label {
-  font-weight: 600;
 }

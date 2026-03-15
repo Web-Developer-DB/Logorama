@@ -13,12 +13,16 @@ const DEFAULT_KEYWORDS =
 const FALLBACK_SITE_URL = "https://logorama.app/";
 
 const resolveSiteUrl = () => {
-  const envUrl =
-    typeof import.meta !== "undefined" && import.meta.env?.VITE_SITE_URL
-      ? import.meta.env.VITE_SITE_URL
+  const processUrl =
+    typeof process !== "undefined" && process.env?.VITE_SITE_URL
+      ? process.env.VITE_SITE_URL
+      : null;
+  const browserUrl =
+    typeof window !== "undefined" && window.location?.origin
+      ? `${window.location.origin}/`
       : null;
   try {
-    return new URL(envUrl ?? FALLBACK_SITE_URL).origin + "/";
+    return new URL(processUrl ?? browserUrl ?? FALLBACK_SITE_URL).origin + "/";
   } catch {
     return FALLBACK_SITE_URL;
   }

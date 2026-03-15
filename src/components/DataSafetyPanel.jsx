@@ -39,22 +39,43 @@ const DataSafetyPanel = ({
   return (
     <section className="panel data-safety-panel">
       <header className="panel-heading">
+        <p className="panel-eyebrow">Backup &amp; Restore</p>
         <h2 className="panel-title">Daten sichern &amp; wiederherstellen</h2>
         <p className="panel-subtitle">
           Exportiere deine Einträge als JSON oder spiele vorhandene Sicherungen wieder ein.
         </p>
       </header>
-      <p>
-        Lade eine Sicherung deiner Einträge herunter oder spiele sie bei Bedarf wieder ein. So kannst
-        du Inhalte jederzeit retten – auch wenn etwas versehentlich gelöscht wurde.
-      </p>
-      <div className="actions">
-        <button type="button" className="primary" onClick={onExport} disabled={disableExport}>
-          Daten sichern (Upload)
-        </button>
-        <button type="button" className="secondary" onClick={handleRestoreClick}>
-          Daten wiederherstellen (Download)
-        </button>
+      <div className="data-safety-panel__grid">
+        <article className="data-safety-panel__card">
+          <div className="data-safety-panel__card-header">
+            <h3>Daten sichern</h3>
+            <p>
+              Exportiere den aktuellen Stand als JSON-Datei, bevor du größere Änderungen vornimmst
+              oder das Gerät wechselst.
+            </p>
+          </div>
+          <button type="button" className="primary" onClick={onExport} disabled={disableExport}>
+            Daten sichern
+          </button>
+        </article>
+        <article className="data-safety-panel__card">
+          <div className="data-safety-panel__card-header">
+            <h3>Daten wiederherstellen</h3>
+            <p>
+              Importiere eine bestehende Sicherung, um den kompletten Eintragsbestand zu ersetzen.
+            </p>
+          </div>
+          <button type="button" className="secondary" onClick={handleRestoreClick}>
+            Daten wiederherstellen
+          </button>
+        </article>
+      </div>
+      <div className="data-safety-panel__note">
+        <strong>Sicherheits-Hinweis</strong>
+        <p className="data-safety-panel__hint">
+          Lege dir regelmäßige lokale Sicherungen an, damit du Änderungen rückgängig machen oder
+          Inhalte auf andere Geräte übertragen kannst.
+        </p>
       </div>
       <input
         ref={fileInputRef}
@@ -63,10 +84,6 @@ const DataSafetyPanel = ({
         onChange={handleFileChange}
         className="visually-hidden"
       />
-      <p className="data-safety-panel__hint">
-        Tipp: Lege dir regelmäßige lokale Sicherungen an, damit du Änderungen rückgängig machen oder
-        auf andere Geräte übertragen kannst.
-      </p>
     </section>
   );
 };
