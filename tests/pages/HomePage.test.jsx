@@ -34,7 +34,7 @@ const createProps = (overrides = {}) => ({
 });
 
 describe("HomePage", () => {
-  test("zeigt Kennzahlen und den Theme-Umschalter", () => {
+  test("zeigt Kennzahlen und die primären Startaktionen", () => {
     // Arrange
     const props = createProps();
     render(
@@ -48,9 +48,8 @@ describe("HomePage", () => {
     expect(screen.getByText("Heute verfasst")).toBeInTheDocument();
     expect(screen.getByText("Diese Woche")).toBeInTheDocument();
     expect(screen.getByText("Im Papierkorb")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Theme-Modus wechseln/ })
-    ).toBeVisible();
+    expect(screen.getByRole("link", { name: /Neuen Eintrag erstellen/i })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Einträge öffnen/i })).toBeVisible();
   });
 
   test("navigiert zur NewEntryPage über die Hero-Aktion", async () => {
@@ -72,7 +71,7 @@ describe("HomePage", () => {
 
     // Act
     await act(async () => {
-      await user.click(screen.getByRole("link", { name: /Neuantrag erstellen/i }));
+      await user.click(screen.getByRole("link", { name: /Neuen Eintrag erstellen/i }));
     });
 
     // Assert

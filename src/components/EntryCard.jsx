@@ -44,6 +44,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(entry.title ?? "");
   const [draftContent, setDraftContent] = useState(entry.content ?? "");
+  const wasEdited = Boolean(entry.editedAt && entry.editedAt !== entry.createdAt);
 
   /**
    * Wenn der Artikel nicht mehr im Edit-Modus ist, stellen wir sicher,
@@ -88,24 +89,37 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
   return (
     <article className="log-entry">
       <header className="log-entry__header">
-        <div className="log-entry__title-group">
-          <span className="log-entry__avatar">{getInitial(entry)}</span>
-          {isEditing ? (
-            <input
-              type="text"
-              value={draftTitle}
-              onChange={(event) => setDraftTitle(event.target.value)}
-              placeholder="Ohne Titel"
-              maxLength={120}
-              className="log-entry__title-input"
-            />
-          ) : (
-            <strong className="log-entry__title">{entry.title || "Ohne Titel"}</strong>
-          )}
+        <div className="log-entry__title-stack">
+          <div className="log-entry__title-group">
+            <span className="log-entry__avatar">{getInitial(entry)}</span>
+            {isEditing ? (
+              <input
+                type="text"
+                value={draftTitle}
+                onChange={(event) => setDraftTitle(event.target.value)}
+                placeholder="Ohne Titel"
+                maxLength={120}
+                className="log-entry__title-input"
+              />
+            ) : (
+              <strong className="log-entry__title">{entry.title || "Ohne Titel"}</strong>
+            )}
+          </div>
+          <div className="log-entry__chips">
+            <span className="log-entry__chip">Lokal gespeichert</span>
+            {wasEdited ? <span className="log-entry__chip">Bearbeitet</span> : null}
+          </div>
         </div>
-        <time className="log-entry__meta" dateTime={entry.createdAt}>
-          {formatDateTime(entry.createdAt)}
-        </time>
+        <div className="log-entry__meta-group">
+          <time className="log-entry__meta" dateTime={entry.createdAt}>
+            Erstellt {formatDateTime(entry.createdAt)}
+          </time>
+          {wasEdited ? (
+            <span className="log-entry__meta">
+              Aktualisiert {formatDateTime(entry.editedAt)}
+            </span>
+          ) : null}
+        </div>
       </header>
       {isEditing ? (
         <textarea

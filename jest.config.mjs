@@ -35,6 +35,7 @@ export default {
     ]
   },
   moduleNameMapper: {
+    "^react-helmet-async$": "<rootDir>/__mocks__/reactHelmetAsync.js",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "\\.(png|jpg|jpeg|gif|svg|webp|avif)$": "<rootDir>/__mocks__/fileMock.js"
   },
