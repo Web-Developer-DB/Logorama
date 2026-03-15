@@ -7,6 +7,7 @@
 
 import { useCallback, useEffect } from "react";
 import {
+  Link,
   Navigate,
   Route,
   Routes,
@@ -15,6 +16,7 @@ import {
 } from "react-router-dom";
 import DesktopNav from "./components/DesktopNav.jsx";
 import MobileNav from "./components/MobileNav.jsx";
+import ThemeToggle from "./components/ThemeToggle.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import EntriesPage from "./pages/EntriesPage.jsx";
 import NewEntryPage from "./pages/NewEntryPage.jsx";
@@ -66,7 +68,6 @@ const App = () => {
     handleFilterChange,
     handleExport,
     handleImportFile,
-    applyImportedEntries,
     resetQueryState
   } = useEntriesManager();
   const { installPromptEvent, promptInstall } = useInstallPrompt();
@@ -82,6 +83,12 @@ const App = () => {
   }, [location.pathname, resetQueryState]);
 
   const isHelpRoute = location.pathname === "/help";
+  const sharedStats = {
+    totalEntries,
+    todayCount,
+    weekCount,
+    trashEntryCount
+  };
 
   /**
    * Reicht den Formular-Submit weiter und navigiert nur bei erfolgreicher
@@ -103,86 +110,105 @@ const App = () => {
   return (
     <>
       <main className={`app-shell${isHelpRoute ? " app-shell--has-footer" : ""}`}>
-        <DesktopNav
-          stats={{
-            totalEntries,
-            todayCount,
-            weekCount,
-            trashEntryCount
-          }}
-        />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route
-            path="/home"
-            element={
-              <HomePage
-                stats={{
-                  totalEntries,
-                  todayCount,
-                  weekCount,
-                  trashEntryCount
-                }}
-                latestEntries={latestEntries}
-                onDeleteEntry={handleDelete}
-                onUpdateEntry={handleUpdate}
-                themeMode={themeMode}
+        <DesktopNav stats={sharedStats} />
+        <div className="app-shell__content">
+          <header className="app-topbar">
+            <div className="app-topbar__brand">
+              <span className="app-topbar__eyebrow">Offline-first Journal</span>
+              <div className="app-topbar__brand-row">
+                <Link to="/home" className="app-topbar__title">
+                  Logorama
+                </Link>
+                <div className="app-topbar__pills" aria-label="App-Status">
+                  <span className="app-topbar__pill">PWA bereit</span>
+                  <span className="app-topbar__pill">{totalEntries} aktiv</span>
+                  {trashEntryCount ? (
+                    <span className="app-topbar__pill">{trashEntryCount} im Papierkorb</span>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+            <div className="app-topbar__actions">
+              <ThemeToggle
+                mode={themeMode}
                 resolvedTheme={resolvedTheme}
-                onToggleTheme={cycleThemeMode}
-                onInstallApp={promptInstall}
-                canInstall={Boolean(installPromptEvent)}
+                onToggle={cycleThemeMode}
               />
-            }
-          />
-          <Route
-            path="/entries"
-            element={
-              <EntriesPage
-                entries={filteredEntries}
-                searchValue={search}
-                onSearchChange={handleSearchChange}
-                filterValue={filter}
-                onFilterChange={handleFilterChange}
-                onDeleteEntry={handleDelete}
-                onUpdateEntry={handleUpdate}
+              {installPromptEvent ? (
+                <button type="button" className="ghost" onClick={promptInstall}>
+                  App installieren
+                </button>
+              ) : null}
+              <Link to="/new" className="primary">
+                Neuer Eintrag
+              </Link>
+            </div>
+          </header>
+          <div className="app-canvas">
+            <Routes>
+              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route
+                path="/home"
+                element={
+                  <HomePage
+                    stats={sharedStats}
+                    latestEntries={latestEntries}
+                    onDeleteEntry={handleDelete}
+                    onUpdateEntry={handleUpdate}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/new"
-            element={
-              <NewEntryPage
-                formState={formState}
-                onInputChange={handleInputChange}
-                onSubmit={handleCreateEntry}
+              <Route
+                path="/entries"
+                element={
+                  <EntriesPage
+                    entries={filteredEntries}
+                    searchValue={search}
+                    onSearchChange={handleSearchChange}
+                    filterValue={filter}
+                    onFilterChange={handleFilterChange}
+                    onDeleteEntry={handleDelete}
+                    onUpdateEntry={handleUpdate}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/trash"
-            element={
-              <TrashPage
-                entries={sortedTrashEntries}
-                onRestoreEntry={handleRestore}
-                onDeleteForever={handleDeleteForever}
-                onEmptyTrash={handleEmptyTrash}
-                formatDateTime={formatDateTime}
+              <Route
+                path="/new"
+                element={
+                  <NewEntryPage
+                    formState={formState}
+                    onInputChange={handleInputChange}
+                    onSubmit={handleCreateEntry}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path="/backup"
-            element={
-              <BackupPage
-                onExport={handleExport}
-                onImportFile={handleImportFile}
-                disableExport={!entries.length}
+              <Route
+                path="/trash"
+                element={
+                  <TrashPage
+                    entries={sortedTrashEntries}
+                    onRestoreEntry={handleRestore}
+                    onDeleteForever={handleDeleteForever}
+                    onEmptyTrash={handleEmptyTrash}
+                    formatDateTime={formatDateTime}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/help" element={<HelpPage />} />
-          <Route path="*" element={<Navigate to="/home" replace />} />
-        </Routes>
+              <Route
+                path="/backup"
+                element={
+                  <BackupPage
+                    onExport={handleExport}
+                    onImportFile={handleImportFile}
+                    disableExport={!entries.length}
+                  />
+                }
+              />
+              <Route path="/help" element={<HelpPage />} />
+              <Route path="*" element={<Navigate to="/home" replace />} />
+            </Routes>
+          </div>
+        </div>
       </main>
       {isHelpRoute ? (
         <>
@@ -201,14 +227,7 @@ const App = () => {
           <div className="app-footer__spacer" />
         </>
       ) : null}
-      <MobileNav
-        stats={{
-          totalEntries,
-          todayCount,
-          weekCount,
-          trashEntryCount
-        }}
-      />
+      <MobileNav stats={sharedStats} />
     </>
   );
 };

@@ -23,8 +23,11 @@ import { memo } from "react";
  */
 const EntryForm = ({ formState, onInputChange, onSubmit }) => (
   <form className="log-form" onSubmit={onSubmit} id="new-entry">
-    <label>
-      Titel (optional)
+    <label className="log-form__field">
+      <span className="log-form__label-row">
+        <span>Titel (optional)</span>
+        <span className="log-form__meta">Bis 120 Zeichen</span>
+      </span>
       <input
         type="text"
         name="title"
@@ -35,8 +38,11 @@ const EntryForm = ({ formState, onInputChange, onSubmit }) => (
       />
     </label>
 
-    <label>
-      Eintrag
+    <label className="log-form__field">
+      <span className="log-form__label-row">
+        <span>Eintrag</span>
+        <span className="log-form__meta">Pflichtfeld</span>
+      </span>
       <textarea
         name="content"
         value={formState.content}
@@ -46,10 +52,15 @@ const EntryForm = ({ formState, onInputChange, onSubmit }) => (
       />
     </label>
 
-    <div className="actions">
-      <button type="submit" className="primary">
-        Speichern
-      </button>
+    <div className="log-form__footer">
+      <p className="log-form__hint">
+        Dein Eintrag wird lokal im Browser gespeichert und bleibt offline verfügbar.
+      </p>
+      <div className="actions">
+        <button type="submit" className="primary">
+          Speichern
+        </button>
+      </div>
     </div>
   </form>
 );

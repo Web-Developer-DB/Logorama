@@ -5,7 +5,6 @@
 
 import { Link } from "react-router-dom";
 import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
-import ThemeToggle from "../components/ThemeToggle.jsx";
 import Seo from "../components/Seo.jsx";
 
 /**
@@ -20,23 +19,13 @@ import Seo from "../components/Seo.jsx";
  * @param {(id: string) => void} props.onDeleteEntry Übergibt Löschwünsche an die App.
  * @param {(id: string, updates: { title?: string, content?: string }) => void} props.onUpdateEntry
  *        Persistiert Inline-Änderungen.
- * @param {"system"|"light"|"dark"} props.themeMode Gewählter Modus-Schalter.
- * @param {"light"|"dark"} props.resolvedTheme Tatsächlich aktives Theme.
- * @param {() => void} props.onToggleTheme Durchläuft die Theme-Modi.
- * @param {() => void} props.onInstallApp Löst die PWA-Installation aus.
- * @param {boolean} props.canInstall Steuert, ob der Installationsbutton sichtbar ist.
  * @returns {JSX.Element} Kompletter Home-Screen.
  */
 const HomePage = ({
   stats,
   latestEntries,
   onDeleteEntry,
-  onUpdateEntry,
-  themeMode,
-  resolvedTheme,
-  onToggleTheme,
-  onInstallApp,
-  canInstall
+  onUpdateEntry
 }) => (
   <>
     <Seo
@@ -71,54 +60,69 @@ const HomePage = ({
         ]
       })}
     />
-    <header className="app-hero">
-      <div className="app-hero__content">
-        <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
-        <h1>Logorama</h1>
-        <p className="app-hero__lead">
-          Arbeite strukturiert an deinen Projekten: Logorama speichert Gedanken, Fortschritte und
-          Ideen offline im Browser und bietet schnelle Filter für deinen Alltag.
-        </p>
-        <div className="app-hero__actions">
-          <Link to="/new" className="primary">
-            Neuantrag erstellen
-          </Link>
-          <ThemeToggle mode={themeMode} resolvedTheme={resolvedTheme} onToggle={onToggleTheme} />
-          {canInstall ? (
-            <button type="button" className="ghost" onClick={onInstallApp}>
-              App installieren
-            </button>
-          ) : null}
+    <section className="home-grid">
+      <header className="app-hero">
+        <div className="app-hero__content">
+          <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
+          <h1>Logorama</h1>
+          <p className="app-hero__lead">
+            Halte Gedanken, Fortschritte und offene Themen in einer ruhigen Oberfläche fest. Der
+            Fokus liegt auf deinem Inhalt, nicht auf unnötigem UI-Rauschen.
+          </p>
+          <div className="app-hero__actions">
+            <Link to="/new" className="primary">
+              Neuen Eintrag erstellen
+            </Link>
+            <Link to="/entries" className="secondary">
+              Einträge öffnen
+            </Link>
+          </div>
+          <p className="app-hero__note">
+            Alle Daten bleiben lokal im Browser gespeichert und sind auch offline verfügbar.
+          </p>
         </div>
-      </div>
-      <ul className="app-hero__metrics">
-        <li>
-          <span className="metric-value">{stats.totalEntries}</span>
-          <span className="metric-label">Gesamte Einträge</span>
-        </li>
-        <li>
-          <span className="metric-value">{stats.todayCount}</span>
-          <span className="metric-label">Heute verfasst</span>
-        </li>
-        <li>
-          <span className="metric-value">{stats.weekCount}</span>
-          <span className="metric-label">Diese Woche</span>
-        </li>
-        <li>
-          <span className="metric-value">{stats.trashEntryCount}</span>
-          <span className="metric-label">Im Papierkorb</span>
-        </li>
-      </ul>
-    </header>
-    <section className="panel">
-      <header className="panel-heading">
-        <h2 className="panel-title">Aktuelle Einträge</h2>
-        <p className="panel-subtitle">
-          Die drei neuesten Anträge auf einen Blick. Für weitere Details wähle den Menüpunkt
-          „Einträge“.
-        </p>
+        <div className="app-hero__aside">
+          <p className="app-hero__section-label">Arbeitsstatus</p>
+          <ul className="app-hero__metrics">
+            <li>
+              <span className="metric-value">{stats.totalEntries}</span>
+              <span className="metric-label">Gesamte Einträge</span>
+            </li>
+            <li>
+              <span className="metric-value">{stats.todayCount}</span>
+              <span className="metric-label">Heute verfasst</span>
+            </li>
+            <li>
+              <span className="metric-value">{stats.weekCount}</span>
+              <span className="metric-label">Diese Woche</span>
+            </li>
+            <li>
+              <span className="metric-value">{stats.trashEntryCount}</span>
+              <span className="metric-label">Im Papierkorb</span>
+            </li>
+          </ul>
+        </div>
       </header>
-      <ActiveEntriesSection entries={latestEntries} onDelete={onDeleteEntry} onUpdate={onUpdateEntry} />
+      <section className="panel panel--spotlight">
+        <header className="panel-heading panel-heading--split">
+          <div>
+            <p className="panel-eyebrow">Aktueller Fokus</p>
+            <h2 className="panel-title">Neueste Einträge</h2>
+            <p className="panel-subtitle">
+              Die drei jüngsten Einträge bleiben direkt greifbar, damit du ohne Umwege
+              weiterarbeiten kannst.
+            </p>
+          </div>
+          <Link to="/entries" className="ghost">
+            Alle Einträge
+          </Link>
+        </header>
+        <ActiveEntriesSection
+          entries={latestEntries}
+          onDelete={onDeleteEntry}
+          onUpdate={onUpdateEntry}
+        />
+      </section>
     </section>
   </>
 );

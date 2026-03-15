@@ -71,7 +71,8 @@ describe("App routing", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Logorama")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Logorama" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Logorama" })).toBeInTheDocument();
     expect(screen.getByText("Gesamte Einträge")).toBeInTheDocument();
   });
 
