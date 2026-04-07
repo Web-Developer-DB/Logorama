@@ -3,7 +3,7 @@
  * @description Testet das Inline-Editing und Guard-Rails rund um EntryCard.
  */
 
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { jest } from "@jest/globals";
 import EntryCard from "../../src/components/EntryCard.jsx";
@@ -72,5 +72,35 @@ describe("EntryCard", () => {
     // Assert: Kein Persistierungs-Callback, Button zurück im Ausgangszustand
     expect(onUpdate).not.toHaveBeenCalled();
     expect(screen.getByRole("button", { name: /Bearbeiten/i })).toBeInTheDocument();
+  });
+
+  test("oeffnet lange Inhalte in einem separaten Lesedialog", async () => {
+    const user = userEvent.setup();
+    const entry = {
+      ...baseEntry,
+      content: Array.from({ length: 24 }, (_, index) => `Abschnitt ${index + 1}`).join("\n\n")
+    };
+
+    render(<EntryCard entry={entry} onUpdate={jest.fn()} onDelete={jest.fn()} />);
+
+    await act(async () => {
+      await user.click(
+        screen.getByRole("button", { name: /Eintrag Initialer Titel vollständig lesen/i })
+      );
+    });
+
+    const dialog = screen.getByRole("dialog");
+
+    expect(dialog).toBeInTheDocument();
+    expect(screen.getByText("Vollansicht")).toBeInTheDocument();
+    expect(within(dialog).getByText("Abschnitt 24")).toBeInTheDocument();
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Dialog schließen/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
   });
 });

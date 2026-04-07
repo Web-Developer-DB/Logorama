@@ -5,11 +5,21 @@ import { useEffect } from "react";
  *
  * @param {Object} props React-Props.
  * @param {string} props.title Sichtbarer Dialogtitel für Screenreader und UI.
+ * @param {string} [props.eyebrow="Schneller Eingabemodus"] Kurze Kontextzeile oberhalb des Titels.
  * @param {() => void} props.onClose Schließt den Dialog.
+ * @param {string} [props.dialogClassName] Zusätzliche CSS-Klassen für die Dialoghülle.
+ * @param {string} [props.bodyClassName] Zusätzliche CSS-Klassen für den scrollbaren Dialoginhalt.
  * @param {React.ReactNode} props.children Inhalt des Dialogs.
  * @returns {JSX.Element} Zentrierter Modal-Dialog mit Overlay.
  */
-const ModalShell = ({ title, onClose, children }) => {
+const ModalShell = ({
+  title,
+  eyebrow = "Schneller Eingabemodus",
+  onClose,
+  dialogClassName = "",
+  bodyClassName = "",
+  children
+}) => {
   useEffect(() => {
     if (typeof document === "undefined") {
       return undefined;
@@ -36,7 +46,7 @@ const ModalShell = ({ title, onClose, children }) => {
     <div className="modal-shell" role="presentation">
       <div className="modal-shell__backdrop" onClick={onClose} aria-hidden="true" />
       <div
-        className="modal-shell__dialog"
+        className={["modal-shell__dialog", dialogClassName].filter(Boolean).join(" ")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-shell-title"
@@ -44,7 +54,7 @@ const ModalShell = ({ title, onClose, children }) => {
       >
         <div className="modal-shell__header">
           <div>
-            <p className="panel-eyebrow">Schneller Eingabemodus</p>
+            <p className="panel-eyebrow">{eyebrow}</p>
             <h2 id="modal-shell-title" className="modal-shell__title">
               {title}
             </h2>
@@ -58,7 +68,9 @@ const ModalShell = ({ title, onClose, children }) => {
             Schließen
           </button>
         </div>
-        <div className="modal-shell__body">{children}</div>
+        <div className={["modal-shell__body", bodyClassName].filter(Boolean).join(" ")}>
+          {children}
+        </div>
       </div>
     </div>
   );
