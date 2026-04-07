@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import DesktopNav from "./components/DesktopNav.jsx";
 import MobileNav from "./components/MobileNav.jsx";
+import ModalShell from "./components/ModalShell.jsx";
 import ThemeToggle from "./components/ThemeToggle.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import EntriesPage from "./pages/EntriesPage.jsx";
@@ -73,16 +74,28 @@ const App = () => {
   const { installPromptEvent, promptInstall } = useInstallPrompt();
   const location = useLocation();
   const navigate = useNavigate();
+  const isComposerRoute = location.pathname === "/new";
+  const backgroundLocation = isComposerRoute
+    ? location.state?.backgroundLocation ?? {
+        pathname: "/home",
+        search: "",
+        hash: "",
+        state: null,
+        key: "modal-home"
+      }
+    : location;
+  const activePathname = isComposerRoute
+    ? backgroundLocation.pathname
+    : location.pathname;
 
   useEffect(() => {
     // Beim Verlassen der Verwaltungsseite Suche und Filter zurücksetzen,
     // damit Nutzer:innen bei der Rückkehr eine frische, ungefilterte Liste sehen.
-    if (location.pathname !== "/entries") {
+    if (activePathname !== "/entries") {
       resetQueryState();
     }
-  }, [location.pathname, resetQueryState]);
-
-  const isHelpRoute = location.pathname === "/help";
+  }, [activePathname, resetQueryState]);
+  const isHelpRoute = activePathname === "/help";
   const sharedStats = {
     totalEntries,
     todayCount,
@@ -139,13 +152,17 @@ const App = () => {
                   App installieren
                 </button>
               ) : null}
-              <Link to="/new" className="primary">
+              <Link
+                to="/new"
+                state={{ backgroundLocation: location }}
+                className="primary"
+              >
                 Neuer Eintrag
               </Link>
             </div>
           </header>
           <div className="app-canvas">
-            <Routes>
+            <Routes location={backgroundLocation}>
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route
                 path="/home"
@@ -210,6 +227,28 @@ const App = () => {
           </div>
         </div>
       </main>
+      {isComposerRoute ? (
+        <ModalShell
+          title="Neuer Eintrag"
+          onClose={() =>
+            navigate(
+              {
+                pathname: backgroundLocation.pathname || "/home",
+                search: backgroundLocation.search,
+                hash: backgroundLocation.hash
+              },
+              { replace: true, state: backgroundLocation.state }
+            )
+          }
+        >
+          <NewEntryPage
+            formState={formState}
+            onInputChange={handleInputChange}
+            onSubmit={handleCreateEntry}
+            isModal
+          />
+        </ModalShell>
+      ) : null}
       {isHelpRoute ? (
         <>
           <footer className="app-footer">
