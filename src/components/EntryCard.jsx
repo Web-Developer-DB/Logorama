@@ -6,6 +6,7 @@
 
 import { memo, useEffect, useState } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import RichTextContent from "./RichTextContent.jsx";
 import { PencilIcon, CheckIcon, TrashIcon } from "./icons.jsx";
 import { formatDateTime } from "../utils/formatters.js";
 
@@ -129,7 +130,7 @@ const EntryCard = ({ entry, onDelete, onUpdate }) => {
           className="log-entry__editor"
         />
       ) : (
-        <p className="log-entry__content">{entry.content}</p>
+        <RichTextContent className="log-entry__content" content={entry.content} />
       )}
       <footer className="log-entry__footer">
         <button
