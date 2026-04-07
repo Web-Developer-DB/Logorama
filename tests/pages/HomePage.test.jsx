@@ -1,11 +1,10 @@
 /**
  * @file HomePage.test.jsx
- * @description UI-Regressionstests für die Hero-Fläche und Navigation auf der Startseite.
+ * @description UI-Regressionstests für die reduzierte Dashboard-Home.
  */
 
-import { act, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { jest } from "@jest/globals";
 import HomePage from "../../src/pages/HomePage.jsx";
 
@@ -25,16 +24,11 @@ const createProps = (overrides = {}) => ({
   ],
   onDeleteEntry: jest.fn(),
   onUpdateEntry: jest.fn(),
-  themeMode: "system",
-  resolvedTheme: "light",
-  onToggleTheme: jest.fn(),
-  onInstallApp: jest.fn(),
-  canInstall: true,
   ...overrides
 });
 
 describe("HomePage", () => {
-  test("zeigt Kennzahlen und die primären Startaktionen", () => {
+  test("zeigt Dashboard-Kennzahlen und blendet doppelte Menue-Aktionen aus", () => {
     // Arrange
     const props = createProps();
     render(
@@ -44,37 +38,12 @@ describe("HomePage", () => {
     );
 
     // Assert
-    expect(screen.getByText("Gesamte Einträge")).toBeInTheDocument();
-    expect(screen.getByText("Heute verfasst")).toBeInTheDocument();
-    expect(screen.getByText("Diese Woche")).toBeInTheDocument();
-    expect(screen.getByText("Im Papierkorb")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Neuen Eintrag erstellen/i })).toBeVisible();
-    expect(screen.getByRole("link", { name: /Einträge öffnen/i })).toBeVisible();
-  });
-
-  test("navigiert zur NewEntryPage über die Hero-Aktion", async () => {
-    // Arrange
-    const user = userEvent.setup();
-    const props = createProps();
-
-    render(
-      <MemoryRouter
-        initialEntries={["/home"]}
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
-        <Routes>
-          <Route path="/home" element={<HomePage {...props} />} />
-          <Route path="/new" element={<h2>Neuer Eintrag</h2>} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    // Act
-    await act(async () => {
-      await user.click(screen.getByRole("link", { name: /Neuen Eintrag erstellen/i }));
-    });
-
-    // Assert
-    expect(screen.getByRole("heading", { name: /Neuer Eintrag/i })).toBeInTheDocument();
+    expect(screen.getByText("Einträge diese Woche")).toBeInTheDocument();
+    expect(screen.getByText("Heute erfasst")).toBeInTheDocument();
+    expect(screen.getByText("Aktive Sammlung")).toBeInTheDocument();
+    expect(screen.getByText("Neueste Einträge")).toBeInTheDocument();
+    expect(screen.queryByText("Schnellaktionen")).not.toBeInTheDocument();
+    expect(screen.queryByText("Ablage & Sicherung")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /^Einträge$/i })).not.toBeInTheDocument();
   });
 });

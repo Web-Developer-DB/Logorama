@@ -5,7 +5,8 @@
  */
 
 import { MemoryRouter } from "react-router-dom";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import App from "../src/App.jsx";
 
 jest.mock("../src/hooks/useEntriesManager.js", () => jest.fn());
@@ -72,8 +73,9 @@ describe("App routing", () => {
     );
 
     expect(screen.getByRole("link", { name: "Logorama" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Logorama" })).toBeInTheDocument();
-    expect(screen.getByText("Gesamte Einträge")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Logorama/i })).toBeInTheDocument();
+    expect(screen.getByText("Einträge diese Woche")).toBeInTheDocument();
+    expect(screen.getByText("Neueste Einträge")).toBeInTheDocument();
   });
 
   test("zeigt Footer nur auf der Hilfe-Seite", () => {
@@ -90,5 +92,43 @@ describe("App routing", () => {
       screen.getByRole("heading", { name: "Hilfe & Einstieg" })
     ).toBeInTheDocument();
     expect(screen.getByText(/MIT License/)).toBeInTheDocument();
+  });
+
+  test("oeffnet den Composer als Dialog ueber der aktuellen Ansicht und schliesst ihn wieder", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: "/new",
+            state: {
+              backgroundLocation: {
+                pathname: "/home",
+                search: "",
+                hash: "",
+                state: null,
+                key: "home"
+              }
+            }
+          }
+        ]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText("Zentrierter Composer")).toBeInTheDocument();
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: /Dialog schließen/i }));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(screen.getByRole("heading", { name: /Logorama/i })).toBeInTheDocument();
   });
 });
