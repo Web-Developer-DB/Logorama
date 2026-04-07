@@ -26,7 +26,7 @@ describe("Navigation", () => {
     );
 
     expect(screen.getByText("Einträge")).toBeInTheDocument();
-    expect(screen.getByText("4")).toBeInTheDocument();
+    expect(document.querySelector(".desktop-nav__badge")).toHaveTextContent("4");
     expect(screen.getByRole("link", { name: /Einträge/ })).toHaveClass(
       "desktop-nav__link--active"
     );

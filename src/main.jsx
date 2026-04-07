@@ -11,6 +11,7 @@ import { HashRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { inject } from "@vercel/analytics";
 import App from "./App.jsx";
+import "katex/dist/katex.min.css";
 import "./styles.css";
 
 // Sicherheitsnetz: React braucht ein Root-Element, sonst stoppen wir mit einer klaren Fehlermeldung.

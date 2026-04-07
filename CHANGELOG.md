@@ -8,6 +8,10 @@ Das Format orientiert sich an [Keep a Changelog](https://keepachangelog.com/de/1
 ### Added
 - Komprimierte App-Screenshots (`public/images/help/*.webp`) samt Styles für eine bildgestützte Hilfe.
 - Jest-Mock für `react-helmet-async`, damit Seiten- und Routing-Tests ohne Helmet-Provider-Kontext stabil laufen.
+- Markdown- und LaTeX-Rendering für Eintragsinhalte via `react-markdown`, `remark-math` und KaTeX, damit aus ChatGPT kopierte wissenschaftliche Formeln lesbar angezeigt werden.
+- Normalisierung für typische ChatGPT-Math-Blöcke (`\[...\]`, `\(...\)` sowie zeilenweise `[`/`]`-Blöcke), damit kopierte Formeln ohne manuelle Nacharbeit gerendert werden.
+- Modal-Composer für neue Einträge, damit sich Notizen als Dialog über der aktuellen Ansicht erfassen lassen.
+- Lesedialog für lange Einträge, damit vollständige Inhalte separat und mit eigener Scrollfläche geöffnet werden können.
 
 ### Changed
 - Hilfeseite inhaltlich und visuell überarbeitet: Screenshots eingebunden, Texte an aktuelle UI angepasst.
@@ -17,9 +21,13 @@ Das Format orientiert sich an [Keep a Changelog](https://keepachangelog.com/de/1
 - Formular-, Filter-, Karten- und Backup-UI konsolidiert: klarere visuelle Hierarchie, kontextbezogene Meta-Informationen, vereinheitlichte Buttons und modernisierte Spacing-/Typografie-Standards.
 - Globales Styling vollständig neu aufgebaut, inklusive neuer Design-Tokens für Light/Dark Mode, verbesserter Mobile-Navigation und ruhigerer SaaS-orientierter Oberflächenwirkung.
 - `Seo`-Komponente für Build- und Testumgebungen robuster gemacht, indem die Site-URL ohne direkten `import.meta`-Zugriff aufgelöst wird.
+- Eintrags- und Papierkorbansichten von Plaintext auf strukturiertes Rich-Text-Rendering umgestellt, inklusive Styles für Überschriften, Zitate, Code, Tabellen und Formelboxen.
+- Home-Dashboard und Desktop-Navigation weiter verdichtet, damit zentrale Bereiche schneller erreichbar bleiben und mehr Platz für Inhalte entsteht.
+- Lange Einträge in Listenansichten auf eine kompakte Vorschau begrenzt, damit ein einzelner Beitrag nicht mehr die gesamte Übersicht verdrängt.
 
 ### Fixed
 - Veraltete `baseline-browser-mapping`-Daten im Dev-Tooling aktualisiert, damit die entsprechende Browserslist-/Vite-Warnung nicht mehr erscheint.
+- Scroll-Artefakte und optische Überlagerungen in Shell- und Vorschau-Komponenten reduziert, indem instabile Blur-/Overlay-Kombinationen entschärft wurden.
 
 ## [1.0.0] - 2025-10-30
 

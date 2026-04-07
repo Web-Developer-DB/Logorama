@@ -6,6 +6,7 @@
 
 import { memo } from "react";
 import ConfirmButton from "./ConfirmButton.jsx";
+import RichTextContent from "./RichTextContent.jsx";
 import { RestoreIcon, TrashIcon } from "./icons.jsx";
 
 /**
@@ -60,7 +61,7 @@ const TrashSection = ({ entries, onRestore, onDeleteForever, onEmptyTrash, forma
                     Erstellt am {formatDateTime(entry.createdAt)}
                   </time>
                 </div>
-                <p className="trash-entry-content">{entry.content}</p>
+                <RichTextContent className="trash-entry-content" content={entry.content} />
                 <div className="trash-entry-actions">
                   <button type="button" className="secondary" onClick={() => onRestore(entry.id)}>
                     <span className="button-icon">

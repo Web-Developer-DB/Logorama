@@ -3,7 +3,6 @@
  * @description Landing-Route mit Kennzahlen, Hero-Text und Schnellzugriffen.
  */
 
-import { Link } from "react-router-dom";
 import ActiveEntriesSection from "../components/ActiveEntriesSection.jsx";
 import Seo from "../components/Seo.jsx";
 
@@ -26,8 +25,24 @@ const HomePage = ({
   latestEntries,
   onDeleteEntry,
   onUpdateEntry
-}) => (
-  <>
+}) => {
+  const heroMetrics = [
+    {
+      label: "Einträge diese Woche",
+      value: stats.weekCount
+    },
+    {
+      label: "Heute erfasst",
+      value: stats.todayCount
+    },
+    {
+      label: "Aktive Sammlung",
+      value: stats.totalEntries
+    }
+  ];
+
+  return (
+    <>
     <Seo
       title="Logorama – Offline Lernjournal & Notiz-PWA"
       description="Plane Projekte, halte Fortschritte fest und arbeite offline weiter – Logorama speichert deine Einträge lokal, bietet Filter und lässt sich als PWA installieren."
@@ -61,70 +76,53 @@ const HomePage = ({
       })}
     />
     <section className="home-grid">
-      <header className="app-hero">
-        <div className="app-hero__content">
-          <p className="app-hero__eyebrow">Persönliches Lernjournal</p>
-          <h1>Logorama</h1>
-          <p className="app-hero__lead">
-            Halte Gedanken, Fortschritte und offene Themen in einer ruhigen Oberfläche fest. Der
-            Fokus liegt auf deinem Inhalt, nicht auf unnötigem UI-Rauschen.
-          </p>
-          <div className="app-hero__actions">
-            <Link to="/new" className="primary">
-              Neuen Eintrag erstellen
-            </Link>
-            <Link to="/entries" className="secondary">
-              Einträge öffnen
-            </Link>
+      <header className="dashboard-hero panel panel--hero">
+        <div className="dashboard-hero__main">
+          <div className="dashboard-hero__chips">
+            <span className="app-topbar__pill">Offline-fähig</span>
+            <span className="app-topbar__pill">Lokal gespeichert</span>
+            <span className="app-topbar__pill">PWA bereit</span>
           </div>
-          <p className="app-hero__note">
-            Alle Daten bleiben lokal im Browser gespeichert und sind auch offline verfügbar.
-          </p>
-        </div>
-        <div className="app-hero__aside">
-          <p className="app-hero__section-label">Arbeitsstatus</p>
-          <ul className="app-hero__metrics">
-            <li>
-              <span className="metric-value">{stats.totalEntries}</span>
-              <span className="metric-label">Gesamte Einträge</span>
-            </li>
-            <li>
-              <span className="metric-value">{stats.todayCount}</span>
-              <span className="metric-label">Heute verfasst</span>
-            </li>
-            <li>
-              <span className="metric-value">{stats.weekCount}</span>
-              <span className="metric-label">Diese Woche</span>
-            </li>
-            <li>
-              <span className="metric-value">{stats.trashEntryCount}</span>
-              <span className="metric-label">Im Papierkorb</span>
-            </li>
-          </ul>
-        </div>
-      </header>
-      <section className="panel panel--spotlight">
-        <header className="panel-heading panel-heading--split">
-          <div>
-            <p className="panel-eyebrow">Aktueller Fokus</p>
-            <h2 className="panel-title">Neueste Einträge</h2>
-            <p className="panel-subtitle">
-              Die drei jüngsten Einträge bleiben direkt greifbar, damit du ohne Umwege
-              weiterarbeiten kannst.
+          <div className="dashboard-hero__heading">
+            <h1>Logorama</h1>
+            <p className="app-hero__lead">
+              Du bleibst im Flow. Jeder neue Eintrag hält Gedanken, Fortschritte und offene Punkte
+              in einer konzentrierten Arbeitsfläche fest.
             </p>
           </div>
-          <Link to="/entries" className="ghost">
-            Alle Einträge
-          </Link>
-        </header>
-        <ActiveEntriesSection
-          entries={latestEntries}
-          onDelete={onDeleteEntry}
-          onUpdate={onUpdateEntry}
-        />
+          <article className="dashboard-hero__metrics-card" aria-label="Schnellüberblick">
+            {heroMetrics.map((item) => (
+              <div key={item.label} className="dashboard-hero__metric">
+                <span className="dashboard-hero__metric-label">{item.label}</span>
+                <strong className="dashboard-hero__metric-value">{item.value}</strong>
+              </div>
+            ))}
+          </article>
+        </div>
+      </header>
+
+      <section className="dashboard-workspace">
+        <section className="panel panel--spotlight dashboard-workspace__main">
+          <header className="panel-heading">
+            <div>
+              <p className="panel-eyebrow">Arbeitsfläche</p>
+              <h2 className="panel-title">Neueste Einträge</h2>
+              <p className="panel-subtitle">
+                Die letzten Einträge bleiben direkt sichtbar, damit du Inhalte weiterentwickeln
+                kannst, ohne in andere Bereiche springen zu müssen.
+              </p>
+            </div>
+          </header>
+          <ActiveEntriesSection
+            entries={latestEntries}
+            onDelete={onDeleteEntry}
+            onUpdate={onUpdateEntry}
+          />
+        </section>
       </section>
     </section>
   </>
-);
+  );
+};
 
 export default HomePage;
