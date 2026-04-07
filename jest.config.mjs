@@ -12,7 +12,7 @@ export default {
    */
   maxWorkers: 1,
   transform: {
-    "^.+\\.(js|jsx)$": [
+    "^.+\\.(js|jsx|mjs)$": [
       "@swc/jest",
       {
         jsc: {
@@ -34,6 +34,9 @@ export default {
       }
     ]
   },
+  // react-markdown/remark/rehype werden als ESM ausgeliefert und muessen fuer Jest
+  // ebenfalls durch SWC laufen, statt von transformIgnorePatterns ausgeschlossen zu werden.
+  transformIgnorePatterns: [],
   moduleNameMapper: {
     "^react-helmet-async$": "<rootDir>/__mocks__/reactHelmetAsync.js",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",

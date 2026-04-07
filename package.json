@@ -14,10 +14,16 @@
   "dependencies": {
     "@swc/core-linux-x64-gnu": "^1.14.0",
     "@vercel/analytics": "^1.5.0",
+    "katex": "^0.16.45",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.5",
-    "react-router-dom": "^6.23.1"
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^6.23.1",
+    "rehype-katex": "^7.0.1",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",

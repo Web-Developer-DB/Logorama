@@ -778,15 +778,142 @@ main.app-shell {
   line-height: 1.5;
 }
 
-.log-entry__content,
-.trash-entry-content,
+.rich-content,
 .help-content p,
 .help-content li,
 .help-content dd {
   color: var(--color-text-soft);
   line-height: 1.68;
-  white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+.log-entry__content,
+.trash-entry-content {
+  min-width: 0;
+}
+
+.rich-content > :first-child {
+  margin-top: 0;
+}
+
+.rich-content > :last-child {
+  margin-bottom: 0;
+}
+
+.rich-content :where(p, ul, ol, blockquote, pre, table, hr) {
+  margin: 0 0 1rem;
+}
+
+.rich-content :where(ul, ol) {
+  padding-left: 1.35rem;
+}
+
+.rich-content li + li {
+  margin-top: 0.35rem;
+}
+
+.rich-content :where(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 0.9rem;
+  color: var(--color-text);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.rich-content h1 {
+  font-size: 1.35rem;
+}
+
+.rich-content h2 {
+  font-size: 1.2rem;
+}
+
+.rich-content h3,
+.rich-content h4,
+.rich-content h5,
+.rich-content h6 {
+  font-size: 1.02rem;
+}
+
+.rich-content a {
+  color: var(--color-accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.rich-content blockquote {
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.rich-content code {
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+  padding: 0.12rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-inset);
+}
+
+.rich-content pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-muted);
+}
+
+.rich-content pre code {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.rich-content hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.rich-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.rich-content th,
+.rich-content td {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.rich-content th {
+  color: var(--color-text);
+  font-weight: 700;
+  background: var(--color-panel-inset);
+}
+
+.rich-content .katex {
+  color: var(--color-text);
+}
+
+.rich-content .katex-display {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel-inset);
+}
+
+.rich-content .katex-display > .katex {
+  display: inline-block;
+  min-width: max-content;
 }
 
 .trash-entry {
